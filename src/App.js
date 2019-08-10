@@ -1,24 +1,17 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Header from "./Header";
+import Tiles from "./Tiles";
 
 function App() {
+  // I've modified the basic CRA to include some material-ui elements
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* See src/Header.js */}
+      <Header/>
+      {/* See src/Tiles.js*/}
+      <Tiles/>
     </div>
   );
 }
