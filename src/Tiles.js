@@ -12,19 +12,60 @@ const useStyles = makeStyles(theme => ({
         overflow: 'hidden',
         backgroundColor: theme.palette.background.paper,
     },
-    gridList: {
-    },
+    gridList: {},
 }));
 
-class Tiles extends React.Component {
+let colour = [
+    "rgb(142, 68, 173)",
+    "rgb(243, 156, 18)",
+    "rgb(211, 84, 0)",
+    "rgb(0, 106, 63)",
+    "rgb(41, 128, 185)",
+    "rgb(192, 57, 43)",
+    "rgb(135, 0, 0)",
+    "rgb(39, 174, 96)"
+];
+
+class Tile extends React.Component {
+    reset = () => {
+        var wall = new window.Freewall("#freewall");
+        wall.fitWidth()
+    };
+
+
     render() {
-        return <GridList className={""} cols={3}>
+        const {tile} = this.props;
+        return <div className={"brick"} >
+            <img src={tile.img} alt={tile.title} onLoad={this.reset}/>
+        </div>
+    }
+}
+
+class Tiles extends React.Component {
+
+    activate = (event) => {
+        var wall = new window.Freewall("#freewall");
+
+        wall.reset({
+            selector: '.brick',
+            animate: true,
+            cellW: 150,
+            cellH: 'auto',
+            onResize: function() {
+                wall.fitWidth();
+            },
+            bottomToTop: false,
+
+        });
+        wall.fitWidth();
+    };
+
+    render() {
+        return <span id={"freewall"} className={"free-wall"} onLoad={this.activate}>
             {tileData.map(tile => (
-                <GridListTile style={{height:"auto !important"}} key={tile.img} cols={tile.cols || 1}>
-                    <img src={tile.img} alt={tile.title}/>
-                </GridListTile>
+                <Tile tile={tile} key={tile.img}/>
             ))}
-        </GridList>
+        </span>
     }
 }
 
