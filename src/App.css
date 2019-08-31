@@ -29,6 +29,7 @@ header.stamp {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 5px;
 }
 
 .grid-item > .title {

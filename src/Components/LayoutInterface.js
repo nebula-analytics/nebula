@@ -1,10 +1,9 @@
-import * as Packery from "packery"
-import * as imagesloaded from "imagesloaded"
+import * as Isotope from "isotope-layout"
 import * as React from "react";
 import PropTypes from 'prop-types';
 
-class PackeryComponent extends React.Component {
-    displayName = 'PackeryComponent';
+class LayoutInterface extends React.Component {
+    displayName = 'LayoutInterface';
 
     static propTypes = {
         disableImagesLoaded: PropTypes.bool,
@@ -13,7 +12,9 @@ class PackeryComponent extends React.Component {
 
     static defaultProps = {
         disableImagesLoaded: false,
-        options: {},
+        options: {
+            layoutMode: 'masonry'
+        },
         className: '',
         elementType: 'div'
     };
@@ -35,7 +36,7 @@ class PackeryComponent extends React.Component {
         let oldChildren = this.domChildren.filter(function (element) {
             /*
              * take only elements attached to DOM
-             * (aka the parent is the packery container, not null)
+             * (aka the parent is the isotope/masonry container, not null)
              */
             return !!element.parentNode;
         });
@@ -112,54 +113,42 @@ class PackeryComponent extends React.Component {
         let diff = this.diffDomChildren();
 
         if (diff.removed.length > 0) {
-            this.packery.remove(diff.removed);
-            this.packery.reloadItems();
+            this.isotope.remove(diff.removed);
+            this.isotope.reloadItems();
         }
 
         if (diff.appended.length > 0) {
-            this.packery.appended(diff.appended);
-            this.packery.reloadItems();
+            this.isotope.appended(diff.appended);
+            this.isotope.reloadItems();
         }
 
         if (diff.prepended.length > 0) {
-            this.packery.prepended(diff.prepended);
+            this.isotope.prepended(diff.prepended);
         }
 
         if (diff.moved.length > 0) {
-            this.packery.reloadItems();
+            this.isotope.reloadItems();
         }
 
-        this.packery.layout();
+        this.isotope.layout();
     };
 
-    imagesLoaded = () => {
-        if (this.props.disableImagesLoaded) return;
-
-        imagesloaded(
-            this.reference.current,
-            function (instance) {
-                this.packery.layout();
-            }.bind(this)
-        );
-    };
 
     componentDidMount = () => {
         this.domChildren = this.getNewDomChildren();
-        this.packery = new Packery(
+        this.isotope = new Isotope(
             this.reference.current,
-            this.props.options
+            this.props.options,
         );
-        // this.imagesLoaded();
     };
 
     componentDidUpdate = () => {
         this.performLayout();
-        this.imagesLoaded();
     };
 
     UNSAFE_componentWillReceiveProps() {
         this._timer = setTimeout(() => {
-            this.packery.reloadItems();
+            this.isotope.reloadItems();
             this.forceUpdate();
         }, 0);
     };
@@ -168,8 +157,8 @@ class PackeryComponent extends React.Component {
         clearTimeout(this._timer);
     };
 
-    loadTest = (context) => () =>{
-        context.packery.layout()
+    loadTest = (context) => () => {
+        context.isotope.layout()
     };
 
     render() {
@@ -181,4 +170,4 @@ class PackeryComponent extends React.Component {
     }
 }
 
-export default PackeryComponent;
+export default LayoutInterface;

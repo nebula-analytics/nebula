@@ -1,25 +1,28 @@
 import React from 'react';
-import PackeryComponent from "./PackeryFix";
-// import * as Packery from "PackeryFix.js"
+import LayoutInterface from "./LayoutInterface";
 
-let packeryOptions = {
-    transitionDuration: 1,
-    gutter: 5,
-        stamp: ".stamp"
+let options = {
+    transitionDuration: '0.4s',
+    layoutMode: 'masonry',
+    masonry: {
+        columnWidth: 50,
+        gutter: 2.5
+    },
+    stamp: ".stamp",
 };
 
 class Gallery extends React.Component {
     render() {
         const {children} = this.props;
         return (
-            <PackeryComponent
+            <LayoutInterface
                 className={'my-gallery-class'} // default ''
                 elementType={'div'} // default 'div'
-                options={packeryOptions} // default {}
+                options={options} // default {}
                 disableImagesLoaded={false} // default false
             >
                 {children}
-            </PackeryComponent>
+            </LayoutInterface>
         );
     }
 }
