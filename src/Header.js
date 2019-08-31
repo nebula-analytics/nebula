@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 class Header extends React.Component {
     render() {
         return (
-            <header>
+            <header className={"stamp"}>
                 <AppBar position="static" color="default">
                     <Toolbar>
                         <Typography variant="h6" color="inherit">

@@ -8,7 +8,11 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-image-layout": "^1.0.0",
-    "react-scripts": "3.0.1"
+    "react-packery-component": "^1.0.2",
+    "react-scripts": "3.0.1",
+    "imagesloaded": "github:eiriklv/imagesloaded",
+    "packery": "github:eiriklv/packery",
+    "prop-types": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
