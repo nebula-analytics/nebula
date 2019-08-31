@@ -2,7 +2,7 @@ import React from 'react';
 import LayoutInterface from "./LayoutInterface";
 
 let options = {
-    transitionDuration: '0.4s',
+    transitionDuration: '0.2s',
     layoutMode: 'masonry',
     masonry: {
         columnWidth: 50,

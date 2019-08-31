@@ -3,12 +3,13 @@ import {Tooltip, withStyles} from "@material-ui/core";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import {SyncProblem} from "@material-ui/icons"
+import {Close, SyncProblem} from "@material-ui/icons"
 import MenuIcon from '@material-ui/icons/Menu';
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
+import Fade from "@material-ui/core/Fade";
 
 const useStyles = theme => ({
     root: {
@@ -47,7 +48,7 @@ class Header extends React.Component {
                         aria-label="open drawer"
                         onClick={toggleMenu}
                     >
-                        <MenuIcon/>
+                        {showMenu ? <Close/> : <MenuIcon/>}
                     </IconButton>
                     <div className={classes.grow}>
                         <Typography variant="h6" className={classes.title} color="inherit" noWrap>
@@ -73,7 +74,7 @@ class Header extends React.Component {
                             Queensland’s collection.
                         </Typography>
                     </CardContent>
-                    <Divider variant="inset" component="div"/>
+                    <Divider variant="fullWidth" component="div"/>
                     <CardContent>
                         <Typography gutterBottom variant="body1" component="p">
                             Filters
