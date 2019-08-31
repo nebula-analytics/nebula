@@ -13,10 +13,10 @@ let options = {
 
 class Gallery extends React.Component {
     render() {
-        const {children} = this.props;
+        const {children, onChildResize} = this.props;
         return (
             <LayoutInterface
-                className={'my-gallery-class'} // default ''
+                className={'grid'} // default ''
                 elementType={'div'} // default 'div'
                 options={options} // default {}
                 disableImagesLoaded={false} // default false

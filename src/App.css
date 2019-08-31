@@ -1,11 +1,8 @@
-header.stamp {
-    width: 410px;
-    float: left;
-    /*background: #D26;*/
-    border: 2px solid #333;
+body {
+    background: black;
 }
-
 .grid {
+    margin: auto;
 }
 
 /* clearfix */
@@ -20,19 +17,22 @@ header.stamp {
 .grid-item {
     width: 200px;
     min-height: 100px;
-    /*height: 120px;*/
     float: left;
+    margin-bottom: 5px;
+}
+
+.card {
     background: rgba(86, 86, 86, 0.99);
     border: 2px solid hsla(0, 0%, 0%, 0.5);
     border-radius: 5px;
     display: flex;
+
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 5px;
 }
 
-.grid-item > .title {
+.card > .title {
     position: absolute;
     bottom: 5px;
 
@@ -45,6 +45,9 @@ header.stamp {
     width: calc(100% - 6px);
 }
 
-.grid-item > img {
-
+.card > .alt.text {
+    color: white;
+    text-align: center;
+    padding: 5px;
+    width: calc(100% - 6px);
 }

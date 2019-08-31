@@ -1,0 +1,11 @@
+{
+  "palette": {
+    "type": "dark",
+    "primary1Color": "#512da8",
+    "primary2Color": "#303f9f",
+    "primary3Color": "#d81b60",
+    "accent1Color": "#ff6e40",
+    "accent2Color": "#ff3d00",
+    "accent3Color": "#ffd180"
+  }
+}

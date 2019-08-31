@@ -7,7 +7,8 @@ class LayoutInterface extends React.Component {
 
     static propTypes = {
         disableImagesLoaded: PropTypes.bool,
-        options: PropTypes.object
+        options: PropTypes.object,
+        onChildResize: PropTypes.func
     };
 
     static defaultProps = {
@@ -16,7 +17,7 @@ class LayoutInterface extends React.Component {
             layoutMode: 'masonry'
         },
         className: '',
-        elementType: 'div'
+        elementType: 'div',
     };
 
     constructor(props) {
@@ -146,26 +147,29 @@ class LayoutInterface extends React.Component {
         this.performLayout();
     };
 
+
     UNSAFE_componentWillReceiveProps() {
         this._timer = setTimeout(() => {
             this.isotope.reloadItems();
             this.forceUpdate();
         }, 0);
+
     };
 
     componentWillUnmount = () => {
         clearTimeout(this._timer);
     };
 
-    loadTest = (context) => () => {
-        context.isotope.layout()
+    relayout = (context) => () => {
+        context.performLayout();
     };
 
     render() {
         return React.createElement(this.props.elementType, {
             className: this.props.className,
             ref: this.reference,
-            onLoad: this.loadTest(this),
+            onLoad: this.relayout(this),
+
         }, this.props.children);
     }
 }
