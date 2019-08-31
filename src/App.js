@@ -15,10 +15,10 @@ function App() {
                 {
                     data.map((element) => {
                             const url = `http://covers.openlibrary.org/b/isbn/${element.isbn}-M.jpg`;
-                            const loader =  <CircularProgress style={{"margin": "auto"}} />;
+                            const loader =  <CircularProgress className={"load"} />;
                             return <div className={"grid-item image-element-class"} style={{height: "auto"}}
                                         key={element.isbn}>
-                                <Img src={url} alt={""} style={{"width": "100%"}}/>
+                                <Img src={url} alt={""} style={{"width": "100%"}} loader={loader} unloader={loader}/>
                                 <div className={"title"}>{element.title}</div>
                             </div>
                         }
