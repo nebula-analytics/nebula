@@ -3,43 +3,30 @@ import * as imagesloaded from "imagesloaded"
 import * as React from "react";
 import PropTypes from 'prop-types';
 
-const refName = 'packeryContainer';
-
 class PackeryComponent extends React.Component {
-
-    packery = false;
-
-    domChildren = [];
-
     displayName = 'PackeryComponent';
 
-    propTypes = {
+    static propTypes = {
         disableImagesLoaded: PropTypes.bool,
         options: PropTypes.object
     };
 
-    getDefaultProps = () => {
-        return {
-            disableImagesLoaded: false,
-            options: {},
-            className: '',
-            elementType: 'div'
-        };
+    static defaultProps = {
+        disableImagesLoaded: false,
+        options: {},
+        className: '',
+        elementType: 'div'
     };
 
-    initializePackery = (force) => {
-        if (!this.packery || force) {
-            this.packery = new Packery(
-                this.refs[refName],
-                this.props.options
-            );
+    constructor(props) {
+        super(props);
+        this.reference = React.createRef();
+        this.domChildren = [];
+    }
 
-            this.domChildren = this.getNewDomChildren();
-        }
-    };
 
     getNewDomChildren = () => {
-        let node = this.refs[refName];
+        let node = this.reference.current;
         let children = this.props.options.itemSelector ? node.querySelectorAll(this.props.options.itemSelector) : node.children;
         return Array.prototype.slice.call(children);
     };
@@ -66,7 +53,7 @@ class PackeryComponent extends React.Component {
         let beginningIndex = 0;
 
         // get everything added to the beginning of the DOMNode list
-        let prepended = domDiff.filter(function (newChild, i) {
+        let prepended = domDiff.filter(function (newChild) {
             let prepend = (beginningIndex === newChildren.indexOf(newChild));
 
             if (prepend) {
@@ -149,7 +136,7 @@ class PackeryComponent extends React.Component {
         if (this.props.disableImagesLoaded) return;
 
         imagesloaded(
-            this.refs[refName],
+            this.reference.current,
             function (instance) {
                 this.packery.layout();
             }.bind(this)
@@ -157,8 +144,12 @@ class PackeryComponent extends React.Component {
     };
 
     componentDidMount = () => {
-        this.initializePackery();
-        this.imagesLoaded();
+        this.domChildren = this.getNewDomChildren();
+        this.packery = new Packery(
+            this.reference.current,
+            this.props.options
+        );
+        // this.imagesLoaded();
     };
 
     componentDidUpdate = () => {
@@ -166,10 +157,10 @@ class PackeryComponent extends React.Component {
         this.imagesLoaded();
     };
 
-    componentWillReceiveProps = () => {
+    UNSAFE_componentWillReceiveProps() {
         this._timer = setTimeout(() => {
             this.packery.reloadItems();
-            this.isMounted && this.isMounted() && this.forceUpdate();
+            this.forceUpdate();
         }, 0);
     };
 
@@ -177,10 +168,15 @@ class PackeryComponent extends React.Component {
         clearTimeout(this._timer);
     };
 
+    loadTest = (context) => () =>{
+        context.packery.layout()
+    };
+
     render() {
         return React.createElement(this.props.elementType, {
             className: this.props.className,
-            ref: refName
+            ref: this.reference,
+            onLoad: this.loadTest(this),
         }, this.props.children);
     }
 }

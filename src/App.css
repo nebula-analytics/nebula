@@ -169,6 +169,7 @@ header.stamp {
 
 .grid-item {
     width: 200px;
+    min-height: 100px;
     /*height: 120px;*/
     float: left;
     /*background: #D26;*/
