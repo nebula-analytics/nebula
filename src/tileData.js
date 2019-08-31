@@ -16,19 +16,19 @@ const tileData = [
         title: 'Twenty Thousand Leagues Under the Sea',
         author: 'Jules Verne',
     },{
-        img: 'https://covers.openlibrary.org/w/id/8281954-M.jpg',
+        img: '0',
         title: 'Hamlet',
         author: 'Shakespere',
     },{
-        img: 'https://covers.openlibrary.org/w/id/4636490-M.jpg',
+        img: '1',
         title: 'Frankenstein',
         author: 'Mary Shelley',
     },{
-        img: 'https://covers.openlibrary.org/w/id/8579152-M.jpg',
+        img: '2',
         title: 'Nineteen Eighty-Four',
         author: 'George Orwell',
     },{
-        img: 'https://covers.openlibrary.org/w/id/8236368-M.jpg',
+        img: '3',
         title: 'Twenty Thousand Leagues Under the Sea',
         author: 'Jules Verne',
     },

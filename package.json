@@ -5,9 +5,13 @@
   "dependencies": {
     "@material-ui/core": "^4.3.1",
     "@material-ui/icons": "^4.2.1",
+    "imagesloaded": "github:eiriklv/imagesloaded",
+    "isotope-layout": "^3.0.6",
+    "isotope": "github:eiriklv/packery",
+    "prop-types": "latest",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-image-layout": "^1.0.0",
+    "react-image": "^2.2.0",
     "react-scripts": "3.0.1"
   },
   "scripts": {
