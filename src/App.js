@@ -14,8 +14,9 @@ function App() {
                 {
                     data.map((element) => {
                             const url = `http://covers.openlibrary.org/b/isbn/${element.isbn}-M.jpg`;
-                            return <div className={"grid-item image-element-class"} style={{height: "auto"}}>
+                            return <div className={"grid-item image-element-class"} style={{height: "auto"}} key={element.isbn}>
                                 <img src={url} alt={element.title} style={{"width": "100%"}}/>
+                                <div className={"title"}>{element.title}</div>
                             </div>
                         }
                     )

@@ -176,3 +176,10 @@ header.stamp {
     border-color: hsla(0, 0%, 0%, 0.5);
     border-radius: 5px;
 }
+
+.grid-item > .title {
+    position: absolute;
+    bottom: 5px;
+    background: #ffffff8f;
+    width: 100%;
+}
