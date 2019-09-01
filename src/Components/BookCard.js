@@ -3,19 +3,14 @@ import * as PropTypes from "prop-types";
 import Img from 'react-image'
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Card} from "@material-ui/core";
-import CardActions from "@material-ui/core/CardActions";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import themeData from "../constants/theme"
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Modal from "@material-ui/core/Modal";
-import Fade from "@material-ui/core/Fade";
 import Backdrop from "@material-ui/core/Backdrop";
-import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
-import Container from "@material-ui/core/Container";
-import CardMedia from "@material-ui/core/CardMedia";
 import Collapse from "@material-ui/core/Collapse";
 import Zoom from "@material-ui/core/Zoom";
 

@@ -9,6 +9,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
+import GitHub from "./Components/Icons/Github";
 
 const useStyles = theme => ({
     root: {
@@ -82,7 +83,20 @@ class Header extends React.Component {
                             <span className={classes.timezone}>(UTC+11)</span>
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            A real-time visualisation of resources users are accessing from RMIT University Library's collection.
+                            A real-time visualisation of resources users are accessing from RMIT University Library's
+                            collection.
+                        </Typography>
+                    </CardContent>
+                    <Divider variant="fullWidth" component="div"/>
+                    <CardContent>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <Tooltip title={"Github"}>
+                                <IconButton href={"https://github.com/nebula-analytics/nebula"} aria-label="Github link"
+                                            color="default">
+                                    <GitHub/>
+                                </IconButton>
+                            </Tooltip>
+                            Explore Nebula's source code on Github
                         </Typography>
                     </CardContent>
                     <Divider variant="fullWidth" component="div"/>
