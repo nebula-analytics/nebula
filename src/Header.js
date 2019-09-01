@@ -9,7 +9,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
-import Fade from "@material-ui/core/Fade";
 
 const useStyles = theme => ({
     root: {
@@ -37,8 +36,21 @@ const useStyles = theme => ({
 });
 
 class Header extends React.Component {
+    state = {
+        showMenu: false
+    };
+
+    toggleMenu = () => {
+        this.setState({
+            showMenu: !this.state.showMenu
+        })
+    };
+
     render() {
-        const {toggleMenu, classes, showMenu} = this.props;
+        const {classes, onResize} = this.props;
+        const {showMenu} = this.state;
+
+
         return (<Card className={`stamp ${classes.root}`}>
                 <Toolbar>
                     <IconButton
@@ -46,7 +58,7 @@ class Header extends React.Component {
                         className={classes.menuButton}
                         color="inherit"
                         aria-label="open drawer"
-                        onClick={toggleMenu}
+                        onClick={this.toggleMenu}
                     >
                         {showMenu ? <Close/> : <MenuIcon/>}
                     </IconButton>
@@ -62,7 +74,7 @@ class Header extends React.Component {
                         </IconButton>
                     </Tooltip>
                 </Toolbar>
-                <Collapse in={showMenu} timeout={0} unmountOnExit>
+                <Collapse in={showMenu} timeout="auto" onEntered={onResize} onExited={onResize}>
                     <CardContent>
                         <Typography variant="body1" color="textPrimary" component="p">
                             <span>31 August 2019, </span>
@@ -70,8 +82,7 @@ class Header extends React.Component {
                             <span className={classes.timezone}>(UTC+11)</span>
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            A real-time visualisation of resources users are accessing from the State Library of
-                            Queensland’s collection.
+                            A real-time visualisation of resources users are accessing from RMIT University Library's collection.
                         </Typography>
                     </CardContent>
                     <Divider variant="fullWidth" component="div"/>

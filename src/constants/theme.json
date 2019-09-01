@@ -7,5 +7,9 @@
     "accent1Color": "#ff6e40",
     "accent2Color": "#ff3d00",
     "accent3Color": "#ffd180"
+  },
+  "cards": {
+    "size": 200,
+    "gutter": 5
   }
 }

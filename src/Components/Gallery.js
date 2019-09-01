@@ -17,7 +17,7 @@ class Gallery extends React.Component {
         return (
             <LayoutInterface
                 className={'grid'} // default ''
-                elementType={'div'} // default 'div'
+                elementType={'ul'} // default 'div'
                 options={options} // default {}
                 disableImagesLoaded={false} // default false
             >
