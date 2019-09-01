@@ -17,6 +17,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Container from "@material-ui/core/Container";
 import CardMedia from "@material-ui/core/CardMedia";
 import Collapse from "@material-ui/core/Collapse";
+import Zoom from "@material-ui/core/Zoom";
 
 const styles = theme => {
     return {
@@ -107,7 +108,7 @@ class BookCard extends React.Component {
                     timeout: 500,
                 }}
             >
-                <Fade in={open} on>
+                <Zoom in={open} timeout={300}>
                     <Card>
                         <CardActionArea className={classes.clickable}>
                             <Collapse in={true}>
@@ -124,7 +125,7 @@ class BookCard extends React.Component {
                                 about {book.title}.</Typography>
                         </CardContent>
                     </Card>
-                </Fade>
+                </Zoom>
             </Modal>
         </Card>
     }
