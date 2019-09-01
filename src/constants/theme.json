@@ -8,6 +8,16 @@
     "accent2Color": "#ff3d00",
     "accent3Color": "#ffd180"
   },
+  "breakpoints": {
+    "values": {
+      "xxs": 0,
+      "xs": 250,
+      "sm": 460,
+      "md": 870,
+      "lg": 1280,
+      "xl": 1690
+    }
+  },
   "cards": {
     "size": 200,
     "gutter": 5

@@ -1,6 +1,4 @@
 import React from 'react';
-import Img from 'react-image'
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import './App.css';
 import Header from "./Header";
@@ -14,26 +12,25 @@ import BookCard from "./Components/BookCard";
 
 const theme = createMuiTheme(themeData);
 
+
 class App extends React.Component {
 
     render() {
 
         return (
-            <div className="App">
-                <ThemeProvider theme={theme}>
-                    <Container>
-                        <Gallery>
-                            <Header/>
-                            {
-                                data.map((element) => {
-                                        return <BookCard book={element}/>
-                                    }
-                                )
-                            }
-                        </Gallery>
-                    </Container>
-                </ThemeProvider>
-            </div>
+            <ThemeProvider theme={theme}>
+                <Container maxWidth={false}>
+                    <Gallery>
+                        <Header/>
+                        {
+                            data.map((element) => {
+                                    return <BookCard book={element}/>
+                                }
+                            )
+                        }
+                    </Gallery>
+                </Container>
+            </ThemeProvider>
         );
     }
 }

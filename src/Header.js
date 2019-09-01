@@ -10,12 +10,15 @@ import CardContent from "@material-ui/core/CardContent";
 import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
 import GitHub from "./Components/Icons/Github";
+import themeData from "./constants/theme"
 
 const useStyles = theme => ({
     root: {
-        marginBottom: "5px",
-        width: "415" +
-            "px",
+        marginBottom: `${themeData.cards.gutter}px`,
+        width: "100%",
+        [theme.breakpoints.up('sm')]: {
+            width: `${themeData.cards.size * 2 + themeData.cards.gutter * 2}px`,
+        },
         float: "left",
     },
     grow: {
@@ -25,10 +28,7 @@ const useStyles = theme => ({
         marginRight: theme.spacing(2),
     },
     title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        }
+        display: 'block',
     },
     timezone: {
         fontSize: ".8em !important",

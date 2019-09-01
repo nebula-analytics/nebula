@@ -1,31 +1,17 @@
 const data = [{"isbn": "9781891830754", "title": "110 Per¢ by Tony Consiglio"},
-
     {"isbn": "9781603090506", "title": "The 120 Days of Simon"},
-
     {"isbn": "9781891830716", "title": "AEIOU or Any Easy Intimacy byJeffrey Brown"},
-
     {"isbn": "9781603090254", "title": "Alec: The Years Have Pants"},
-
     {"isbn": "9781603090476", "title": "Alec: The Years Have Pants -- HARDCOVER"},
-
     {"isbn": "9781603093224", "title": "Alone Forever"},
-
     {"isbn": "9781891830853", "title": "American Elf (Book 2)"},
-
     {"isbn": "9781603090162", "title": "American Elf (Book 3)"},
-
     {"isbn": "9781603092654", "title": "American Elf (Book 4)"},
-
     {"isbn": "9781603092395", "title": "American Elf 1999 by James Kochalka"},
-
     {"isbn": "9781603090773", "title": "Any Empire"},
-
     {"isbn": "9781603093699", "title": "Apocrypha Now"},
-
     {"isbn": "9781603090698", "title": "August Moon"},
-
     {"isbn": "9781603090421", "title": "Ax (Vol 1): A Collection of Alternative Manga"},
-
     {"isbn": "9781603090261", "title": "Bacchus (Omnibus Edition): Volume One"},
 
     {"isbn": "9781603093804", "title": "Bacchus (Omnibus Edition): Volume One -- SIGNED & NUMBERED HC"},

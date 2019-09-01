@@ -21,11 +21,19 @@ const styles = theme => {
             borderRadius: "5px",
 
             float: "left",
-            marginBottom: `${themeData.cards.gutter}px`,
+            marginBottom: `${theme.spacing.unit}px`,
             minHeight: `${themeData.cards.size / 2}px`,
-            width: `${themeData.cards.size}px`,
+            // width: `${themeData.cards.size}px`,
             display: "flex",
-            flexDirection: "column"
+            flexDirection: "column",
+            width: `100%`,
+
+            [theme.breakpoints.up('xs')]: {
+                width: "48%",
+            },
+            [theme.breakpoints.up('sm')]: {
+                width: `${themeData.cards.size}px`,
+            }
 
         },
         clickable: {

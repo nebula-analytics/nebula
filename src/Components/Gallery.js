@@ -1,14 +1,16 @@
 import React from 'react';
 import LayoutInterface from "./LayoutInterface";
+import themeData from "../constants/theme"
 
 let options = {
     transitionDuration: '0.2s',
     layoutMode: 'masonry',
     masonry: {
-        columnWidth: 50,
         gutter: 2.5
     },
     stamp: ".stamp",
+    percentPosition: true,
+
 };
 
 class Gallery extends React.Component {
@@ -17,7 +19,7 @@ class Gallery extends React.Component {
         return (
             <LayoutInterface
                 className={'grid'} // default ''
-                elementType={'ul'} // default 'div'
+                elementType={'div'} // default 'div'
                 options={options} // default {}
                 disableImagesLoaded={false} // default false
             >
