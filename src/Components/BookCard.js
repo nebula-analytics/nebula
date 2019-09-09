@@ -21,7 +21,7 @@ const styles = theme => {
             borderRadius: "5px",
 
             float: "left",
-            marginBottom: `${theme.spacing.unit}px`,
+            marginBottom: `${themeData.cards.gutter}px`,
             minHeight: `${themeData.cards.size / 2}px`,
             // width: `${themeData.cards.size}px`,
             display: "flex",
@@ -51,6 +51,7 @@ const styles = theme => {
             textAlign: "center",
             padding: `${themeData.cards.gutter}px`,
             width: "calc(100 % -10px);",
+            marginTop:"10px"
         },
         modal: {
             display: 'flex',
@@ -63,6 +64,15 @@ const styles = theme => {
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
         },
+        tag: {
+            position: "absolute",
+            top: "0",
+            left: "0",
+            zIndex: "10",
+            padding: "2px",
+            background: "#00000070",
+            borderBottomRightRadius: "5px"
+        }
     };
 };
 
@@ -85,9 +95,20 @@ class BookCard extends React.Component {
     render() {
         const {book, classes, onResize} = this.props;
         const {open} = this.state;
+        let image_url = "";
+        let large_image_url = "";
 
-        const url = `http://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg?default=false`;
-        const large_url = `http://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`;
+        if (book.record_type === "book") {
+            let isbn = book.identifiers.filter((id_object) => id_object.idType === "http://purl.org/dc/terms/type/isbn");
+            console.log(isbn);
+            if (isbn[0]) {
+                isbn = isbn[0].id.replace("-", "").replace("-", "").replace("-", "")
+                image_url = `https://proxy-ap.hosted.exlibrisgroup.com/exl_rewrite/syndetics.com/index.aspx?isbn=${isbn}/LC.JPG&client=primo`;
+                large_image_url = `https://proxy-ap.hosted.exlibrisgroup.com/exl_rewrite/syndetics.com/index.aspx?isbn=${isbn}/LC.JPG&client=primo`;
+            }
+
+
+        }
 
         const loader = <CircularProgress/>;
         const fallback = <div className={classes.text}>
@@ -96,7 +117,8 @@ class BookCard extends React.Component {
 
         return <Card className={classes.root}>
             <CardActionArea onClick={this.onClick} className={classes.clickable}>
-                <Img src={url} alt={""} className={classes.image} loader={loader}
+                <Typography className={classes.tag}>{book.record_type}</Typography>
+                <Img src={image_url} alt={""} className={classes.image} loader={loader}
                      unloader={fallback}/>
             </CardActionArea>
             <Modal
@@ -115,7 +137,8 @@ class BookCard extends React.Component {
                     <Card>
                         <CardActionArea className={classes.clickable}>
                             <Collapse in={true}>
-                                <Img width={"100%"} src={large_url} alt={""} className={classes.image} loader={loader}
+                                <Img width={"100%"} src={large_image_url} alt={""} className={classes.image}
+                                     loader={loader}
                                      unloader={<div className={classes.text}>
                                          <h3>No image available</h3>
                                      </div>}/>
