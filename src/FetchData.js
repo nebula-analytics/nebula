@@ -9,21 +9,10 @@ class FetchData extends Component{
         };
     }
 
-    componentWillMount()
+    componentDidMount()
     {
-        fetch('http://localhost:5000/api/data')
-        .then(results => {
-            console.log(results);
-            return results.json();
-        }).then(data => {
-            let bookCollection = data['data'].map((element) => {
-                return (
-                    <BookCard book={element}/>
-                )
-            })
-            this.setState({books: bookCollection});
-            console.log("State", this.state.books);
-        })
+        this.fetchData()
+        setInterval(this.fetchData, 10000);
 
         // let bookCollection = data.map((element) => {
         //     return (
@@ -31,6 +20,23 @@ class FetchData extends Component{
         //     )
         // })
         // this.setState({books: bookCollection})
+    }
+
+    async fetchData() {
+        try{
+            const response = await fetch('http://localhost:5000/joint');
+            const data = await response.json();
+            let bookCollection = data['_items'].map((element) => {
+                return (
+                    <BookCard key={element['_id']} book={element}/>
+                )
+            })
+            this.setState({books: bookCollection});
+            console.log("State", this.state.books);
+
+        } catch (e) {
+            console.log(e);
+        }
     }
 
 
