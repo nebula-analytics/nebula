@@ -22,8 +22,8 @@ class App extends React.Component {
             <ThemeProvider theme={theme}>
                 <Container maxWidth={false}>
                     <Gallery>
-                        <Header/>
                         <FetchData/>
+                        <Header/>
                         
                         {/* {
                             data.map((element) => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import BookCard from "./Components/BookCard";
+import { clearInterval } from 'timers';
 
 class FetchData extends Component{
     constructor(){
@@ -12,7 +13,7 @@ class FetchData extends Component{
     componentDidMount()
     {
         this.fetchData()
-        setInterval(this.fetchData, 10000);
+        this.setState({timeout:setInterval(this.fetchData, 10000)});
 
         // let bookCollection = data.map((element) => {
         //     return (
@@ -22,26 +23,29 @@ class FetchData extends Component{
         // this.setState({books: bookCollection})
     }
 
-    async fetchData() {
-        try{
-            const response = await fetch('http://localhost:5000/joint');
-            const data = await response.json();
-            let bookCollection = data['_items'].map((element) => {
-                return (
-                    <BookCard key={element['_id']} book={element}/>
-                )
-            })
-            this.setState({books: bookCollection});
-            console.log("State", this.state.books);
-
-        } catch (e) {
-            console.log(e);
-        }
+    componentWillUnmount(){
+        clearInterval(this.state.timeout);
     }
 
 
+    fetchData = () => {
+        fetch('http://localhost:5000/joint').then(
+            response => {
+                return response.json()
+            }
+        ).then(
+            data => {this.setState({
+                books: data["_items"].map(book => <BookCard key={book['_id']} book={book}/>)
+            })
+        }
+        ).catch(err => console.log(err))
+    }
+
     render(){
-        return this.state.books;
+        if(this.state.books !== undefined){
+            return this.state.books
+        }
+        return
     }
 
 

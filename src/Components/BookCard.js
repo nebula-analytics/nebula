@@ -86,6 +86,12 @@ class BookCard extends React.Component {
         onResize: PropTypes.func,
     };
 
+    // componentDidMount(){
+    //     const {book} = this.props;
+    //     if(book.record_type !== book)
+    //         this.onLoad()
+    // }
+
     onClick = () => {
         this.setState({
             open: !this.state.open
