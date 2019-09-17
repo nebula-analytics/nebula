@@ -51,7 +51,7 @@ const styles = theme => {
             textAlign: "center",
             padding: `${themeData.cards.gutter}px`,
             width: "calc(100 % -10px);",
-            marginTop:"10px"
+            marginTop: "10px"
         },
         modal: {
             display: 'flex',
@@ -86,11 +86,6 @@ class BookCard extends React.Component {
         onResize: PropTypes.func,
     };
 
-    // componentDidMount(){
-    //     const {book} = this.props;
-    //     if(book.record_type !== book)
-    //         this.onLoad()
-    // }
 
     onClick = () => {
         this.setState({
@@ -99,14 +94,13 @@ class BookCard extends React.Component {
     };
 
     render() {
-        const {book, classes, onResize} = this.props;
+        const {book, classes} = this.props;
         const {open} = this.state;
         let image_url = "";
         let large_image_url = "";
 
         if (book.record_type === "book") {
             let isbn = book.identifiers.filter((id_object) => id_object.idType === "http://purl.org/dc/terms/type/isbn");
-            console.log(isbn);
             if (isbn[0]) {
                 isbn = isbn[0].id.replace("-", "").replace("-", "").replace("-", "")
                 image_url = `https://proxy-ap.hosted.exlibrisgroup.com/exl_rewrite/syndetics.com/index.aspx?isbn=${isbn}/LC.JPG&client=primo`;

@@ -66,30 +66,10 @@ class LayoutInterface extends React.Component {
             return prepend;
         });
 
-        // we assume that everything else is appended
         let appended = domDiff.filter(function (el) {
             return prepended.indexOf(el) === -1;
         });
 
-        /*
-         * otherwise we reverse it because so we're going through the list picking off the items that
-         * have been added at the end of the list. this complex logic is preserved in case it needs to be
-         * invoked
-         *
-         * let endingIndex = newChildren.length - 1;
-         *
-         * domDiff.reverse().filter(function(newChild, i){
-         *     let append = endingIndex == newChildren.indexOf(newChild);
-         *
-         *     if (append) {
-         *         endingIndex--;
-         *     }
-         *
-         *     return append;
-         * });
-         */
-
-        // get everything added to the end of the DOMNode list
         let moved = [];
 
         if (removed.length === 0) {
@@ -115,22 +95,17 @@ class LayoutInterface extends React.Component {
 
         if (diff.removed.length > 0) {
             this.isotope.remove(diff.removed);
-            this.isotope.reloadItems();
         }
 
         if (diff.appended.length > 0) {
             this.isotope.appended(diff.appended);
-            this.isotope.reloadItems();
         }
 
         if (diff.prepended.length > 0) {
             this.isotope.prepended(diff.prepended);
         }
 
-        if (diff.moved.length > 0) {
-            this.isotope.reloadItems();
-        }
-
+        this.isotope.reloadItems();
         this.isotope.layout();
     };
 
