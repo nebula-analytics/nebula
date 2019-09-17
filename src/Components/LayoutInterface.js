@@ -161,16 +161,24 @@ class LayoutInterface extends React.Component {
     };
 
     relayout = (context) => () => {
-        context.performLayout();
+        console.log("layout");
+        context.performLayout()
+        context.forceUpdate()
     };
 
     render() {
+
+        const children = React.Children.map(this.props.children, child => {
+            return React.cloneElement(child, {
+                onResize: this.relayout(this),
+            });
+        });
         return React.createElement(this.props.elementType, {
             className: this.props.className,
             ref: this.reference,
             onLoad: this.relayout(this),
 
-        }, this.props.children);
+        }, children);
     }
 }
 

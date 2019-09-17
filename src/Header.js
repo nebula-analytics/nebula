@@ -3,18 +3,22 @@ import {Tooltip, withStyles} from "@material-ui/core";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import {SyncProblem} from "@material-ui/icons"
+import {Close, SyncProblem} from "@material-ui/icons"
 import MenuIcon from '@material-ui/icons/Menu';
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
+import GitHub from "./Components/Icons/Github";
+import themeData from "./constants/theme"
 
 const useStyles = theme => ({
     root: {
-        marginBottom: "5px",
-        width: "415" +
-            "px",
+        marginBottom: `${themeData.cards.gutter}px`,
+        width: "100%",
+        [theme.breakpoints.up('sm')]: {
+            width: `${themeData.cards.size * 2 + themeData.cards.gutter * 2}px`,
+        },
         float: "left",
     },
     grow: {
@@ -24,10 +28,7 @@ const useStyles = theme => ({
         marginRight: theme.spacing(2),
     },
     title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        }
+        display: 'block',
     },
     timezone: {
         fontSize: ".8em !important",
@@ -36,8 +37,21 @@ const useStyles = theme => ({
 });
 
 class Header extends React.Component {
+    state = {
+        showMenu: false
+    };
+
+    toggleMenu = () => {
+        this.setState({
+            showMenu: !this.state.showMenu
+        })
+    };
+
     render() {
-        const {toggleMenu, classes, showMenu} = this.props;
+        const {classes, onResize} = this.props;
+        const {showMenu} = this.state;
+
+
         return (<Card className={`stamp ${classes.root}`}>
                 <Toolbar>
                     <IconButton
@@ -45,9 +59,9 @@ class Header extends React.Component {
                         className={classes.menuButton}
                         color="inherit"
                         aria-label="open drawer"
-                        onClick={toggleMenu}
+                        onClick={this.toggleMenu}
                     >
-                        <MenuIcon/>
+                        {showMenu ? <Close/> : <MenuIcon/>}
                     </IconButton>
                     <div className={classes.grow}>
                         <Typography variant="h6" className={classes.title} color="inherit" noWrap>
@@ -61,7 +75,7 @@ class Header extends React.Component {
                         </IconButton>
                     </Tooltip>
                 </Toolbar>
-                <Collapse in={showMenu} timeout={0} unmountOnExit>
+                <Collapse in={showMenu} timeout="auto" onEntered={onResize} onExited={onResize}>
                     <CardContent>
                         <Typography variant="body1" color="textPrimary" component="p">
                             <span>31 August 2019, </span>
@@ -69,11 +83,23 @@ class Header extends React.Component {
                             <span className={classes.timezone}>(UTC+11)</span>
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            A real-time visualisation of resources users are accessing from the State Library of
-                            Queensland’s collection.
+                            A real-time visualisation of resources users are accessing from RMIT University Library's
+                            collection.
                         </Typography>
                     </CardContent>
-                    <Divider variant="inset" component="div"/>
+                    <Divider variant="fullWidth" component="div"/>
+                    <CardContent>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <Tooltip title={"Github"}>
+                                <IconButton href={"https://github.com/nebula-analytics/nebula"} aria-label="Github link"
+                                            color="default">
+                                    <GitHub/>
+                                </IconButton>
+                            </Tooltip>
+                            Explore Nebula's source code on Github
+                        </Typography>
+                    </CardContent>
+                    <Divider variant="fullWidth" component="div"/>
                     <CardContent>
                         <Typography gutterBottom variant="body1" component="p">
                             Filters
