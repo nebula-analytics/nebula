@@ -3,7 +3,7 @@ import {Tooltip, withStyles} from "@material-ui/core";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import {Close, SyncProblem} from "@material-ui/icons"
+import {Close, Sync, SyncProblem} from "@material-ui/icons"
 import MenuIcon from '@material-ui/icons/Menu';
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -17,9 +17,10 @@ const useStyles = theme => ({
         marginBottom: `${themeData.cards.gutter}px`,
         width: "100%",
         [theme.breakpoints.up('sm')]: {
-            width: `${themeData.cards.size * 2 + themeData.cards.gutter * 2}px`,
+            width: `${themeData.cards.size * 2 + themeData.cards.gutter * 4}px`,
         },
         float: "left",
+        zIndex: 1000
     },
     grow: {
         flexGrow: 1,
@@ -41,6 +42,11 @@ class Header extends React.Component {
         showMenu: false
     };
 
+    static defaultProps = {
+        online: false
+    };
+
+
     toggleMenu = () => {
         this.setState({
             showMenu: !this.state.showMenu
@@ -50,6 +56,20 @@ class Header extends React.Component {
     render() {
         const {classes, onResize} = this.props;
         const {showMenu} = this.state;
+
+        const offline = <Tooltip title={"Offline Mode"}>
+
+            <IconButton aria-label="Nebula is offline" color="secondary">
+                <SyncProblem/>
+            </IconButton>
+        </Tooltip>;
+
+        const online = <Tooltip title={"Synchronized"}>
+
+            <IconButton aria-label="Nebula is connected" color="default">
+                <Sync/>
+            </IconButton>
+        </Tooltip>;
 
 
         return (<Card className={`stamp ${classes.root}`}>
@@ -68,12 +88,7 @@ class Header extends React.Component {
                             Nebula
                         </Typography>
                     </div>
-                    <Tooltip title={"Offline Mode"}>
-
-                        <IconButton aria-label="App is offline" color="secondary">
-                            <SyncProblem/>
-                        </IconButton>
-                    </Tooltip>
+                    {this.props.online ? online : offline}
                 </Toolbar>
                 <Collapse in={showMenu} timeout="auto" onEntered={onResize} onExited={onResize}>
                     <CardContent>
