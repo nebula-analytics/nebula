@@ -1,29 +1,23 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import BookCard from "./Components/BookCard";
-import { clearInterval } from 'timers';
+import {clearInterval} from 'timers';
+import Header from "./Header";
+import Gallery from "./Components/Gallery";
 
-class FetchData extends Component{
-    constructor(){
+class FetchData extends Component {
+    constructor() {
         super();
         this.state = {
             books: [],
         };
     }
 
-    componentDidMount()
-    {
-        this.fetchData()
-        this.setState({timeout:setInterval(this.fetchData, 10000)});
-
-        // let bookCollection = data.map((element) => {
-        //     return (
-        //         <BookCard book={element}/>
-        //     )
-        // })
-        // this.setState({books: bookCollection})
+    componentDidMount() {
+        this.fetchData();
+        this.setState({timeout: setInterval(this.fetchData, 10000)});
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         clearInterval(this.state.timeout);
     }
 
@@ -34,18 +28,33 @@ class FetchData extends Component{
                 return response.json()
             }
         ).then(
-            data => {this.setState({
-                books: data["_items"].map(book => <BookCard key={book['_id']} book={book}/>)
+            data => {
+                this.setState({
+                        books: data["_items"].map(book => <BookCard key={book['_id']} book={book}/>),
+                        connected: true,
+                        last_beacon: new Date()
+                    }
+                )
+            }
+        ).catch(err => {
+            console.log(err);
+            this.setState({
+                connected: false
             })
-        }
-        ).catch(err => console.log(err))
-    }
+        });
 
-    render(){
-        if(this.state.books !== undefined){
-            return this.state.books
+    };
+
+    render() {
+        if (this.state.books !== undefined) {
+            return <Gallery>
+                {this.state.books}
+                <Header online={this.state.connected}/>
+            </Gallery>
         }
-        return
+        return <Gallery>
+            <Header online={this.state.connected}/>
+        </Gallery>
     }
 
 
