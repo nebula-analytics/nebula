@@ -11,6 +11,7 @@ import Collapse from "@material-ui/core/Collapse";
 import Divider from "@material-ui/core/Divider";
 import GitHub from "./Components/Icons/Github";
 import themeData from "./constants/theme"
+import * as PropTypes from "prop-types";
 
 const useStyles = theme => ({
     root: {
@@ -44,6 +45,9 @@ class Header extends React.Component {
 
     static defaultProps = {
         online: false
+    };
+    static propTypes = {
+        online: PropTypes
     };
 
 
@@ -93,8 +97,7 @@ class Header extends React.Component {
                 <Collapse in={showMenu} timeout="auto" onEntered={onResize} onExited={onResize}>
                     <CardContent>
                         <Typography variant="body1" color="textPrimary" component="p">
-                            <span>31 August 2019, </span>
-                            <span>11:25am</span>
+                            {this.props.when ? this.props.when.toString(): "Loading..."}
                             <span className={classes.timezone}>(UTC+11)</span>
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">

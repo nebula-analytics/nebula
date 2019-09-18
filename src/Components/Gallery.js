@@ -3,7 +3,7 @@ import LayoutInterface from "./LayoutInterface";
 import themeData from "../constants/theme"
 
 let options = {
-    transitionDuration: '0.2s',
+    transitionDuration: '1s',
     layoutMode: 'masonry',
     masonry: {
         gutter: 2.5

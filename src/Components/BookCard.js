@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
 import Collapse from "@material-ui/core/Collapse";
 import Zoom from "@material-ui/core/Zoom";
+import Badge from "@material-ui/core/Badge";
+import {Visibility} from "@material-ui/icons";
 
 const styles = theme => {
     return {
@@ -71,9 +73,18 @@ const styles = theme => {
             zIndex: "10",
             padding: "2px",
             background: "#00000070",
-            borderBottomRightRadius: "5px"
+            borderBottomRightRadius: "5px",
+            textTransform: "capitalize",
+        },
+        views: {
+            position: "absolute",
+            top: "0",
+            right: "0",
+            zIndex: "10",
+            margin: theme.spacing(1)
         }
     };
+
 };
 
 class BookCard extends React.Component {
@@ -110,6 +121,7 @@ class BookCard extends React.Component {
 
         }
 
+        const type = book.record_type.replace("_", " ");
         const loader = <CircularProgress/>;
         const fallback = <div className={classes.text}>
             <h3>{book.title}</h3>
@@ -117,9 +129,14 @@ class BookCard extends React.Component {
 
         return <Card className={classes.root}>
             <CardActionArea onClick={this.onClick} className={classes.clickable}>
-                <Typography className={classes.tag}>{book.record_type}</Typography>
+                <Typography className={classes.tag}>{type}</Typography>
                 <Img src={image_url} alt={""} className={classes.image} loader={loader}
                      unloader={fallback}/>
+                {book.count > 1 &&
+                <Badge className={classes.views} badgeContent={book.count} overlap={"circle"} color="primary">
+                    <Visibility/>
+                </Badge>
+                }
             </CardActionArea>
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -149,6 +166,9 @@ class BookCard extends React.Component {
                                         gutterBottom>{book.title}</Typography>
                             <Typography variant="body2" component={"p"} id="transition-modal-title">More information
                                 about {book.title}.</Typography>
+                            <Typography variant="body2" component={"p"} id="transition-modal-title">
+                                {JSON.stringify(book)}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Zoom>
