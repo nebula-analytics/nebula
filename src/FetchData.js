@@ -52,7 +52,7 @@ class FetchData extends Component {
 
 
     fetchData = () => {
-        fetch('http://10.234.2.223:5000/joint?max_results=200&page=1&sort=-last_view').then(
+        fetch(`http://${window.location.hostname}:5000/joint?max_results=200&page=1&sort=-last_view`).then(
             response => {
                 return response.json()
             }

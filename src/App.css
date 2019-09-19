@@ -1,5 +1,9 @@
+html {
+    background: #160028 !important;
+}
 body {
-    background: #160028;
+    background: #160028 !important;
+
 }
 .grid {
     margin: auto;
