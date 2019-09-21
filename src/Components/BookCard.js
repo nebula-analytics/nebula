@@ -167,7 +167,6 @@ class BookCard extends React.Component {
                             <Typography variant="body2" component={"p"} id="transition-modal-title">More information
                                 about {book.title}.</Typography>
                             <Typography variant="body2" component={"p"} id="transition-modal-title">
-                                {JSON.stringify(book)}
                             </Typography>
                         </CardContent>
                     </Card>
