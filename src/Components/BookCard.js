@@ -113,18 +113,18 @@ class BookCard extends React.Component {
         if (book.record_type === "book") {
             let isbn = book.identifiers.filter((id_object) => id_object.idType === "http://purl.org/dc/terms/type/isbn");
             if (isbn[0]) {
-                isbn = isbn[0].id.replace("-", "").replace("-", "").replace("-", "")
+                isbn = isbn[0].id.replace("-", "").replace("-", "").replace("-", "");
                 image_url = `https://proxy-ap.hosted.exlibrisgroup.com/exl_rewrite/syndetics.com/index.aspx?isbn=${isbn}/LC.JPG&client=primo`;
                 large_image_url = `https://proxy-ap.hosted.exlibrisgroup.com/exl_rewrite/syndetics.com/index.aspx?isbn=${isbn}/LC.JPG&client=primo`;
             }
-
-
         }
 
         const type = book.record_type.replace("_", " ");
         const loader = <CircularProgress/>;
+        let title = (book.title || "");
+        title = title.replace(/(<([^>]+)>)/ig,"");
         const fallback = <div className={classes.text}>
-            <h3>{book.title}</h3>
+            <h3>{title}</h3>
         </div>;
 
         return <Card className={classes.root}>
@@ -132,11 +132,14 @@ class BookCard extends React.Component {
                 <Typography className={classes.tag}>{type}</Typography>
                 <Img src={image_url} alt={""} className={classes.image} loader={loader}
                      unloader={fallback}/>
-                {book.count > 1 &&
-                <Badge className={classes.views} badgeContent={book.count} overlap={"circle"} color="primary">
-                    <Visibility/>
-                </Badge>
-                }
+                <div className={classes.views}>
+                    {'?'} minutes ago
+                    {book.count > 1 &&
+                    <Badge badgeContent={book.count} overlap={"circle"} color="primary">
+                        <Visibility/>
+                    </Badge>
+                    }
+                </div>
             </CardActionArea>
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -163,9 +166,9 @@ class BookCard extends React.Component {
                         </CardActionArea>
                         <CardContent>
                             <Typography variant="body1" id="transition-modal-title"
-                                        gutterBottom>{book.title}</Typography>
+                                        gutterBottom>{title}</Typography>
                             <Typography variant="body2" component={"p"} id="transition-modal-title">More information
-                                about {book.title}.</Typography>
+                                about "{title}".</Typography>
                             <Typography variant="body2" component={"p"} id="transition-modal-title">
                             </Typography>
                         </CardContent>

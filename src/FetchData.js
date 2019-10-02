@@ -53,9 +53,9 @@ class FetchData extends Component {
     buildTimeFilter(from, until) {
         let params = new URLSearchParams(window.location.search);
         if (until === undefined) {
-            if(params.has("end_at")){
-                until= new Date(params.get("end_at"))
-            }else {
+            if (params.has("end_at")) {
+                until = new Date(params.get("end_at"))
+            } else {
                 until = new Date()
             }
         }
@@ -64,7 +64,7 @@ class FetchData extends Component {
                 from = new Date(params.get("start_at"));
             } else {
                 let window = 30;
-                if(params.has("window")){
+                if (params.has("window")) {
                     window = parseInt(params.get("window"))
                 }
                 from = until;
@@ -79,14 +79,16 @@ class FetchData extends Component {
     }
 
     buildRecordRequestURL(filter) {
+        let protocol = window.location.protocol;
         let location = process.env.REACT_APP_API_LOCATION || ':8080';
-        const url = new URL(`http://${window.location.hostname}${location}/joint`);
+        let host = process.env.REACT_APP_API_HOST || window.location.hostname;
+
+        const url = new URL(`${protocol}//${host}${location}/joint`);
 
         url.search = new URLSearchParams({
             "max_results": "200",
             "page": "1",
             "sort": "-last_view",
-            "where": JSON.stringify(filter)
         });
         return url
     }
