@@ -88,15 +88,15 @@ const styles = theme => {
 };
 
 class BookCard extends React.Component {
+
     state = {
-        open: false,
+        open: false
     };
 
     static propTypes = {
         book: PropTypes.object.isRequired,
         onResize: PropTypes.func,
     };
-
 
     onClick = () => {
         this.setState({
@@ -122,18 +122,17 @@ class BookCard extends React.Component {
         const type = book.record_type.replace("_", " ");
         const loader = <CircularProgress/>;
         let title = (book.title || "");
-        title = title.replace(/(<([^>]+)>)/ig,"");
-        const fallback = <div className={classes.text}>
-            <h3>{title}</h3>
+        title = title.replace(/(<([^>]+)>)/ig, "");
+        const fallback = <div className={classes.text}><h3>{title}</h3>
         </div>;
 
-        return <Card className={classes.root}>
+        return <Card className={`${classes.root} book-dynamic`}>
             <CardActionArea onClick={this.onClick} className={classes.clickable}>
                 <Typography className={classes.tag}>{type}</Typography>
                 <Img src={image_url} alt={""} className={classes.image} loader={loader}
                      unloader={fallback}/>
                 <div className={classes.views}>
-                    {'?'} minutes ago
+                    {/*{'?'} minutes ago*/}
                     {book.count > 1 &&
                     <Badge badgeContent={book.count} overlap={"circle"} color="primary">
                         <Visibility/>

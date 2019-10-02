@@ -2,14 +2,31 @@ import React, {Component} from 'react';
 import BookCard from "./Components/BookCard";
 import Header from "./Header";
 import Gallery from "./Components/Gallery";
+import themeData from "./constants/theme";
 
 class FetchData extends Component {
     constructor() {
         super();
         this.state = {
             books: [],
+            width: this.findPercentWidth()
         };
     }
+
+
+    findPercentWidth = () => {
+        let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
+        let num_cards = parseInt(adjusted/themeData.cards.size);
+        console.log(`Calculated grid width: ${adjusted}; Expected column count: ${num_cards}`);
+        return `${(100/num_cards)}% - ${themeData.cards.gutter*4}px`;
+    };
+
+    onResize = () => {
+        let width = this.findPercentWidth();
+        this.setState({
+            width: width
+        })
+    };
 
     getSyncTimeout = (query_frequency) => {
         let params = new URLSearchParams(window.location.search);
@@ -28,6 +45,8 @@ class FetchData extends Component {
     };
 
     componentDidMount() {
+        window.addEventListener('resize', this.onResize);
+
         const query_frequency = 10000;
 
         let timeout = this.getSyncTimeout(query_frequency);
@@ -48,6 +67,8 @@ class FetchData extends Component {
         if (this.timeout) {
             clearInterval(this.timeout);
         }
+        window.removeEventListener('resize', this.onResize);
+
     }
 
     buildTimeFilter(from, until) {
@@ -119,13 +140,19 @@ class FetchData extends Component {
     };
 
     render() {
-        return <Gallery>
-            {this.state.books && this.state.books}
-            <Header
-                online={this.state.connected}
-                when={this.state.last_beacon}
-            />
-        </Gallery>
+        return <>
+            <style>
+                .book-dynamic {`{width:calc(${this.state.width})}`}
+                .header-dynamic {`{width:calc((${this.state.width})*2 + ${themeData.cards.gutter}px * 4)}`}
+            </style>
+            <Gallery>
+                {this.state.books && this.state.books}
+                <Header
+                    online={this.state.connected}
+                    when={this.state.last_beacon}
+                />
+            </Gallery>
+        </>
     }
 
 

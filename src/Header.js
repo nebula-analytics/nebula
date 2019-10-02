@@ -40,7 +40,7 @@ const useStyles = theme => ({
 
 class Header extends React.Component {
     state = {
-        showMenu: false
+        showMenu: false,
     };
 
     static defaultProps = {
@@ -76,7 +76,7 @@ class Header extends React.Component {
         </Tooltip>;
 
 
-        return (<Card className={`stamp ${classes.root}`}>
+        return (<Card className={`stamp ${classes.root} header-dynamic`}>
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -97,7 +97,7 @@ class Header extends React.Component {
                 <Collapse in={showMenu} timeout="auto" onEntered={onResize} onExited={onResize}>
                     <CardContent>
                         <Typography variant="body1" color="textPrimary" component="p">
-                            {this.props.when ? this.props.when.toString(): "Loading..."}
+                            {this.props.when ? this.props.when.toString() : "Loading..."}
                             <span className={classes.timezone}>(UTC+11)</span>
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
