@@ -123,22 +123,9 @@ class LayoutInterface extends React.Component {
     };
 
 
-    UNSAFE_componentWillReceiveProps() {
-        this._timer = setTimeout(() => {
-            this.isotope.reloadItems();
-            this.forceUpdate();
-        }, 0);
-
-    };
-
-    componentWillUnmount = () => {
-        clearTimeout(this._timer);
-    };
-
     relayout = (context) => () => {
-        console.log("layout");
-        context.performLayout()
-        context.forceUpdate()
+        context.performLayout();
+        context.forceUpdate();
     };
 
     render() {

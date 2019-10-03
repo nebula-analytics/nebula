@@ -3,6 +3,7 @@ import BookCard from "./Components/BookCard";
 import Header from "./Header";
 import Gallery from "./Components/Gallery";
 import themeData from "./constants/theme";
+import {getQueryStringValue} from "./helpers/utils";
 
 class FetchData extends Component {
     constructor() {
@@ -13,12 +14,17 @@ class FetchData extends Component {
         };
     }
 
+    findNumCards = () => {
+        let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
+        return parseInt(adjusted / themeData.cards.size);
+    };
+
 
     findPercentWidth = () => {
         let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
-        let num_cards = parseInt(adjusted/themeData.cards.size);
+        let num_cards = parseInt(adjusted / themeData.cards.size);
         console.log(`Calculated grid width: ${adjusted}; Expected column count: ${num_cards}`);
-        return `${(100/num_cards)}% - ${themeData.cards.gutter*4}px`;
+        return `${(100 / num_cards)}% - ${themeData.cards.gutter * 4}px`;
     };
 
     onResize = () => {
@@ -71,6 +77,7 @@ class FetchData extends Component {
 
     }
 
+
     buildTimeFilter(from, until) {
         let params = new URLSearchParams(window.location.search);
         if (until === undefined) {
@@ -107,7 +114,7 @@ class FetchData extends Component {
         const url = new URL(`${protocol}//${host}${location}/joint`);
 
         url.search = new URLSearchParams({
-            "max_results": "200",
+            "max_results": this.findNumCards() * 10,
             "page": "1",
             "sort": "-last_view",
         });
@@ -115,6 +122,8 @@ class FetchData extends Component {
     }
 
     fetchData = () => {
+        const saturation = parseInt(getQueryStringValue("saturation", 0));
+        const brightness = parseInt(getQueryStringValue("brightness", 50));
         fetch(this.buildRecordRequestURL(this.buildTimeFilter()).toString()).then(
             response => {
                 return response.json()
@@ -122,11 +131,15 @@ class FetchData extends Component {
         ).then(
             data => {
                 this.setState({
-                        books: data["_items"].map(book => < BookCard key={book['_id']} book={book}
-                        />),
+                        books: data["_items"].map(
+                            book => <BookCard
+                                key={book['_id']}
+                                book={book}
+                                saturation={saturation}
+                                brightness={brightness}
+                            />),
                         connected: true,
-                        last_beacon:
-                            new Date()
+                        last_beacon: new Date()
                     }
                 )
             }
@@ -143,7 +156,7 @@ class FetchData extends Component {
         return <>
             <style>
                 .book-dynamic {`{width:calc(${this.state.width})}`}
-                .header-dynamic {`{width:calc((${this.state.width})*2 + ${themeData.cards.gutter}px * 4)}`}
+                .header-dynamic {`{width:calc((${this.state.width})*2 + ${themeData.cards.gutter}px * 1)}`}
             </style>
             <Gallery>
                 {this.state.books && this.state.books}

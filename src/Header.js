@@ -21,7 +21,7 @@ const useStyles = theme => ({
             width: `${themeData.cards.size * 2 + themeData.cards.gutter * 4}px`,
         },
         float: "left",
-        zIndex: 1000
+        zIndex: 1000,
     },
     grow: {
         flexGrow: 1,
@@ -47,7 +47,7 @@ class Header extends React.Component {
         online: false
     };
     static propTypes = {
-        online: PropTypes
+        online: PropTypes.bool
     };
 
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import LayoutInterface from "./LayoutInterface";
-import themeData from "../constants/theme"
 
 let options = {
     transitionDuration: '1s',
@@ -15,7 +14,7 @@ let options = {
 
 class Gallery extends React.Component {
     render() {
-        const {children, onChildResize} = this.props;
+        const {children} = this.props;
         return (
             <LayoutInterface
                 className={'grid'} // default ''
