@@ -1,4 +1,5 @@
 import fetchJsonp from "fetch-jsonp";
+
 export const rewritePrimoURLs = (primoURL) => {
     let url = new URL(primoURL);
     if (url.hostname.startsWith("proxy-") && url.hostname.endsWith(".hosted.exlibrisgroup.com")) {
@@ -68,7 +69,7 @@ export const updateWithImageURLs = (links, callback) => {
 };
 
 export const updateWithALMAImages = (alma_id) => {
-    if(alma_id !== undefined){
+    if (alma_id !== undefined) {
 
     }
 }
@@ -80,7 +81,11 @@ export const updateWithGBooksURLs = (url, callback) => {
             return response.json()
         }
     ).then((json) => {
-        callback([json.thumbnail_url]);
+        for (let key in json) {
+            if (json[key].thumbnail_url) {
+                callback([json.thumbnail_url]);
+            }
+        }
     }).catch((ex) => {
         console.log('Unable to request google book data', url, ex)
     })

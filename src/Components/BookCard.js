@@ -64,9 +64,37 @@ class BookCard extends React.Component {
 
 
     onClick = () => {
-        this.setState({
-            open: !this.state.open
-        })
+        const {book} = this.props;
+        let {record_type, title, extra_fields, last_view, count} = book;
+
+        record_type = record_type.replace("_", " ");
+        title = (title || "").replace(/(<([^>]+)>)/ig, "");
+
+
+        let {subject, topic, date} = extra_fields;
+
+        if (!date) {
+            date = "Unknown"
+        }
+
+        if (!subject) {
+            subject = []
+        }
+
+        if (!topic) {
+            topic = []
+        }
+         const modal_info = {
+            published: date,
+            "number of views (in current window)": count,
+            subjects: subject,
+            topics: topic,
+            "last accessed": last_view,
+             "type of record": record_type
+        };
+        this.props.createModal(
+            title, modal_info, generatePrimoLink(book), this.state.images
+        )
     };
 
     componentWillMount() {
@@ -76,20 +104,35 @@ class BookCard extends React.Component {
 
     render() {
         const {book, classes, saturation, brightness} = this.props;
-        const {open} = this.state;
 
-        let {record_type, title, extra_fields} = book;
+        let {record_type, title, extra_fields, last_view, count} = book;
 
         record_type = record_type.replace("_", " ");
         title = (title || "").replace(/(<([^>]+)>)/ig, "");
 
         let record_color_key = record_type;
-        if (extra_fields.hasOwnProperty("subject")) {
-            // record_color_key = extra_fields.subject[0]
+
+        let {subject, topic, date} = extra_fields;
+
+        if (!date) {
+            date = "Unknown"
         }
 
+        if (!subject) {
+            subject = []
+        }
 
-        // console.log(this.state.images);
+        if (!topic) {
+            topic = []
+        }
+
+        const modal_info = {
+            published: date,
+            "number of views (in current window)": count,
+            subjects: subject,
+            topics: topic,
+            "last accessed": last_view
+        };
         return <Card className={`${classes.root} book-dynamic`}>
             <BookView
                 book={book}
@@ -98,16 +141,6 @@ class BookCard extends React.Component {
                 title={title}
                 record_type={record_type}
                 color={stringToHslColor(record_color_key, saturation, brightness)}
-            />
-            <BookModal
-                open={open}
-                onClose={this.onClick}
-
-                images={this.state.images}
-                title={title}
-                record_type={record_type}
-                description={extra_fields.description || "That's all we know..."}
-                link={generatePrimoLink(book)}
             />
         </Card>
     }

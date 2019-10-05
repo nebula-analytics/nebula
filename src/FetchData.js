@@ -4,15 +4,36 @@ import Header from "./Header";
 import Gallery from "./Components/Gallery";
 import themeData from "./constants/theme";
 import {getQueryStringValue} from "./helpers/utils";
+import BookModal from "./Components/BookModal";
 
 class FetchData extends Component {
     constructor() {
         super();
         this.state = {
             books: [],
-            width: this.findPercentWidth()
+            width: this.findPercentWidth(),
+            modal: null,
+            modal_open: false
         };
     }
+
+    openModal = (title, data, link, images) => {
+        this.setState({
+            modal: {
+                title: title,
+                data: data,
+                link: link,
+                images: images
+            },
+            modal_open: true
+        })
+    };
+
+    closeModal = () => {
+        this.setState({
+            modal_open: false
+        })
+    };
 
     findNumCards = () => {
         let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
@@ -110,11 +131,12 @@ class FetchData extends Component {
         let protocol = window.location.protocol;
         let location = process.env.REACT_APP_API_LOCATION || ':8080';
         let host = process.env.REACT_APP_API_HOST || window.location.hostname;
+        let max_results = getQueryStringValue("max_results") || this.findNumCards() * 10;
 
         const url = new URL(`${protocol}//${host}${location}/joint`);
 
         url.search = new URLSearchParams({
-            "max_results": this.findNumCards() * 10,
+            "max_results": max_results,
             "page": "1",
             "sort": "-last_view",
         });
@@ -135,8 +157,7 @@ class FetchData extends Component {
                             book => <BookCard
                                 key={book['_id']}
                                 book={book}
-                                saturation={saturation}
-                                brightness={brightness}
+                                createModal={this.openModal}
                             />),
                         connected: true,
                         last_beacon: new Date()
@@ -165,6 +186,7 @@ class FetchData extends Component {
                     when={this.state.last_beacon}
                 />
             </Gallery>
+            <BookModal onClose={this.closeModal} open={this.state.modal_open} {...this.state.modal}/>
         </>
     }
 

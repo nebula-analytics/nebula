@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 import {Visibility} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core";
+import Zoom from "@material-ui/core/Zoom";
 
 const useStyles = makeStyles((theme) => ({
     clickable: {
@@ -60,7 +61,9 @@ function BookView(props) {
         <Typography className={classes.tag}>{record_type}</Typography>
 
         <Img src={images} alt={""} className={classes.image} loader={loader}
-             unloader={fallback}/>
+             unloader={fallback}
+             container={(c) => <Zoom mountOnEnter={true} in={true} appear={true} timeout={1000}>{c}</Zoom>}
+        />
 
         <div className={classes.views}>
             {book.count > 1 &&

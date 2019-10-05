@@ -3,6 +3,7 @@ import LayoutInterface from "./LayoutInterface";
 
 let options = {
     transitionDuration: '1s',
+    stagger: 30,
     layoutMode: 'masonry',
     masonry: {
         gutter: 2.5

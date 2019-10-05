@@ -21,13 +21,12 @@ export const stringToHslColor = (str, s = 20, l = 50) => {
 export const generatePrimoLink = (book) => {
     const region = process.env.REACT_APP_PRIMO_REGION || "apac";
     const host = process.env.REACT_APP_PRIMO_HOST || `primo-direct-${region}.hosted.exlibrisgroup.com`;
-    const url = new URL(`https://${host}/primo-explore/fulldisplay/?`);
+    const url = new URL(`https://${host}/primo-explore/fulldisplay?`);
 
     url.search = new URLSearchParams({
         docid: book.doc_id,
-        vid: book.extra_fields.institution,
+        vid: book.extra_fields.institution || book.extra_fields.delivery_institution,
         context: book.extra_fields.context,
-        lang: "en_US",
     });
     return url.toString()
 };

@@ -1,23 +1,29 @@
 import * as React from "react";
 import Img from 'react-image'
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import themeData from "../constants/theme"
 import Typography from "@material-ui/core/Typography";
-import {Card, makeStyles} from "@material-ui/core";
+import {Card, makeStyles, TableCell} from "@material-ui/core";
 import Backdrop from "@material-ui/core/Backdrop/Backdrop";
 import Zoom from "@material-ui/core/Zoom";
-import Collapse from "@material-ui/core/Collapse";
 import CardContent from "@material-ui/core/CardContent";
 import Modal from "@material-ui/core/Modal";
-import CardMedia from "@material-ui/core/CardMedia";
+import CardHeader from "@material-ui/core/CardHeader";
+import IconButton from "@material-ui/core/IconButton";
+import {Label, Launch} from "@material-ui/icons";
+import Chip from "@material-ui/core/Chip";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Fade from "@material-ui/core/Fade";
+
 
 const useStyles = makeStyles((theme) => ({
     image: {
         display: "inline-flex",
         flexGrow: 1,
-        width: "200px",
-
+        maxWidth: "200px",
+        maxHeight: "500px"
     },
     text: {
         color: "white",
@@ -30,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: "column",
         flexGrow: 1
     },
     paper: {
@@ -45,56 +52,100 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         display: "inline-flex",
-        flexDirection: "row",
+        flexDirection: "column",
         width: "80%",
     },
     content: {
         flexGrow: 4,
         display: "flex",
         flexDirection: "column",
-    }
+        overflowY: "scroll"
+    },
+    header: {
+        display: "inline-flex",
+        flexDirection: "row",
+    },
+    headerText: {
+        flexGrow: 1,
+        textTransform: "capitalize",
+    },
+    keyCell: {
+        textTransform: "capitalize",
+    },
+    valueCell: {}
 }));
 
 
 function BookModal(props) {
     const classes = useStyles();
-    const {title, description, link, images, onClose, open} = props;
-
-    const loader = <CircularProgress/>;
-
+    const {title, data, link, images, onClose, open} = props;
 
     return <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
-        onClose={onClose}
         closeAfterTransition
+        onClose={onClose}
         BackdropComponent={Backdrop}
         BackdropProps={{
             timeout: 500,
         }}
     >
-        <Zoom in={open} timeout={500}>
+
+        <Zoom in={open} timeout={600}>
             <Card className={classes.card}>
-                <CardMedia className={classes.clickable}>
-                    <Collapse in={true}>
+                {data !== undefined &&
+                <>
+                    <CardContent className={classes.header}>
                         <Img width={"100%"} src={images} alt={""} className={classes.image}
-                             loader={loader}
-                             unloader={<div className={classes.text}>
-                             </div>}/>
-                    </Collapse>
-                </CardMedia>
-                <CardContent className={classes.content}>
-                    <Typography variant="h4" id="transition-modal-title"
-                                gutterBottom>{title}</Typography>
-                    <Typography variant="body2" component={"p"} id="transition-modal-title" gutterBottom={true}>
-                        <a href={link}>View on Primo</a>
-                    </Typography>
-                    <Typography variant="body2" component={"p"} id="transition-modal-title">
-                        <i>{description}</i>
-                    </Typography>
-                </CardContent>
+                             container={(c) => <Zoom in={true} timeout={600}>{c}</Zoom>
+                             }
+                        />
+                        <CardHeader
+                            action={
+                                <IconButton aria-label="view externally" href={link}>
+                                    <Launch/>
+                                </IconButton>
+                            }
+                            title={title}
+                            subheader={`Last Accessed: ${data['last accessed']}`}
+                            className={classes.headerText}
+                        />
+                    </CardContent>
+                    <CardContent className={classes.content}>
+                        <Table className={classes.table} size="small">
+                            <TableHead>
+                                {
+                                    Object.keys(data).map(
+                                        key => {
+                                            let value = data[key];
+                                            let repr = <Typography>{value}</Typography>;
+                                            let has_content = Boolean(value);
+                                            if (typeof value === "object") {
+                                                repr = Object.values(value).map(
+                                                    (item, i) => <Chip
+                                                        key={i}
+                                                        icon={<Label/>}
+                                                        label={item.replace(/(<([^>]+)>)/ig, "")}
+                                                        color="primary"
+                                                        size={"small"}
+                                                    />
+                                                );
+                                                has_content = Boolean(repr.length)
+                                            }
+                                            return has_content && <TableRow key={key}>
+                                                <TableCell className={classes.keyCell}>{key}</TableCell>
+                                                <TableCell className={classes.valueCell}>{repr}</TableCell>
+                                            </TableRow>
+                                        }
+                                    )
+                                }
+                            </TableHead>
+                        </Table>
+                    </CardContent>
+                </>
+                }
             </Card>
         </Zoom>
     </Modal>
