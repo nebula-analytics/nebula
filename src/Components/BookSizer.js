@@ -7,7 +7,7 @@ const findPercentWidth = () => {
     let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
     let num_cards = parseInt(adjusted / themeData.cards.size);
     console.log(`Calculated grid width: ${adjusted}; Expected column count: ${num_cards}`);
-    return `${(100 / num_cards)}% - ${themeData.cards.gutter * num_cards}px + ${themeData.cards.gutter * 2}px`;
+    return `${(100 / num_cards)}% - ${themeData.cards.gutter * (num_cards - 1)}px`;
 };
 
 
