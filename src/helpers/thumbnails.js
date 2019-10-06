@@ -49,23 +49,22 @@ export const fixGoogleBooks = (gbooksURL) => {
 };
 
 export const updateWithImageURLs = (links, callback) => {
-    callback(
-        links.map((link) => {
-            if (link["displayLabel"] === "thumbnail") {
-                if (link["linkURL"] && link["linkURL"] !== "no_cover") {
-                    let url = rewritePrimoURLs(link["linkURL"]);
-                    if (url.hostname === "books.google.com") {
-                        if (isValidGBooksURL(url)) {
-                            updateWithGBooksURLs(url, callback);
-                        }
-                        return undefined
+    return links.map((link) => {
+        if (link["displayLabel"] === "thumbnail") {
+            if (link["linkURL"] && link["linkURL"] !== "no_cover") {
+                let url = rewritePrimoURLs(link["linkURL"]);
+                if (url.hostname === "books.google.com") {
+                    if (callback && isValidGBooksURL(url)) {
+                        updateWithGBooksURLs(url, callback);
                     }
-                    return url.toString()
+                    return undefined
                 }
+                return url.toString()
             }
-            return undefined
-        }).filter((l) => l)
-    )
+        }
+        return undefined
+    }).filter((l) => l)
+
 };
 
 export const updateWithALMAImages = (alma_id) => {

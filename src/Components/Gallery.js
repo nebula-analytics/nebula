@@ -6,11 +6,10 @@ let options = {
     stagger: 30,
     layoutMode: 'masonry',
     masonry: {
-        gutter: 2.5
+        gutter: 2.5,
     },
     stamp: ".stamp",
     percentPosition: true,
-
 };
 
 class Gallery extends React.Component {

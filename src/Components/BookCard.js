@@ -1,15 +1,15 @@
 import * as React from "react";
+import {useState} from "react";
 import * as PropTypes from "prop-types";
-import {Card} from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
+import {Card, makeStyles} from "@material-ui/core";
 
 import themeData from "../constants/theme"
 import BookView from "./BookView";
-import BookModal from "./BookModal";
 import {generatePrimoLink, stringToHslColor} from "../helpers/utils";
 import {updateWithImageURLs} from "../helpers/thumbnails";
 
-const styles = theme => {
+
+const useStyles = makeStyles((theme) => {
     return {
         root: {
             borderRadius: "5px",
@@ -20,130 +20,70 @@ const styles = theme => {
             // width: `${themeData.cards.size}px`,
             display: "flex",
             flexDirection: "column",
-            width: `100%`,
-
-            [theme.breakpoints.up('xs')]: {
-                width: "48%",
-            },
-            [theme.breakpoints.up('sm')]: {
-                width: `${themeData.cards.size}px`,
-            }
-
         }
+    }
+});
+
+const getBookDisplayDetails = book => {
+    let {record_type, title, extra_fields, last_view, count} = book;
+    let {subject, topic, date} = extra_fields;
+
+    title = title || "";
+    record_type = record_type || "Unknown";
+
+    subject = subject || [];
+    topic = topic || [];
+    date = date || "Unknown";
+
+    record_type = record_type.replace("_", " ");
+    title = title.replace(/(<([^>]+)>)/ig, "");
+
+    const modal_data = {
+        "publish date": date,
+        "number of views (in current window)": count,
+        "subjects": subject,
+        "topics": topic,
+        "last accessed": last_view,
+        "type of record": record_type
+    };
+
+    return {
+        title, record_type, subject, topic, date, modal_data
     }
 };
 
-class BookCard extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            open: false,
-            images: [],
-        }
-    }
+function BookCard(props) {
+    const classes = useStyles();
+    const {book, saturation, brightness, createModal} = props;
+    const {title, record_type, modal_data} = getBookDisplayDetails(book);
 
-    addImages = (urls = []) => {
-        let srcSet = this.state.images;
-        for (let index in urls) {
-            let url = urls[index];
-            if (!srcSet.includes(url)) {
-                srcSet.push(url);
-            }
-        }
-        if (srcSet.length > this.state.images.length) {
-            this.setState({
-                images: srcSet
-            })
-        }
-    };
+    const [images, ] = useState(updateWithImageURLs(book.extra_fields.delivery.link));
 
-    static propTypes = {
-        book: PropTypes.object.isRequired,
-    };
-
-
-    onClick = () => {
-        const {book} = this.props;
-        let {record_type, title, extra_fields, last_view, count} = book;
-
-        record_type = record_type.replace("_", " ");
-        title = (title || "").replace(/(<([^>]+)>)/ig, "");
-
-
-        let {subject, topic, date} = extra_fields;
-
-        if (!date) {
-            date = "Unknown"
-        }
-
-        if (!subject) {
-            subject = []
-        }
-
-        if (!topic) {
-            topic = []
-        }
-         const modal_info = {
-            published: date,
-            "number of views (in current window)": count,
-            subjects: subject,
-            topics: topic,
-            "last accessed": last_view,
-             "type of record": record_type
-        };
-        this.props.createModal(
-            title, modal_info, generatePrimoLink(book), this.state.images
-        )
-    };
-
-    componentWillMount() {
-        updateWithImageURLs(this.props.book.extra_fields.delivery.link, this.addImages)
-    }
-
-
-    render() {
-        const {book, classes, saturation, brightness} = this.props;
-
-        let {record_type, title, extra_fields, last_view, count} = book;
-
-        record_type = record_type.replace("_", " ");
-        title = (title || "").replace(/(<([^>]+)>)/ig, "");
-
-        let record_color_key = record_type;
-
-        let {subject, topic, date} = extra_fields;
-
-        if (!date) {
-            date = "Unknown"
-        }
-
-        if (!subject) {
-            subject = []
-        }
-
-        if (!topic) {
-            topic = []
-        }
-
-        const modal_info = {
-            published: date,
-            "number of views (in current window)": count,
-            subjects: subject,
-            topics: topic,
-            "last accessed": last_view
-        };
-        return <Card className={`${classes.root} book-dynamic`}>
-            <BookView
-                book={book}
-                onClick={this.onClick}
-                images={this.state.images}
-                title={title}
-                record_type={record_type}
-                color={stringToHslColor(record_color_key, saturation, brightness)}
-            />
-        </Card>
-    }
+    return <Card className={`${classes.root} dynamic-book-width`}>
+        <BookView
+            book={book}
+            onClick={() => createModal(
+                title, modal_data, generatePrimoLink(book), images
+            )}
+            images={images}
+            title={title}
+            record_type={record_type}
+            color={stringToHslColor(record_type, saturation, brightness)}
+        />
+    </Card>;
 }
 
-export default withStyles(styles)(BookCard)
+BookCard.propTypes = {
+    book: PropTypes.object.isRequired,
+    createModal: PropTypes.func.isRequired,
+    saturation: PropTypes.number,
+    brightness: PropTypes.number,
+};
+
+BookCard.defaultProps = {
+    saturation: 0,
+    brightness: 100,
+};
+
+export default BookCard;

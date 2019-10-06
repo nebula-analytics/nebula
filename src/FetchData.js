@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import BookCard from "./Components/BookCard";
-import Header from "./Header";
 import Gallery from "./Components/Gallery";
 import themeData from "./constants/theme";
 import {getQueryStringValue} from "./helpers/utils";
 import BookModal from "./Components/BookModal";
+import BookSizer from "./Components/BookSizer";
+import HeaderBar from "./Navigation/HeaderBar";
+
 
 class FetchData extends Component {
     constructor() {
         super();
         this.state = {
             books: [],
-            width: this.findPercentWidth(),
             modal: null,
             modal_open: false
         };
@@ -40,21 +41,6 @@ class FetchData extends Component {
         return parseInt(adjusted / themeData.cards.size);
     };
 
-
-    findPercentWidth = () => {
-        let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
-        let num_cards = parseInt(adjusted / themeData.cards.size);
-        console.log(`Calculated grid width: ${adjusted}; Expected column count: ${num_cards}`);
-        return `${(100 / num_cards)}% - ${themeData.cards.gutter * 4}px`;
-    };
-
-    onResize = () => {
-        let width = this.findPercentWidth();
-        this.setState({
-            width: width
-        })
-    };
-
     getSyncTimeout = (query_frequency) => {
         let params = new URLSearchParams(window.location.search);
         if (params.has("sync_key")) {
@@ -72,7 +58,6 @@ class FetchData extends Component {
     };
 
     componentDidMount() {
-        window.addEventListener('resize', this.onResize);
 
         const query_frequency = 10000;
 
@@ -94,8 +79,6 @@ class FetchData extends Component {
         if (this.timeout) {
             clearInterval(this.timeout);
         }
-        window.removeEventListener('resize', this.onResize);
-
     }
 
 
@@ -158,6 +141,8 @@ class FetchData extends Component {
                                 key={book['_id']}
                                 book={book}
                                 createModal={this.openModal}
+                                saturation={saturation}
+                                brightness={brightness}
                             />),
                         connected: true,
                         last_beacon: new Date()
@@ -174,17 +159,18 @@ class FetchData extends Component {
     };
 
     render() {
+        const saturation = parseInt(getQueryStringValue("saturation", 0));
+        const brightness = parseInt(getQueryStringValue("brightness", 50));
         return <>
-            <style>
-                .book-dynamic {`{width:calc(${this.state.width})}`}
-                .header-dynamic {`{width:calc((${this.state.width})*2 + ${themeData.cards.gutter}px * 1)}`}
-            </style>
             <Gallery>
                 {this.state.books && this.state.books}
-                <Header
-                    online={this.state.connected}
-                    when={this.state.last_beacon}
+                <HeaderBar
+                    connected={this.state.connected}
+                    last_connected={this.state.last_beacon}
+                    brightness={brightness}
+                    saturation={saturation}
                 />
+                <BookSizer/>
             </Gallery>
             <BookModal onClose={this.closeModal} open={this.state.modal_open} {...this.state.modal}/>
         </>
@@ -193,4 +179,4 @@ class FetchData extends Component {
 
 }
 
-export default (FetchData)
+export default FetchData
