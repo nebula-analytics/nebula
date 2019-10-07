@@ -21,17 +21,7 @@ class App extends React.Component {
         return (
             <ThemeProvider theme={theme}>
                 <Container maxWidth={false}>
-                    <Gallery>
-                        <FetchData/>
-                        <Header/>
-                        
-                        {/* {
-                            data.map((element) => {
-                                    return <BookCard book={element}/>
-                                }
-                            )
-                        } */}
-                    </Gallery>
+                    <FetchData/>
                 </Container>
             </ThemeProvider>
         );
