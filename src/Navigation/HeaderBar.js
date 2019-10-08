@@ -39,7 +39,7 @@ function HeaderBar(props) {
     const connectionColor = connected ? "default" : "secondary";
 
 
-    return (<Card className={`stamp ${classes.root} dynamic-header-width`}>
+    return (<Card className={`stamp grid-item ${classes.root} dynamic-header-width`}>
             <Toolbar style={{background: stringToHslColor("header", saturation, brightness)}}>
                 <IconButton
                     edge="start"

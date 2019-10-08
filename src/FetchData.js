@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import BookCard from "./Components/BookCard";
 import Gallery from "./Components/Gallery";
-import themeData from "./constants/theme";
-import {getQueryStringValue} from "./helpers/utils";
+import {buildRecordRequestURL, buildTimeFilter, getQueryStringValue} from "./helpers/utils";
 import BookModal from "./Components/BookModal";
 import BookSizer from "./Components/BookSizer";
 import HeaderBar from "./Navigation/HeaderBar";
@@ -14,9 +13,30 @@ class FetchData extends Component {
         this.state = {
             books: [],
             modal: null,
-            modal_open: false
+            modal_open: false,
+            filter: undefined,
+            sort: undefined,
         };
     }
+
+    setFilter = (filter = undefined) => {
+        if (typeof filter === "string") {
+            filter = `${filter}, .stamp`
+        }
+        if (filter === this.state.filter) {
+            filter = null
+
+        }
+        this.setState({
+            filter: filter
+        })
+    };
+
+    setSort = (sort = undefined) => {
+        this.setState({
+            sort: sort
+        })
+    };
 
     openModal = (title, data, link, images) => {
         this.setState({
@@ -34,11 +54,6 @@ class FetchData extends Component {
         this.setState({
             modal_open: false
         })
-    };
-
-    findNumCards = () => {
-        let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
-        return parseInt(adjusted / themeData.cards.size);
     };
 
     getSyncTimeout = (query_frequency) => {
@@ -81,74 +96,27 @@ class FetchData extends Component {
         }
     }
 
-
-    buildTimeFilter(from, until) {
-        let params = new URLSearchParams(window.location.search);
-        if (until === undefined) {
-            if (params.has("end_at")) {
-                until = new Date(params.get("end_at"))
-            } else {
-                until = new Date()
-            }
-        }
-        if (from === undefined) {
-            if (params.has("start_at")) {
-                from = new Date(params.get("start_at"));
-            } else {
-                let window = 30;
-                if (params.has("window")) {
-                    window = parseInt(params.get("window"))
-                }
-                from = until;
-                from.setMinutes((until).getMinutes() - window);
-            }
-        }
-        until = until.toUTCString();
-        from = from.toUTCString();
-        return {
-            last_viewed: {"$gte": from, "$lte": until}
-        };
-    }
-
-    buildRecordRequestURL(filter) {
-        let protocol = window.location.protocol;
-        let location = process.env.REACT_APP_API_LOCATION || ':8080';
-        let host = process.env.REACT_APP_API_HOST || window.location.hostname;
-        let max_results = getQueryStringValue("max_results") || this.findNumCards() * 10;
-
-        const url = new URL(`${protocol}//${host}${location}/joint`);
-
-        url.search = new URLSearchParams({
-            "max_results": max_results,
-            "page": "1",
-            "sort": "-last_view",
-        });
-        return url
-    }
-
     fetchData = () => {
         const saturation = parseInt(getQueryStringValue("saturation", 0));
         const brightness = parseInt(getQueryStringValue("brightness", 50));
-        fetch(this.buildRecordRequestURL(this.buildTimeFilter()).toString()).then(
+        fetch(buildRecordRequestURL(buildTimeFilter()).toString()).then(
             response => {
                 return response.json()
             }
-        ).then(
-            data => {
-                this.setState({
-                        books: data["_items"].map(
-                            book => <BookCard
-                                key={book['_id']}
-                                book={book}
-                                createModal={this.openModal}
-                                saturation={saturation}
-                                brightness={brightness}
-                            />),
-                        connected: true,
-                        last_beacon: new Date()
-                    }
-                )
-            }
+        ).then(data => this.setState({
+                books: data["_items"].map(
+                    book => <BookCard
+                        key={book['_id']}
+                        book={book}
+                        createModal={this.openModal}
+                        saturation={saturation}
+                        brightness={brightness}
+                        setFilter={this.setFilter}
+                        setSort={this.setSort}
+                    />),
+                connected: true,
+                last_beacon: new Date()
+            })
         ).catch(err => {
             console.log(err);
             this.setState({
@@ -162,7 +130,9 @@ class FetchData extends Component {
         const saturation = parseInt(getQueryStringValue("saturation", 0));
         const brightness = parseInt(getQueryStringValue("brightness", 50));
         return <>
-            <Gallery>
+            <Gallery
+                filter={this.state.filter}
+            >
                 {this.state.books && this.state.books}
                 <HeaderBar
                     connected={this.state.connected}
