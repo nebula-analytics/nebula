@@ -74,7 +74,13 @@ class FetchData extends Component {
 
     componentDidMount() {
 
-        const query_frequency = 10000;
+        const min_query_frequency = 10000;
+
+        let query_frequency = parseInt(getQueryStringValue("refresh_rate", 0)) * 1000;
+
+        if(query_frequency < min_query_frequency){
+            query_frequency = min_query_frequency;
+        }
 
         let timeout = this.getSyncTimeout(query_frequency);
 
