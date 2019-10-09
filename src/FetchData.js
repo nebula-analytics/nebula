@@ -99,7 +99,7 @@ class FetchData extends Component {
     fetchData = () => {
         const saturation = parseInt(getQueryStringValue("saturation", 0));
         const brightness = parseInt(getQueryStringValue("brightness", 30));
-        fetch(this.buildRecordRequestURL(this.buildTimeFilter()).toString()).then(
+        fetch(buildRecordRequestURL(buildTimeFilter()).toString()).then(
             response => {
                 return response.json()
             }

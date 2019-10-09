@@ -80,4 +80,4 @@ export const buildTimeFilter = (from, until) => {
     return {
         last_viewed: {"$gte": from, "$lte": until}
     };
-}
+};
