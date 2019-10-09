@@ -4,11 +4,11 @@ import {Close, Menu, Sync, SyncProblem} from "@material-ui/icons";
 import Card from "@material-ui/core/Card";
 import Toolbar from "@material-ui/core/Toolbar";
 import {stringToHslColor} from "../helpers/utils";
-import Typography from "@material-ui/core/Typography";
 import Submenu from "./Submenu";
 import * as React from "react";
 import {useState} from "react";
 import themeData from "../constants/theme";
+import Img from "react-image";
 import * as PropTypes from "prop-types";
 
 
@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     },
     title: {
         display: 'block',
+        maxWidth: "100%"
     }
 }));
 
@@ -39,8 +40,8 @@ function HeaderBar(props) {
     const connectionColor = connected ? "default" : "secondary";
 
 
-    return (<Card className={`stamp grid-item ${classes.root} dynamic-header-width`}>
-            <Toolbar style={{background: stringToHslColor("header", saturation, brightness)}}>
+    return (<Card className={`stamp ${classes.root} dynamic-header-width`}>
+            <Toolbar style={{background: stringToHslColor("nebula", saturation, brightness)}}>
                 <IconButton
                     edge="start"
                     className={classes.menuButton}
@@ -51,9 +52,10 @@ function HeaderBar(props) {
                     {showMenu ? <Close/> : <Menu/>}
                 </IconButton>
                 <div className={classes.grow}>
-                    <Typography variant="h6" className={classes.title} color="inherit" noWrap>
-                        Nebula
-                    </Typography>
+                    {/*<Typography variant="h6" className={classes.title} color="inherit" noWrap>*/}
+                    {/*    Nebula*/}
+                    {/*</Typography>*/}
+                    <img src={"/rmit-branding.png"} className={classes.title}/>
                 </div>
                 <Tooltip title={`${connectionText} Connected`}>
                     <IconButton aria-label={`${connectionText} Connected`} color={connectionColor}>
@@ -66,7 +68,7 @@ function HeaderBar(props) {
                 connected={connected}
                 when={last_connected}
                 onResize={onResize}
-                color={stringToHslColor("header", saturation/2, brightness)}
+                color={stringToHslColor("header", saturation / 2, brightness)}
             />
         </Card>
     );

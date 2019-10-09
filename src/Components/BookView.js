@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
         background: "#00000070",
         borderBottomRightRadius: "5px",
         textTransform: "capitalize",
+        color: "white",
     },
     views: {
         position: "absolute",
