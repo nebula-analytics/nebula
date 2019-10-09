@@ -15,6 +15,7 @@ import Chip from "@material-ui/core/Chip";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -103,9 +104,11 @@ function BookModal(props) {
                         />
                         <CardHeader
                             action={
-                                <IconButton aria-label="view externally" href={link}>
-                                    <Launch/>
-                                </IconButton>
+                                <Tooltip title={"View Source record"}>
+                                    <IconButton aria-label="view externally" href={link}>
+                                        <Launch/>
+                                    </IconButton>
+                                </Tooltip>
                             }
                             title={title}
                             subheader={`Last Accessed: ${data['last accessed']}`}
@@ -133,7 +136,7 @@ function BookModal(props) {
                                                 );
                                                 has_content = Boolean(repr.length)
                                             }
-                                            if (typeof value === "string" && value.startsWith("http")){
+                                            if (typeof value === "string" && value.startsWith("http")) {
                                                 repr = <a href="{value}">{value}</a>
                                             }
                                             return has_content && <TableRow key={key}>
