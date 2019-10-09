@@ -8,7 +8,6 @@ import Submenu from "./Submenu";
 import * as React from "react";
 import {useState} from "react";
 import themeData from "../constants/theme";
-import Img from "react-image";
 import * as PropTypes from "prop-types";
 
 
@@ -55,7 +54,7 @@ function HeaderBar(props) {
                     {/*<Typography variant="h6" className={classes.title} color="inherit" noWrap>*/}
                     {/*    Nebula*/}
                     {/*</Typography>*/}
-                    <img src={"/rmit-branding.png"} className={classes.title}/>
+                    <img alt={"RMIT Library Live"} src={"/rmit-branding.png"} className={classes.title}/>
                 </div>
                 <Tooltip title={`${connectionText} Connected`}>
                     <IconButton aria-label={`${connectionText} Connected`} color={connectionColor}>

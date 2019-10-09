@@ -9,7 +9,7 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 
 function Submenu(props) {
-    const {visible, when, connected, onResize, color} = props;
+    const {visible, when, connected, onResize} = props;
 
     const last_connected = when ? when.toLocaleString() : connected ? "Loading ..." : "Unable to connect to the library";
 
