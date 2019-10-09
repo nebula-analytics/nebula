@@ -14,8 +14,6 @@ function Submenu(props) {
     const last_connected = when ? when.toLocaleString() : connected ? "Loading ..." : "Unable to connect to the library";
 
     return <Collapse in={visible} timeout="auto" onEntered={onResize} onExited={onResize}>
-        <CardContent style={{background: color}}>
-
             <CardContent>
                 <Typography variant="body1" color="textPrimary" component="p">
                     {last_connected}
@@ -46,7 +44,6 @@ function Submenu(props) {
                     This feature is coming soon!
                 </Typography>
             </CardContent>
-        </CardContent>
     </Collapse>
 }
 

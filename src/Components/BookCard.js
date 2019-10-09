@@ -40,9 +40,9 @@ const getBookDisplayDetails = book => {
 
     const modal_data = {
         "publish date": date,
+        "view this in primo": generatePrimoLink(book),
         "number of views (in current window)": count,
         "subjects": subject,
-        "topics": topic,
         "last accessed": last_view,
         "type of record": record_type
     };
@@ -55,21 +55,25 @@ const getBookDisplayDetails = book => {
 
 function BookCard(props) {
     const classes = useStyles();
-    const {book, saturation, brightness, createModal} = props;
+    const {book, saturation, brightness, createModal, setFilter} = props;
     const {title, record_type, modal_data} = getBookDisplayDetails(book);
 
-    const [images, ] = useState(updateWithImageURLs(book.extra_fields.delivery.link));
+    const [images,] = useState(updateWithImageURLs(book.extra_fields.delivery.link));
 
-    return <Card className={`${classes.root} dynamic-book-width`}>
+    return <Card
+        data-record_type={record_type}
+        className={`${classes.root} dynamic-book-width grid-item`}
+    >
         <BookView
             book={book}
             onClick={() => createModal(
-                title, modal_data, generatePrimoLink(book), images
+                title, modal_data, modal_data["view this in primo"], images
             )}
             images={images}
             title={title}
             record_type={record_type}
             color={stringToHslColor(record_type, saturation, brightness)}
+            setFilter={setFilter}
         />
     </Card>;
 }
@@ -79,11 +83,17 @@ BookCard.propTypes = {
     createModal: PropTypes.func.isRequired,
     saturation: PropTypes.number,
     brightness: PropTypes.number,
+    setFilter: PropTypes.func,
+    setSort: PropTypes.func
 };
 
 BookCard.defaultProps = {
     saturation: 0,
     brightness: 100,
+    setFilter: () => {
+    },
+    setSort: () => {
+    }
 };
 
 export default BookCard;

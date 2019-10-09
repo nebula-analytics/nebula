@@ -1,6 +1,6 @@
 import * as Isotope from "isotope-layout"
 import * as React from "react";
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 class LayoutInterface extends React.Component {
     displayName = 'LayoutInterface';
@@ -109,7 +109,6 @@ class LayoutInterface extends React.Component {
         this.isotope.layout();
     };
 
-
     componentDidMount = () => {
         this.domChildren = this.getNewDomChildren();
         this.isotope = new Isotope(
@@ -118,29 +117,48 @@ class LayoutInterface extends React.Component {
         );
     };
 
-    componentDidUpdate = () => {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         this.performLayout();
+        if (prevProps.options.filter !== this.props.options.filter) {
+            this.isotope.destroy();
+            this.isotope = new Isotope(
+                this.reference.current,
+                this.props.options,
+            );
+            // this.option(this.props.options);
+            // this.isotope._filter(this.items);
+            // this.isotope.layout()
+        }
     };
 
 
-    relayout = (context) => () => {
-        context.performLayout();
-        context.forceUpdate();
+    relayout = (isotope) => () => {
+        if (isotope) {
+            isotope.reloadItems();
+            isotope.layout();
+        }
+    };
+
+    onLoad = (_this) => () => {
+        _this.performLayout();
+        _this.forceUpdate();
     };
 
     render() {
 
         const children = React.Children.map(this.props.children, child => {
             return React.cloneElement(child, {
-                onResize: this.relayout(this),
+                onResize: this.relayout(this.isotope),
             });
         });
-        return React.createElement(this.props.elementType, {
-            className: this.props.className,
-            ref: this.reference,
-            onLoad: this.relayout(this),
-
-        }, children);
+        return <div className={this.props.className} ref={this.reference} onLoad={this.onLoad(this)}>
+            {children}
+        </div>
+        // return React.createElement(this.props.elementType, {
+        //     className: this.props.className,
+        //     ref: this.reference,
+        //     onLoad: this.onLoad(this),
+        // }, children);
     }
 }
 

@@ -20,6 +20,6 @@
   },
   "cards": {
     "size": 200,
-    "gutter": 2.5
+    "gutter": 5
   }
 }
