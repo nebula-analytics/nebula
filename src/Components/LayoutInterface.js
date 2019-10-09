@@ -98,7 +98,7 @@ class LayoutInterface extends React.Component {
         }
 
         if (diff.appended.length > 0) {
-            this.isotope.append(diff.appended);
+            this.isotope.appended(diff.appended);
         }
 
         if (diff.prepended.length > 0) {
@@ -120,14 +120,14 @@ class LayoutInterface extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.performLayout();
         if (prevProps.options.filter !== this.props.options.filter) {
-            // this.isotope.destroy();
-            // this.isotope = new Isotope(
-            //     this.reference.current,
-            //     this.props.options,
-            // );
-            this.option(this.props.options);
-            this.isotope._filter(this.items);
-            this.isotope.layout()
+            this.isotope.destroy();
+            this.isotope = new Isotope(
+                this.reference.current,
+                this.props.options,
+            );
+            // this.option(this.props.options);
+            // this.isotope._filter(this.items);
+            // this.isotope.layout()
         }
     };
 

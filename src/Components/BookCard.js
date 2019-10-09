@@ -40,9 +40,9 @@ const getBookDisplayDetails = book => {
 
     const modal_data = {
         "publish date": date,
+        "view this in primo": generatePrimoLink(book),
         "number of views (in current window)": count,
         "subjects": subject,
-        "topics": topic,
         "last accessed": last_view,
         "type of record": record_type
     };
@@ -67,7 +67,7 @@ function BookCard(props) {
         <BookView
             book={book}
             onClick={() => createModal(
-                title, modal_data, generatePrimoLink(book), images
+                title, modal_data, modal_data["view this in primo"], images
             )}
             images={images}
             title={title}

@@ -13,7 +13,7 @@ class App extends React.Component {
     render() {
         return (
             <ThemeProvider theme={theme}>
-                <Container maxWidth={false}>
+                <Container maxWidth={false} style={}>
                     <FetchData/>
                 </Container>
             </ThemeProvider>

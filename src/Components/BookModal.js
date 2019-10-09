@@ -133,6 +133,9 @@ function BookModal(props) {
                                                 );
                                                 has_content = Boolean(repr.length)
                                             }
+                                            if (typeof value === "string" && value.startsWith("http")){
+                                                repr = <a href="{value}">{value}</a>
+                                            }
                                             return has_content && <TableRow key={key}>
                                                 <TableCell className={classes.keyCell}>{key}</TableCell>
                                                 <TableCell className={classes.valueCell}>{repr}</TableCell>

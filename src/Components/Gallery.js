@@ -1,6 +1,7 @@
 import React from 'react';
 import * as PropTypes from "prop-types"
 import LayoutInterface from "./LayoutInterface";
+import * as themeData from "../constants/theme"
 
 function Gallery(props) {
     const {children, ...options} = props;
@@ -31,10 +32,9 @@ Gallery.propTypes = {
 
 Gallery.defaultProps = {
     transitionDuration: '1s',
-    stagger: 30,
     layoutMode: 'masonry',
     masonry: {
-        gutter: 2.5,
+        gutter: themeData.cards.gutter,
     },
     stamp: ".stamp",
     percentPosition: true,
