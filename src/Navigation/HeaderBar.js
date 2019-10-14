@@ -40,7 +40,7 @@ function HeaderBar(props) {
 
 
     return (<Card className={`stamp ${classes.root} dynamic-header-width`}>
-            <Toolbar style={{background: stringToHslColor("nebula", saturation, brightness)}}>
+            <Toolbar style={{background: "#160028"}}>
                 <IconButton
                     edge="start"
                     className={classes.menuButton}
