@@ -9,12 +9,12 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 
 function Submenu(props) {
-    const {visible, when, connected, onResize, color} = props;
+    const {visible, when, connected, onResize} = props;
 
     const last_connected = when ? when.toLocaleString() : connected ? "Loading ..." : "Unable to connect to the library";
 
     return <Collapse in={visible} timeout="auto" onEntered={onResize} onExited={onResize}>
-            <CardContent style={{color: color}}>
+            <CardContent>
                 <Typography variant="body1" color="textPrimary" component="p">
                     {last_connected}
                 </Typography>
@@ -23,8 +23,8 @@ function Submenu(props) {
                     collection.
                 </Typography>
             </CardContent>
-            <Divider style={{color: color}} variant="fullWidth" component="div"/>
-            <CardContent> style={{color: color}}
+            <Divider variant="fullWidth" component="div"/>
+            <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
                     <Tooltip title={"Github"}>
                         <IconButton href={"https://github.com/nebula-analytics/nebula"} aria-label="Github link"
@@ -35,8 +35,8 @@ function Submenu(props) {
                     Explore Nebula's source code on Github
                 </Typography>
             </CardContent>
-            <Divider variant="fullWidth" component="div" style={{color: color}}/>
-            <CardContent style={{color: color}}>
+            <Divider variant="fullWidth" component="div"/>
+            <CardContent>
                 <Typography gutterBottom variant="body1" component="p">
                     Filters
                 </Typography>
