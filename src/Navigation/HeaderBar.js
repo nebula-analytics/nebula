@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: `${themeData.cards.gutter}px`,
         float: "left",
         zIndex: 1000,
-        background: "#160028",
+        background: "none",
         color: "white",
     },
     grow: {
@@ -38,7 +38,7 @@ function HeaderBar(props) {
 
     const connectionText = connected ? "" : "Not";
     const connectionIcon = connected ? <Sync/> : <SyncProblem/>;
-    const connectionColor = connected ? "white" : "secondary";
+    const connectionColor = connected ? "primary" : "secondary";
 
 
     return (<Card className={`stamp ${classes.root} dynamic-header-width`}>
