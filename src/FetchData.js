@@ -1,30 +1,58 @@
 import React, {Component} from 'react';
 import BookCard from "./Components/BookCard";
-import Header from "./Header";
 import Gallery from "./Components/Gallery";
-import themeData from "./constants/theme";
+import {buildRecordRequestURL, buildTimeFilter, getQueryStringValue} from "./helpers/utils";
+import BookModal from "./Components/BookModal";
+import BookSizer from "./Components/BookSizer";
+import HeaderBar from "./Navigation/HeaderBar";
+
 
 class FetchData extends Component {
     constructor() {
         super();
         this.state = {
             books: [],
-            width: this.findPercentWidth()
+            modal: null,
+            modal_open: false,
+            filter: undefined,
+            sort: undefined,
         };
     }
 
+    setFilter = (filter = undefined) => {
+        if (typeof filter === "string") {
+            filter = `${filter}, .stamp`
+        }
+        if (filter === this.state.filter) {
+            filter = null
 
-    findPercentWidth = () => {
-        let adjusted = window.innerWidth - ((32 + themeData.cards.gutter) * 2);
-        let num_cards = parseInt(adjusted/themeData.cards.size);
-        console.log(`Calculated grid width: ${adjusted}; Expected column count: ${num_cards}`);
-        return `${(100/num_cards)}% - ${themeData.cards.gutter*4}px`;
+        }
+        this.setState({
+            filter: filter
+        })
     };
 
-    onResize = () => {
-        let width = this.findPercentWidth();
+    setSort = (sort = undefined) => {
         this.setState({
-            width: width
+            sort: sort
+        })
+    };
+
+    openModal = (title, data, link, images) => {
+        this.setState({
+            modal: {
+                title: title,
+                data: data,
+                link: link,
+                images: images
+            },
+            modal_open: true
+        })
+    };
+
+    closeModal = () => {
+        this.setState({
+            modal_open: false
         })
     };
 
@@ -45,9 +73,14 @@ class FetchData extends Component {
     };
 
     componentDidMount() {
-        window.addEventListener('resize', this.onResize);
 
-        const query_frequency = 10000;
+        const min_query_frequency = 10000;
+
+        let query_frequency = parseInt(getQueryStringValue("refresh_rate", 0)) * 1000;
+
+        if(query_frequency < min_query_frequency){
+            query_frequency = min_query_frequency;
+        }
 
         let timeout = this.getSyncTimeout(query_frequency);
 
@@ -67,69 +100,29 @@ class FetchData extends Component {
         if (this.timeout) {
             clearInterval(this.timeout);
         }
-        window.removeEventListener('resize', this.onResize);
-
-    }
-
-    buildTimeFilter(from, until) {
-        let params = new URLSearchParams(window.location.search);
-        if (until === undefined) {
-            if (params.has("end_at")) {
-                until = new Date(params.get("end_at"))
-            } else {
-                until = new Date()
-            }
-        }
-        if (from === undefined) {
-            if (params.has("start_at")) {
-                from = new Date(params.get("start_at"));
-            } else {
-                let window = 30;
-                if (params.has("window")) {
-                    window = parseInt(params.get("window"))
-                }
-                from = until;
-                from.setMinutes((until).getMinutes() - window);
-            }
-        }
-        until = until.toUTCString();
-        from = from.toUTCString();
-        return {
-            last_viewed: {"$gte": from, "$lte": until}
-        };
-    }
-
-    buildRecordRequestURL(filter) {
-        let protocol = window.location.protocol;
-        let location = process.env.REACT_APP_API_LOCATION || ':8080';
-        let host = process.env.REACT_APP_API_HOST || window.location.hostname;
-
-        const url = new URL(`${protocol}//${host}${location}/joint`);
-
-        url.search = new URLSearchParams({
-            "max_results": "200",
-            "page": "1",
-            "sort": "-last_view",
-        });
-        return url
     }
 
     fetchData = () => {
-        fetch(this.buildRecordRequestURL(this.buildTimeFilter()).toString()).then(
+        const saturation = parseInt(getQueryStringValue("saturation", 0));
+        const brightness = parseInt(getQueryStringValue("brightness", 30));
+        fetch(buildRecordRequestURL(buildTimeFilter()).toString()).then(
             response => {
                 return response.json()
             }
-        ).then(
-            data => {
-                this.setState({
-                        books: data["_items"].map(book => < BookCard key={book['_id']} book={book}
-                        />),
-                        connected: true,
-                        last_beacon:
-                            new Date()
-                    }
-                )
-            }
+        ).then(data => this.setState({
+                books: data["_items"].map(
+                    book => <BookCard
+                        key={book['_id']}
+                        book={book}
+                        createModal={this.openModal}
+                        saturation={saturation}
+                        brightness={brightness}
+                        setFilter={this.setFilter}
+                        setSort={this.setSort}
+                    />),
+                connected: true,
+                last_beacon: new Date()
+            })
         ).catch(err => {
             console.log(err);
             this.setState({
@@ -140,22 +133,26 @@ class FetchData extends Component {
     };
 
     render() {
+        const saturation = parseInt(getQueryStringValue("saturation", 0));
+        const brightness = parseInt(getQueryStringValue("brightness", 50));
         return <>
-            <style>
-                .book-dynamic {`{width:calc(${this.state.width})}`}
-                .header-dynamic {`{width:calc((${this.state.width})*2 + ${themeData.cards.gutter}px * 4)}`}
-            </style>
-            <Gallery>
+            <Gallery
+                filter={this.state.filter}
+            >
                 {this.state.books && this.state.books}
-                <Header
-                    online={this.state.connected}
-                    when={this.state.last_beacon}
+                <HeaderBar
+                    connected={this.state.connected}
+                    last_connected={this.state.last_beacon}
+                    brightness={brightness}
+                    saturation={saturation}
                 />
+                <BookSizer/>
             </Gallery>
+            <BookModal onClose={this.closeModal} open={this.state.modal_open} {...this.state.modal}/>
         </>
     }
 
 
 }
 
-export default (FetchData)
+export default FetchData

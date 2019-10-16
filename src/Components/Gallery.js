@@ -1,33 +1,44 @@
 import React from 'react';
+import * as PropTypes from "prop-types"
 import LayoutInterface from "./LayoutInterface";
-import themeData from "../constants/theme"
+import * as themeData from "../constants/theme"
 
-let options = {
-    transitionDuration: '1s',
+function Gallery(props) {
+    const {children, ...options} = props;
+    return (
+        <LayoutInterface
+            className={'grid'}
+            elementType={'div'}
+            options={options}
+            disableImagesLoaded={false}
+        >
+            {children}
+        </LayoutInterface>
+    );
+}
+
+Gallery.propTypes = {
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+
+    filter: PropTypes.any,
+    sort: PropTypes.object,
+    transitionDuration: PropTypes.string,
+    stagger: PropTypes.number,
+    layoutMode: PropTypes.string,
+    masonry: PropTypes.object,
+    stamp: PropTypes.string,
+    percentPosition: PropTypes.bool,
+};
+
+Gallery.defaultProps = {
+    transitionDuration: '2s',
     layoutMode: 'masonry',
     masonry: {
-        gutter: 2.5
+        gutter: themeData.cards.gutter,
     },
     stamp: ".stamp",
     percentPosition: true,
-
+    filter: "*",
 };
-
-class Gallery extends React.Component {
-    render() {
-        const {children, onChildResize} = this.props;
-        return (
-            <LayoutInterface
-                className={'grid'} // default ''
-                elementType={'div'} // default 'div'
-                options={options} // default {}
-                disableImagesLoaded={false} // default false
-            >
-                {children}
-            </LayoutInterface>
-        );
-    }
-}
-
 
 export default Gallery;
