@@ -31,7 +31,7 @@ Gallery.propTypes = {
 };
 
 Gallery.defaultProps = {
-    transitionDuration: '1s',
+    transitionDuration: '2s',
     layoutMode: 'masonry',
     masonry: {
         gutter: themeData.cards.gutter,

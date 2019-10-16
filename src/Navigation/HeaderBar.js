@@ -8,7 +8,6 @@ import Submenu from "./Submenu";
 import * as React from "react";
 import {useState} from "react";
 import themeData from "../constants/theme";
-import Img from "react-image";
 import * as PropTypes from "prop-types";
 
 
@@ -17,6 +16,9 @@ const useStyles = makeStyles(theme => ({
         marginBottom: `${themeData.cards.gutter}px`,
         float: "left",
         zIndex: 1000,
+        color: "white",
+        background: "none",
+        boxShadow: "none",
     },
     grow: {
         flexGrow: 1,
@@ -36,12 +38,12 @@ function HeaderBar(props) {
     const classes = useStyles();
 
     const connectionText = connected ? "" : "Not";
-    const connectionIcon = connected ? <Sync/> : <SyncProblem/>;
-    const connectionColor = connected ? "default" : "secondary";
+    const connectionIcon = connected ? undefined : <SyncProblem/>;
+    const connectionColor = connected ? "primary" : "secondary";
 
 
     return (<Card className={`stamp ${classes.root} dynamic-header-width`}>
-            <Toolbar style={{background: stringToHslColor("nebula", saturation, brightness)}}>
+            <Toolbar>
                 <IconButton
                     edge="start"
                     className={classes.menuButton}
@@ -55,7 +57,7 @@ function HeaderBar(props) {
                     {/*<Typography variant="h6" className={classes.title} color="inherit" noWrap>*/}
                     {/*    Nebula*/}
                     {/*</Typography>*/}
-                    <img src={"/rmit-branding.png"} className={classes.title}/>
+                    <img alt={"RMIT Library Live"} src={"/rmit-branding.png"} className={classes.title}/>
                 </div>
                 <Tooltip title={`${connectionText} Connected`}>
                     <IconButton aria-label={`${connectionText} Connected`} color={connectionColor}>

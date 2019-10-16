@@ -125,7 +125,7 @@ class LayoutInterface extends React.Component {
                 this.reference.current,
                 this.props.options,
             );
-            // this.option(this.props.options);
+            // this.isotope.arrange(this.props.options);
             // this.isotope._filter(this.items);
             // this.isotope.layout()
         }
