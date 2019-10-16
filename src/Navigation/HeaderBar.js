@@ -16,8 +16,9 @@ const useStyles = makeStyles(theme => ({
         marginBottom: `${themeData.cards.gutter}px`,
         float: "left",
         zIndex: 1000,
-        background: "none",
         color: "white",
+        background: "none",
+        boxShadow: "none",
     },
     grow: {
         flexGrow: 1,
@@ -37,7 +38,7 @@ function HeaderBar(props) {
     const classes = useStyles();
 
     const connectionText = connected ? "" : "Not";
-    const connectionIcon = connected ? <Sync/> : <SyncProblem/>;
+    const connectionIcon = connected ? undefined : <SyncProblem/>;
     const connectionColor = connected ? "primary" : "secondary";
 
 

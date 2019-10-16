@@ -1,26 +1,47 @@
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import {Tooltip} from "@material-ui/core";
+import {makeStyles, Tooltip} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import GitHub from "../Components/Icons/Github";
 import Collapse from "@material-ui/core/Collapse";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 
+const useStyles = makeStyles(theme => ({
+    root: {
+        background: "white",
+    }
+}));
+
 function Submenu(props) {
     const {visible, when, connected, onResize} = props;
+    const classes = useStyles();
 
     const last_connected = when ? when.toLocaleString() : connected ? "Loading ..." : "Unable to connect to the library";
 
     return <Collapse in={visible} timeout="auto" onEntered={onResize} onExited={onResize}>
+        <div className={classes.root}>
             <CardContent>
                 <Typography variant="body1" color="textPrimary" component="p">
+                    What is this?
+                </Typography>
+                <Typography gutterBottom variant="body2" color="textSecondary" component="p">
+                    You're looking at a real-time visualization of resource access at the RMIT library, as users view books
+                    online a card for the book is added on this site.
+                </Typography>
+                <Typography variant="body1" color="textPrimary" component="p">
+                    What time is it at the RMIT Library?
+                </Typography>
+                <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {last_connected}
                 </Typography>
+                <Typography variant="body1" color="textPrimary" component="p">
+                    About Nebula
+                </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    A real-time visualisation of resources users are accessing from RMIT University Library's
-                    collection.
+                    Project Nebula was a 2019 student project at RMIT thought up by the RMIT library with the goal
+                    of visualizing resource usage in real-time.
                 </Typography>
             </CardContent>
             <Divider variant="fullWidth" component="div"/>
@@ -41,9 +62,10 @@ function Submenu(props) {
                     Filters
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    This feature is coming soon!
+                    You can filter by record type by hitting the button in the top corner!
                 </Typography>
             </CardContent>
+        </div>
     </Collapse>
 }
 
