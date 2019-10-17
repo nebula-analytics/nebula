@@ -76,7 +76,7 @@ class FetchData extends Component {
 
         const min_query_frequency = 10000;
 
-        let query_frequency = parseInt(getQueryStringValue("refresh_rate", 0)) * 1000;
+        let query_frequency = parseInt(getQueryStringValue("refresh_interval", 0)) * 1000;
 
         if(query_frequency < min_query_frequency){
             query_frequency = min_query_frequency;
@@ -84,7 +84,13 @@ class FetchData extends Component {
 
         let timeout = this.getSyncTimeout(query_frequency);
 
-        console.log(`Fetch immediate, sync begins in ${timeout} ms`);
+        console.log(`Calculated refresh interval: ${query_frequency} ms`);
+        console.log(`Time remaining until first request: ${timeout} ms`);
+
+        if (timeout > 3000){
+            console.log("Next timeout exceeds time boundary (> 3000 ms in future), fetching now");
+            this.fetchData()
+        }
 
         this.timeout = setTimeout(
             () => {
@@ -105,7 +111,9 @@ class FetchData extends Component {
     fetchData = () => {
         const saturation = parseInt(getQueryStringValue("saturation", 0));
         const brightness = parseInt(getQueryStringValue("brightness", 30));
-        fetch(buildRecordRequestURL(buildTimeFilter()).toString()).then(
+        const destination = buildRecordRequestURL(buildTimeFilter()).toString()
+        console.log(`Sending Request to ${destination}`);
+        fetch(destination).then(
             response => {
                 return response.json()
             }
