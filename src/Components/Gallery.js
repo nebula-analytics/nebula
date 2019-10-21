@@ -34,7 +34,7 @@ Gallery.defaultProps = {
     transitionDuration: '2s',
     layoutMode: 'masonry',
     masonry: {
-        gutter: themeData.cards.gutter,
+        gutter: themeData.cards.gutter*2,
     },
     stamp: ".stamp",
     percentPosition: true,
