@@ -9,6 +9,7 @@
     "imagesloaded": "github:desandro/imagesloaded",
     "isotope": "github:metafizzy/isotope",
     "isotope-layout": "^3.0.6",
+    "moment": "^2.24.0",
     "prop-types": "latest",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

@@ -61,7 +61,8 @@ function BookCard(props) {
     const [images,] = useState(updateWithImageURLs(book.extra_fields.delivery.link));
 
     return <Card
-        data-record_type={record_type}
+        data-record_type={record_type.replace(" ", "_")}
+        data-last_view={modal_data["last accessed"]}
         className={`${classes.root} dynamic-book-width grid-item`}
     >
         <BookView

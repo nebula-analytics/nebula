@@ -15,7 +15,6 @@ class FetchData extends Component {
             modal: null,
             modal_open: false,
             filter: undefined,
-            sort: undefined,
         };
     }
 

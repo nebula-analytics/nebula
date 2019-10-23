@@ -59,7 +59,7 @@ function BookView(props) {
     const fallback = <div className={classes.text}><h3>{title}</h3></div>;
 
     const filterByThisRecordType = () => {
-        setFilter(`[data-record_type=${record_type}]`);
+        setFilter(`[data-record_type=${record_type.replace(" ", "_")}]`);
     };
 
 

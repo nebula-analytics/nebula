@@ -34,11 +34,15 @@ Gallery.defaultProps = {
     transitionDuration: '2s',
     layoutMode: 'masonry',
     masonry: {
-        gutter: themeData.cards.gutter*2,
+        gutter: themeData.cards.gutter,
     },
     stamp: ".stamp",
     percentPosition: true,
     filter: "*",
+    getSortData: {
+        time: "[data-last_view]"
+    },
+    sortBy: "time"
 };
 
 export default Gallery;
