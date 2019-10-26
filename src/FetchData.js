@@ -11,6 +11,9 @@ class FetchData extends Component {
     constructor() {
         super({});
         this.state = {
+            upstream: {
+                state: "connecting"
+            },
             books: [],
             modal: null,
             modal_open: false,
@@ -72,7 +75,7 @@ class FetchData extends Component {
 
         let query_frequency = parseInt(getQueryStringValue("refresh_interval", 0)) * 1000;
 
-        if(query_frequency < min_query_frequency){
+        if (query_frequency < min_query_frequency) {
             query_frequency = min_query_frequency;
         }
 
@@ -81,7 +84,7 @@ class FetchData extends Component {
         console.log(`Calculated refresh interval: ${query_frequency} ms`);
         console.log(`Time remaining until first request: ${timeout} ms`);
 
-        if (timeout > 3000){
+        if (timeout > 3000) {
             console.log("Next timeout exceeds time boundary (> 3000 ms in future), fetching now");
             this.fetchData()
         }
@@ -106,7 +109,13 @@ class FetchData extends Component {
         const saturation = parseInt(getQueryStringValue("saturation", 0));
         const brightness = parseInt(getQueryStringValue("brightness", 30));
         const destination = buildRecordRequestURL(buildTimeFilter()).toString();
-        console.log(`Sending Request to ${destination}`);
+        this.setState({
+            upstream: {
+                state: "connecting",
+                last_reached: this.state.upstream.last_reached,
+                last_attempt: this.state.upstream.last_attempt,
+            },
+        });
         fetch(destination).then(
             response => {
                 return response.json()
@@ -122,13 +131,17 @@ class FetchData extends Component {
                         setFilter={this.setFilter}
                         setSort={this.setSort}
                     />),
-                connected: true,
+                upstream: {state: "synced", last_reached: new Date(), last_attempt: new Date()},
                 last_beacon: new Date()
             })
         ).catch(err => {
             console.log(err);
             this.setState({
-                connected: false
+                upstream: {
+                    state: "desynced",
+                    last_reached: this.state.upstream.last_reached,
+                    last_attempt: new Date()
+                },
             })
         });
 
@@ -143,8 +156,7 @@ class FetchData extends Component {
             >
                 {this.state.books && this.state.books}
                 <HeaderBar
-                    connected={this.state.connected}
-                    last_connected={this.state.last_beacon}
+                    upstream={this.state.upstream}
                     brightness={brightness}
                     saturation={saturation}
                 />
