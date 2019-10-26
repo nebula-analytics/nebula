@@ -9,7 +9,7 @@ import HeaderBar from "./Navigation/HeaderBar";
 
 class FetchData extends Component {
     constructor() {
-        super();
+        super({});
         this.state = {
             books: [],
             modal: null,
@@ -37,14 +37,9 @@ class FetchData extends Component {
         })
     };
 
-    openModal = (title, data, link, images) => {
+    openModal = (bookData) => {
         this.setState({
-            modal: {
-                title: title,
-                data: data,
-                link: link,
-                images: images
-            },
+            modal: bookData,
             modal_open: true
         })
     };
@@ -155,7 +150,7 @@ class FetchData extends Component {
                 />
                 <BookSizer/>
             </Gallery>
-            <BookModal onClose={this.closeModal} open={this.state.modal_open} {...this.state.modal}/>
+            <BookModal onClose={this.closeModal} open={this.state.modal_open} values={this.state.modal}/>
         </>
     }
 

@@ -2,19 +2,16 @@ import * as React from "react";
 import Img from 'react-image'
 
 import themeData from "../constants/theme"
-import Typography from "@material-ui/core/Typography";
-import {Card, makeStyles, TableCell} from "@material-ui/core";
+import {Card, makeStyles} from "@material-ui/core";
 import Backdrop from "@material-ui/core/Backdrop/Backdrop";
 import Zoom from "@material-ui/core/Zoom";
 import CardContent from "@material-ui/core/CardContent";
 import Modal from "@material-ui/core/Modal";
 import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
-import {Label, Launch} from "@material-ui/icons";
-import Chip from "@material-ui/core/Chip";
+import {Launch} from "@material-ui/icons";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Tooltip from "@material-ui/core/Tooltip";
 
 
@@ -78,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 
 function BookModal(props) {
     const classes = useStyles();
-    const {title, data, link, images, onClose, open} = props;
+    const {open, onClose, values} = props;
 
     return <Modal
         aria-labelledby="transition-modal-title"
@@ -95,23 +92,23 @@ function BookModal(props) {
 
         <Zoom in={open} timeout={600}>
             <Card className={classes.card}>
-                {data !== undefined &&
+                {values &&
                 <>
                     <CardContent className={classes.header}>
-                        <Img width={"100%"} src={images} alt={""} className={classes.image}
+                        <Img width={"100%"} src={values.images.value} alt={""} className={classes.image}
                              container={(c) => <Zoom in={true} timeout={600}>{c}</Zoom>
                              }
                         />
                         <CardHeader
                             action={
                                 <Tooltip title={"View Source record"}>
-                                    <IconButton aria-label="view externally" href={link}>
+                                    <IconButton aria-label="view externally" href={values.link}>
                                         <Launch/>
                                     </IconButton>
                                 </Tooltip>
                             }
-                            title={title}
-                            subheader={`Last Accessed: ${data['last accessed']}`}
+                            title={values.title.toString()}
+                            subheader={values.type.toString()}
                             className={classes.headerText}
                         />
                     </CardContent>
@@ -119,32 +116,7 @@ function BookModal(props) {
                         <Table className={classes.table} size="small">
                             <TableHead>
                                 {
-                                    Object.keys(data).map(
-                                        key => {
-                                            let value = data[key];
-                                            let repr = <Typography>{value}</Typography>;
-                                            let has_content = Boolean(value);
-                                            if (typeof value === "object") {
-                                                repr = Object.values(value).map(
-                                                    (item, i) => <Chip
-                                                        key={i}
-                                                        icon={<Label/>}
-                                                        label={item.replace(/(<([^>]+)>)/ig, "")}
-                                                        color="primary"
-                                                        size={"small"}
-                                                    />
-                                                );
-                                                has_content = Boolean(repr.length)
-                                            }
-                                            if (typeof value === "string" && value.startsWith("http")) {
-                                                repr = <a href="{value}">{value}</a>
-                                            }
-                                            return has_content && <TableRow key={key}>
-                                                <TableCell className={classes.keyCell}>{key}</TableCell>
-                                                <TableCell className={classes.valueCell}>{repr}</TableCell>
-                                            </TableRow>
-                                        }
-                                    )
+                                    Object.values(values).map(value => value.makeRow())
                                 }
                             </TableHead>
                         </Table>
