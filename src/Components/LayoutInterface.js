@@ -1,23 +1,23 @@
 import * as Isotope from "isotope-layout"
+import "isotope-packery"
 import * as React from "react";
 import * as PropTypes from 'prop-types';
-
 class LayoutInterface extends React.Component {
     displayName = 'LayoutInterface';
 
     static propTypes = {
-        disableImagesLoaded: PropTypes.bool,
         options: PropTypes.object,
+        stampClassName: PropTypes.string,
         onChildResize: PropTypes.func
     };
 
     static defaultProps = {
-        disableImagesLoaded: false,
         options: {
             layoutMode: 'masonry'
         },
         className: '',
         elementType: 'div',
+        stampClassName: "stamp"
     };
 
     constructor(props) {
@@ -86,7 +86,7 @@ class LayoutInterface extends React.Component {
             removed: removed,
             appended: appended,
             prepended: prepended,
-            moved: moved
+            moved: moved,
         };
     };
 
@@ -102,10 +102,16 @@ class LayoutInterface extends React.Component {
         }
 
         if (diff.prepended.length > 0) {
-            this.isotope.prepended(diff.prepended);
+            this.isotope.appended(diff.prepended);
+        }
+
+        if(this.props.options.stamp){
+            let stamped = this.reference.current.querySelectorAll(this.props.options.stamp);
+            this.isotope.stamp(stamped);
         }
 
         this.isotope.reloadItems();
+        this.isotope.arrange();
         this.isotope.layout();
     };
 
@@ -120,14 +126,7 @@ class LayoutInterface extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.performLayout();
         if (prevProps.options.filter !== this.props.options.filter) {
-            this.isotope.destroy();
-            this.isotope = new Isotope(
-                this.reference.current,
-                this.props.options,
-            );
-            // this.isotope.arrange(this.props.options);
-            // this.isotope._filter(this.items);
-            // this.isotope.layout()
+            this.isotope.arrange(this.props.options)
         }
     };
 
@@ -154,11 +153,6 @@ class LayoutInterface extends React.Component {
         return <div className={this.props.className} ref={this.reference} onLoad={this.onLoad(this)}>
             {children}
         </div>
-        // return React.createElement(this.props.elementType, {
-        //     className: this.props.className,
-        //     ref: this.reference,
-        //     onLoad: this.onLoad(this),
-        // }, children);
     }
 }
 

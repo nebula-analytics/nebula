@@ -10,7 +10,6 @@ function Gallery(props) {
             className={'grid'}
             elementType={'div'}
             options={options}
-            disableImagesLoaded={false}
         >
             {children}
         </LayoutInterface>
@@ -18,7 +17,8 @@ function Gallery(props) {
 }
 
 Gallery.propTypes = {
-    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+    children: PropTypes.arrayOf(PropTypes.node).isRequired,
+    stamped: PropTypes.oneOf([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
 
     filter: PropTypes.any,
     sort: PropTypes.object,
@@ -32,17 +32,21 @@ Gallery.propTypes = {
 
 Gallery.defaultProps = {
     transitionDuration: '2s',
-    layoutMode: 'masonry',
-    masonry: {
+    layoutMode: 'packery',
+    packery: {
         gutter: themeData.cards.gutter,
+        columnWidth: `.dynamic-book-width`,
     },
-    stamp: ".stamp",
+    // stamp: ".stamp",
     percentPosition: true,
     filter: "*",
     getSortData: {
-        time: "[data-last_view]"
+        header: "[data-is_first]",
+        time: "[data-last_view]",
+        id: "[data-doc_id]"
     },
-    sortBy: "time"
+    sortBy: ["header", "time", "id"],
+    sortAscending: false
 };
 
 export default Gallery;

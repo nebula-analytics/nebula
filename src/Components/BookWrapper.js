@@ -32,6 +32,7 @@ export default class Book {
             updateWithImageURLs(extra_fields.delivery.link, setImages);
         }, []);
 
+        this.doc_id = new BookRow(book._id);
         this.date = new BookRow(date).setLabel("publish date");
         this.link = new BookRow(link).setLabel("view this in primo").setMode("anchor");
         this.count = new BookRow(count).setLabel("number of views (in the last 30 minutes)");

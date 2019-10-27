@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 import BookCard from "./Components/BookCard";
 import Gallery from "./Components/Gallery";
 import {buildRecordRequestURL, buildTimeFilter, getQueryStringValue} from "./helpers/utils";
@@ -10,6 +10,7 @@ import HeaderBar from "./Navigation/HeaderBar";
 class FetchData extends Component {
     constructor() {
         super({});
+        this.headerRef = createRef();
         this.state = {
             upstream: {
                 state: "connecting"
@@ -121,7 +122,7 @@ class FetchData extends Component {
                 return response.json()
             }
         ).then(data => this.setState({
-                books: data["_items"].map(
+                books: [...data["_items"].map(
                     book => <BookCard
                         key={book['_id']}
                         book={book}
@@ -130,7 +131,7 @@ class FetchData extends Component {
                         brightness={brightness}
                         setFilter={this.setFilter}
                         setSort={this.setSort}
-                    />),
+                    />)],
                 upstream: {state: "synced", last_reached: new Date(), last_attempt: new Date()},
                 last_beacon: new Date()
             })

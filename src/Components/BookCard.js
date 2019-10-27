@@ -1,13 +1,10 @@
 import * as React from "react";
-import {useState} from "react";
 import * as PropTypes from "prop-types";
 import {Card, makeStyles} from "@material-ui/core";
 
 import themeData from "../constants/theme"
 import BookView from "./BookView";
-import {generatePrimoLink, stringToHslColor} from "../helpers/utils";
-import {updateWithImageURLs} from "../helpers/thumbnails";
-import moment from "moment";
+import {stringToHslColor} from "../helpers/utils";
 import BookWrapper from "./BookWrapper";
 
 
@@ -17,9 +14,7 @@ const useStyles = makeStyles((theme) => {
             borderRadius: "5px",
 
             float: "left",
-            marginBottom: `${themeData.cards.gutter}px`,
             minHeight: `${themeData.cards.size / 2}px`,
-            // width: `${themeData.cards.size}px`,
             display: "flex",
             flexDirection: "column",
         }
@@ -27,16 +22,15 @@ const useStyles = makeStyles((theme) => {
 });
 
 
-
 function BookCard(props) {
     const classes = useStyles();
     const {book, saturation, brightness, createModal, setFilter} = props;
-    // const {title, tag, modal_data} = getBookDisplayDetails(book);
 
     let dataWrapper = new BookWrapper(book);
 
     return <Card
         data-record_type={dataWrapper.type.value}
+        data-doc_id={dataWrapper.doc_id.value}
         data-last_view={dataWrapper.when.valueOf()}
         className={`${classes.root} dynamic-book-width grid-item`}
     >

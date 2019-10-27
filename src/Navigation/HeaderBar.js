@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
         color: "white",
         background: "none",
         boxShadow: "none",
+        position: "absolute",
+        top: "0%",
+        left: "0%",
     },
     grow: {
         flexGrow: 1,
@@ -34,16 +37,14 @@ const useStyles = makeStyles(theme => ({
 
 function HeaderBar(props) {
     const {saturation, brightness, upstream, onResize} = props;
-    const {state, last_reached, last_attempt} = upstream;
+    const {state, last_reached} = upstream;
     const [showMenu, setShowMenu] = useState(false);
     const classes = useStyles();
 
-    // const connectionText = connected ? "" : "Not";
-    // const connectionIcon = connected ? undefined : <SyncProblem/>;
-    // const connectionColor = connected ? "primary" : "secondary";
+    return (<Card className={`${classes.root} stamp dynamic-header-width`}
 
-
-    return (<Card className={`stamp ${classes.root} dynamic-header-width`}>
+                  data-last_view={(new Date()).valueOf()}
+        >
             <Toolbar>
                 <IconButton
                     edge="start"
@@ -55,16 +56,8 @@ function HeaderBar(props) {
                     {showMenu ? <Close/> : <Menu/>}
                 </IconButton>
                 <div className={classes.grow}>
-                    {/*<Typography variant="h6" className={classes.title} color="inherit" noWrap>*/}
-                    {/*    Nebula*/}
-                    {/*</Typography>*/}
                     <img alt={"RMIT Library Live"} src={"/rmit-branding.png"} className={classes.title}/>
                 </div>
-                {/*<Tooltip title={`${connectionText} Connected`}>*/}
-                {/*    <IconButton aria-label={`${connectionText} Connected`} color={connectionColor}>*/}
-                {/*        {connectionIcon}*/}
-                {/*    </IconButton>*/}
-                {/*</Tooltip>*/}
             </Toolbar>
             <LinearProgress color={state === "connecting" ? "primary" : "secondary"}
                             style={{opacity: state === "synced" ? 0 : 100}}/>
