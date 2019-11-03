@@ -40,7 +40,7 @@ export const findNumCards = () => {
 
 export const buildRecordRequestURL = (filter) => {
     let protocol = window.location.protocol;
-    let location = process.env.REACT_APP_API_LOCATION || ':8080';
+    let location = process.env.REACT_APP_API_LOCATION || '/api';
     let host = process.env.REACT_APP_API_HOST || window.location.hostname;
     let max_results = getQueryStringValue("max_results") || findNumCards() * 10;
 
