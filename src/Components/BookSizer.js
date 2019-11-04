@@ -1,14 +1,14 @@
 import {makeStyles} from "@material-ui/core";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import themeData from "../constants/theme";
 
 
 const findPercentWidth = () => {
-    let adjusted = window.innerWidth - ((32 * 2) );
-    let num_cards = parseInt(adjusted / (themeData.cards.size + themeData.cards.gutter*2));
+    let adjusted = window.innerWidth - ((32 * 2));
+    let num_cards = parseInt(adjusted / (themeData.cards.size + themeData.cards.gutter * 2));
     console.log(`Calculated grid width: ${adjusted}; Expected column count: ${num_cards}`);
 
-    return `${(100 / num_cards)}% - ${themeData.cards.gutter*2}px`;
+    return `${(100 / num_cards)}% - ${themeData.cards.gutter * 2}px`;
 };
 
 
@@ -36,7 +36,7 @@ export default function BookSizer(props) {
                             },
                             [theme.breakpoints.up('sm')]: {
                                 width: `calc(${width})`,
-                            }
+                            },
                         },
                         ".dynamic-header-width": {
                             width: `100%`,
@@ -48,5 +48,5 @@ export default function BookSizer(props) {
             }
         }
     )(() => null);
-    return null
+    return <div className={"dynamic-book-width"}/>
 }

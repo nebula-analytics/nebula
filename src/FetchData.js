@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 import BookCard from "./Components/BookCard";
 import Gallery from "./Components/Gallery";
 import {buildRecordRequestURL, buildTimeFilter, getQueryStringValue} from "./helpers/utils";
@@ -9,13 +9,16 @@ import HeaderBar from "./Navigation/HeaderBar";
 
 class FetchData extends Component {
     constructor() {
-        super();
+        super({});
+        this.headerRef = createRef();
         this.state = {
+            upstream: {
+                state: "connecting"
+            },
             books: [],
             modal: null,
             modal_open: false,
             filter: undefined,
-            sort: undefined,
         };
     }
 
@@ -38,14 +41,9 @@ class FetchData extends Component {
         })
     };
 
-    openModal = (title, data, link, images) => {
+    openModal = (bookData) => {
         this.setState({
-            modal: {
-                title: title,
-                data: data,
-                link: link,
-                images: images
-            },
+            modal: bookData,
             modal_open: true
         })
     };
@@ -76,15 +74,21 @@ class FetchData extends Component {
 
         const min_query_frequency = 10000;
 
-        let query_frequency = parseInt(getQueryStringValue("refresh_rate", 0)) * 1000;
+        let query_frequency = parseInt(getQueryStringValue("refresh_interval", 0)) * 1000;
 
-        if(query_frequency < min_query_frequency){
+        if (query_frequency < min_query_frequency) {
             query_frequency = min_query_frequency;
         }
 
         let timeout = this.getSyncTimeout(query_frequency);
 
-        console.log(`Fetch immediate, sync begins in ${timeout} ms`);
+        console.log(`Calculated refresh interval: ${query_frequency} ms`);
+        console.log(`Time remaining until first request: ${timeout} ms`);
+
+        if (timeout > 3000) {
+            console.log("Next timeout exceeds time boundary (> 3000 ms in future), fetching now");
+            this.fetchData()
+        }
 
         this.timeout = setTimeout(
             () => {
@@ -105,12 +109,20 @@ class FetchData extends Component {
     fetchData = () => {
         const saturation = parseInt(getQueryStringValue("saturation", 0));
         const brightness = parseInt(getQueryStringValue("brightness", 30));
-        fetch(buildRecordRequestURL(buildTimeFilter()).toString()).then(
+        const destination = buildRecordRequestURL(buildTimeFilter()).toString();
+        this.setState({
+            upstream: {
+                state: "connecting",
+                last_reached: this.state.upstream.last_reached,
+                last_attempt: this.state.upstream.last_attempt,
+            },
+        });
+        fetch(destination).then(
             response => {
                 return response.json()
             }
         ).then(data => this.setState({
-                books: data["_items"].map(
+                books: [...data["_items"].map(
                     book => <BookCard
                         key={book['_id']}
                         book={book}
@@ -119,14 +131,18 @@ class FetchData extends Component {
                         brightness={brightness}
                         setFilter={this.setFilter}
                         setSort={this.setSort}
-                    />),
-                connected: true,
+                    />)],
+                upstream: {state: "synced", last_reached: new Date(), last_attempt: new Date()},
                 last_beacon: new Date()
             })
         ).catch(err => {
             console.log(err);
             this.setState({
-                connected: false
+                upstream: {
+                    state: "desynced",
+                    last_reached: this.state.upstream.last_reached,
+                    last_attempt: new Date()
+                },
             })
         });
 
@@ -141,14 +157,13 @@ class FetchData extends Component {
             >
                 {this.state.books && this.state.books}
                 <HeaderBar
-                    connected={this.state.connected}
-                    last_connected={this.state.last_beacon}
+                    upstream={this.state.upstream}
                     brightness={brightness}
                     saturation={saturation}
                 />
                 <BookSizer/>
             </Gallery>
-            <BookModal onClose={this.closeModal} open={this.state.modal_open} {...this.state.modal}/>
+            <BookModal onClose={this.closeModal} open={this.state.modal_open} values={this.state.modal}/>
         </>
     }
 

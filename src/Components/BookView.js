@@ -53,20 +53,20 @@ const useStyles = makeStyles((theme) => ({
 
 function BookView(props) {
     const classes = useStyles();
-    const {book, onClick, images, title, record_type, color, setFilter} = props;
+    const {book, onClick, images, title, tag, color, setFilter} = props;
 
     const loader = <CircularProgress/>;
     const fallback = <div className={classes.text}><h3>{title}</h3></div>;
 
     const filterByThisRecordType = () => {
-        setFilter(`[data-record_type=${record_type}]`);
+        // setFilter(`[data-record_type=${tag.replace(" ", "_")}]`);
     };
 
 
     return <>
-        <Tooltip title={`Filter by ${record_type}`}>
+        <Tooltip title={`Filter by ${tag}`}>
             <Button className={classes.tag} onClick={filterByThisRecordType}>
-                {record_type}
+                {tag}
             </Button>
         </Tooltip>
         <CardActionArea onClick={onClick} className={classes.clickable} style={{background: color}}>
@@ -97,7 +97,7 @@ BookView.propTypes = {
 
     images: PropTypes.array,
     title: PropTypes.string,
-    record_type: PropTypes.string,
+    tag: PropTypes.string,
     color: PropTypes.string
 };
 
