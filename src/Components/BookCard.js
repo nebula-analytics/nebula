@@ -40,7 +40,7 @@ function BookCard(props) {
             images={dataWrapper.images.value}
             title={dataWrapper.title.value}
             tag={dataWrapper.when.value.fromNow()}
-            color={stringToHslColor(dataWrapper.type, saturation, brightness)}
+            color={stringToHslColor(dataWrapper.type.valueOf(), saturation, brightness)}
             setFilter={setFilter}
         />
     </Card>;

@@ -10,16 +10,15 @@ import {updateWithImageURLs} from "../helpers/thumbnails";
 
 export default class Book {
     constructor(book) {
-        let {record_type, title, extra_fields, last_view, count} = book;
-        let {subject, topic, date} = extra_fields;
+        let {record_type, title, thumbnails, locations, significant_date, subjects, last_view, count} = book;
 
         title = title || "";
         record_type = record_type || "Unknown";
         // "Wed, 23 Oct 2019 23:28:41 GMT"
         let when = moment(last_view, moment.RFC_2822);
 
-        subject = subject || [];
-        date = date || "Unknown";
+        let subject = subjects || [];
+        let date = significant_date || "Unknown";
 
         record_type = record_type.replace("_", " ");
         title = title.replace(/(<([^>]+)>)/ig, "");
@@ -29,7 +28,7 @@ export default class Book {
         let [images, setImages] = useState({values: []});
 
         useEffect(() => {
-            updateWithImageURLs(extra_fields.delivery.link, setImages);
+            updateWithImageURLs(thumbnails, setImages);
         }, []);
 
         this.doc_id = new BookRow(book._id);
@@ -37,7 +36,8 @@ export default class Book {
         this.link = new BookRow(link).setLabel("view this in primo").setMode("anchor");
         this.count = new BookRow(count).setLabel("number of views (in the last 30 minutes)");
         this.subjects = new BookRow(subject).setLabel("subjects").setMode("list");
-        this.when = new BookRow(when).setLabel("last accessed").setMode("date");
+        this.when = new BookRow(locations).setLabel("Where this was viewed").setMode("list");
+        this.when = new BookRow(when).setLabel("last accessed").setMode("list");
         this.raw_when = new BookRow(when.valueOf()).setLabel("last accessed debug");
         this.type = new BookRow(record_type).setLabel("type of record");
         this.title = new BookRow(title);
@@ -80,6 +80,7 @@ class BookRow {
 
     makeValue() {
         switch (this.mode) {
+            default:
             case "string":
                 return <Typography>{this.value}</Typography>;
             case "anchor":

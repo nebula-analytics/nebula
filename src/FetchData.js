@@ -8,8 +8,8 @@ import HeaderBar from "./Navigation/HeaderBar";
 
 
 class FetchData extends Component {
-    constructor() {
-        super({});
+    constructor(props) {
+        super(props);
         this.headerRef = createRef();
         this.state = {
             upstream: {
@@ -107,8 +107,6 @@ class FetchData extends Component {
     }
 
     fetchData = () => {
-        const saturation = parseInt(getQueryStringValue("saturation", 0));
-        const brightness = parseInt(getQueryStringValue("brightness", 30));
         const destination = buildRecordRequestURL(buildTimeFilter()).toString();
         this.setState({
             upstream: {
@@ -122,16 +120,7 @@ class FetchData extends Component {
                 return response.json()
             }
         ).then(data => this.setState({
-                books: [...data["_items"].map(
-                    book => <BookCard
-                        key={book['_id']}
-                        book={book}
-                        createModal={this.openModal}
-                        saturation={saturation}
-                        brightness={brightness}
-                        setFilter={this.setFilter}
-                        setSort={this.setSort}
-                    />)],
+                books: data["_items"],
                 upstream: {state: "synced", last_reached: new Date(), last_attempt: new Date()},
                 last_beacon: new Date()
             })
@@ -155,7 +144,16 @@ class FetchData extends Component {
             <Gallery
                 filter={this.state.filter}
             >
-                {this.state.books && this.state.books}
+                {this.state.books && this.state.books.map(
+                    book => <BookCard
+                        key={book['_id']}
+                        book={book}
+                        createModal={this.openModal}
+                        saturation={saturation}
+                        brightness={brightness}
+                        setFilter={this.setFilter}
+                        setSort={this.setSort}
+                    />)}
                 <HeaderBar
                     upstream={this.state.upstream}
                     brightness={brightness}

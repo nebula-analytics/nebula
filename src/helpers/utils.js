@@ -1,4 +1,5 @@
 import themeData from "../constants/theme";
+import moment from "moment";
 
 export const getQueryStringValue = (string, d = undefined) => {
     const params = new URLSearchParams(window.location.search);
@@ -27,8 +28,8 @@ export const generatePrimoLink = (book) => {
 
     url.search = new URLSearchParams({
         docid: book.doc_id,
-        vid: book.extra_fields.institution || book.extra_fields.delivery_institution,
-        context: book.extra_fields.context,
+        vid: book.institution || "RMITU",
+        context: book.context || "PC",
     });
     return url.toString()
 };
@@ -44,12 +45,13 @@ export const buildRecordRequestURL = (filter) => {
     let host = process.env.REACT_APP_API_HOST || window.location.hostname;
     let max_results = getQueryStringValue("max_results") || findNumCards() * 10;
 
-    const url = new URL(`${protocol}//${host}${location}/joint`);
+    const url = new URL(`${protocol}//${host}${location}/views`);
 
     url.search = new URLSearchParams({
         "max_results": max_results,
         "page": "1",
         "sort": "-last_view",
+        ...filter
     });
     return url
 };
@@ -58,26 +60,25 @@ export const buildTimeFilter = (from, until) => {
     let params = new URLSearchParams(window.location.search);
     if (until === undefined) {
         if (params.has("end_at")) {
-            until = new Date(params.get("end_at"))
+            until = moment(params.get("end_at"))
         } else {
-            until = new Date()
+            until = moment()
         }
     }
     if (from === undefined) {
         if (params.has("start_at")) {
-            from = new Date(params.get("start_at"));
+            from = moment(params.get("start_at"));
         } else {
             let window = 30;
             if (params.has("window")) {
                 window = parseInt(params.get("window"))
             }
-            from = until;
-            from.setMinutes((until).getMinutes() - window);
+            from = until.add(window, "minute");
         }
     }
-    until = until.toUTCString();
-    from = from.toUTCString();
+    until = until.toISOString();
+    from = from.toISOString();
     return {
-        last_viewed: {"$gte": from, "$lte": until}
+        aggregate: JSON.stringify({"$start": from, "$end": until})
     };
 };
