@@ -56,31 +56,34 @@ export const buildRecordRequestURL = (filter) => {
     return url
 };
 
-export const buildTimeFilter = (from, until) => {
-    let params = new URLSearchParams(window.location.search);
-    console.log(from, until)
-    if (until === undefined) {
-        if (params.has("end_at")) {
-            until = moment(params.get("end_at"))
-        } else {
-            until = moment()
-        }
+export const buildTimeFilter = (start, end) => {
+    let startParam = getQueryStringValue("start_at");
+    let window = moment.duration(30, "m");
+
+    let endParam = getQueryStringValue("end_at");
+    start = (start || startParam) && moment(start || startParam);
+    end = (end || endParam) && moment(end || endParam);
+    if (!start && !end) {
+        console.log("Auto-Select time period");
+        end = moment();
+
     }
-    if (from === undefined) {
-        if (params.has("start_at")) {
-            from = moment(params.get("start_at"));
-        } else {
-            let window = 30;
-            if (params.has("window")) {
-                window = parseInt(params.get("window"))
-            }
-            from = until.subtract(window, "minutes");
-        }
+    if (!start) {
+        start = end.clone().subtract(window);
     }
-    until = until.toISOString();
-    from = from.toISOString();
-    console.log(from, ">", until)
+
+    if (!end) {
+        end = start.clone().add(window);
+    }
+
+    let aggregation = {
+        "$start": start.toISOString(),
+        "$end": end.toISOString()
+    };
+
+    console.log(aggregation);
+
     return {
-        aggregate: JSON.stringify({"$start": from, "$end": until})
+        aggregate: JSON.stringify(aggregation)
     };
 };

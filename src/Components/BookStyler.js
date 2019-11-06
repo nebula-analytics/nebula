@@ -19,7 +19,7 @@ function getRecordStyling(record_types, brightness, saturation) {
         result[`[data-record_type="${key}"]`] = {
             backgroundColor: stringToHslColor(value, saturation, brightness),
             borderColor: stringToHslColor(value, saturation, brightness + 25),
-            border: "4px solid"
+            border: "3px solid"
         }
     });
     return result;
@@ -46,8 +46,9 @@ export default function BookStyler(props) {
         }
     }, []);
 
-    makeStyles((theme) => {
-            return {
+    // noinspection JSCheckFunctionSignatures
+    makeStyles(theme => (
+            {
                 "@global":
                     {
                         ".record": {
@@ -62,7 +63,7 @@ export default function BookStyler(props) {
                         ".header": {
                             width: `100%`,
                             [theme.breakpoints.up('sm')]: {
-                                width: `calc((${width}) * 2 + ${themeData.cards.gutter}px)`,
+                                width: `calc((${width}) * 2 + ${themeData.cards.gutter}px * 2.5)`,
                             }
                         },
                         ...styling
@@ -70,7 +71,7 @@ export default function BookStyler(props) {
                     },
 
             }
-        }
+        )
     )(() => null);
     return <div className={"dynamic-book-width"}/>
 }

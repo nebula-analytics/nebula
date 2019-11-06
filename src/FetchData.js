@@ -111,6 +111,7 @@ class FetchData extends Component {
                 types[record.record_type] += 1
             })
         }
+        console.log(types);
         return types
     };
 
@@ -152,8 +153,8 @@ class FetchData extends Component {
     };
 
     render() {
-        const saturation = parseInt(getQueryStringValue("saturation", 0));
-        const brightness = parseInt(getQueryStringValue("brightness", 50));
+        const saturation = parseInt(getQueryStringValue("saturation", 100));
+        const brightness = parseInt(getQueryStringValue("brightness", 40));
         const typeCounts = this.getRecordTypeCounts();
         return <>
             <Gallery

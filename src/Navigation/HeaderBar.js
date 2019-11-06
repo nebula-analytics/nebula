@@ -9,11 +9,12 @@ import * as React from "react";
 import {useState} from "react";
 import themeData from "../constants/theme";
 import * as PropTypes from "prop-types";
+import {useEffect} from "react";
 
 
 const useStyles = makeStyles(theme => ({
     root: {
-        marginBottom: `${themeData.cards.gutter}px`,
+        // marginBottom: `${themeData.cards.gutter}px`,
         float: "left",
         zIndex: 1000,
         color: "white",
@@ -36,13 +37,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HeaderBar(props) {
-    const {upstream, onResize, record_types} = props;
+    const {upstream, onResize, recordTypes} = props;
     const {state, last_reached} = upstream;
-    const [showMenu, setShowMenu] = useState(false);
+    const [showMenu, setShowMenu] = useState(localStorage.getItem("header.showMenu", true));
     const classes = useStyles();
 
-    return (<Card className={`${classes.root} stamp header`}
+    useEffect(() => {
+        localStorage.setItem("header.showMenu", showMenu)
+    }, [showMenu]);
 
+    return (<Card className={`${classes.root} stamp header`}
                   data-last_view={(new Date()).valueOf()}
         >
             <Toolbar>
@@ -66,6 +70,7 @@ function HeaderBar(props) {
                 connected={state === "synced"}
                 when={last_reached}
                 onResize={onResize}
+                recordTypes={recordTypes}
             />
         </Card>
     );
@@ -73,20 +78,19 @@ function HeaderBar(props) {
 }
 
 HeaderBar.propTypes = {
-    connected: PropTypes.bool,
-    last_connected: PropTypes.object,
     onResize: PropTypes.func,
-    recordTypes: PropTypes.object
+    recordTypes: PropTypes.object,
+    upstream: PropTypes.object
 };
 
 HeaderBar.defaultProps = {
-    connected: false,
-    last_connected: null,
-    brightness: 100,
-    saturation: 0,
     onResize: () => null,
-    recordTypes: {}
-
+    recordTypes: {},
+    upstream: {
+        state: "desynced",
+        last_attempt: null,
+        last_reached: null
+    }
 };
 
 export default HeaderBar

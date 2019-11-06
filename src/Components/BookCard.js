@@ -28,8 +28,8 @@ function BookCard(props) {
     let dataWrapper = new BookWrapper(book);
 
     return <Card
-        data-record_type={dataWrapper.type.value}
-        data-doc_id={dataWrapper.doc_id.value}
+        data-record_type={dataWrapper.type.valueOf()}
+        data-doc_id={dataWrapper.doc_id.valueOf()}
         data-last_view={dataWrapper.when.valueOf()}
         className={`${classes.root} record`}
     >
