@@ -29,16 +29,15 @@ export default class Book {
 
         useEffect(() => {
             updateWithImageURLs(thumbnails, setImages);
-        }, []);
+        }, [thumbnails]);
 
         this.doc_id = new BookRow(book._id);
         this.date = new BookRow(date).setLabel("publish date");
         this.link = new BookRow(link).setLabel("view this in primo").setMode("anchor");
         this.count = new BookRow(count).setLabel("number of views (in the last 30 minutes)");
         this.subjects = new BookRow(subject).setLabel("subjects").setMode("list");
-        this.when = new BookRow(locations).setLabel("Where this was viewed").setMode("list");
-        this.when = new BookRow(when).setLabel("last accessed").setMode("list");
-        this.raw_when = new BookRow(when.valueOf()).setLabel("last accessed debug");
+        this.where = new BookRow(locations).setLabel("Viewed from").setMode("list");
+        this.when = new BookRow(when).setLabel("last accessed").setMode("date");
         this.type = new BookRow(record_type).setLabel("type of record");
         this.title = new BookRow(title);
         this.images = new BookRow(images.values);
@@ -50,35 +49,37 @@ class BookRow {
         this.value = value;
         this.label = null;
         this.mode = "string";
-        this.setLabel.bind(this);
-        this.setMode.bind(this);
     }
 
-    setLabel(label) {
+    asKey = () => {
+        return this.toString().replace("\"", "")
+    };
+
+    setLabel = (label) => {
         this.label = label;
         return this
-    }
+    };
 
-    setMode(mode) {
+    setMode = (mode) => {
         this.mode = mode;
         return this
-    }
+    };
 
-    makeRow() {
+    makeRow = () => {
         if (this.label !== null) {
-            return <TableRow key={this.mode + this.toString()}>
+            return <TableRow key={`${this.mode}_${this.label}`}>
                 <TableCell style={{textTransform: "capitalize"}}>{this.makeHeader()}</TableCell>
                 <TableCell style={{textTransform: "capitalize"}}>{this.makeValue()}</TableCell>
             </TableRow>
         }
-    }
+    };
 
 
-    makeHeader() {
+    makeHeader = () => {
         return this.label
-    }
+    };
 
-    makeValue() {
+    makeValue = () => {
         switch (this.mode) {
             default:
             case "string":
@@ -98,9 +99,9 @@ class BookRow {
                     />
                 );
         }
-    }
+    };
 
-    toString() {
+    toString = () => {
         switch (this.mode) {
             case "date":
                 return this.value.format("LLLL");
@@ -110,14 +111,14 @@ class BookRow {
                 return this.value;
 
         }
-    }
+    };
 
-    valueOf() {
+    valueOf = () => {
         switch (this.mode) {
             case "date":
                 return this.value.valueOf();
             default:
                 return this.value;
         }
-    }
+    };
 }

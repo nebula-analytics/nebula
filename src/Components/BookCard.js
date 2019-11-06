@@ -4,7 +4,6 @@ import {Card, makeStyles} from "@material-ui/core";
 
 import themeData from "../constants/theme"
 import BookView from "./BookView";
-import {stringToHslColor} from "../helpers/utils";
 import BookWrapper from "./BookWrapper";
 
 
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => {
 
 function BookCard(props) {
     const classes = useStyles();
-    const {book, saturation, brightness, createModal, setFilter} = props;
+    const {book, createModal, setFilter} = props;
 
     let dataWrapper = new BookWrapper(book);
 
@@ -32,7 +31,7 @@ function BookCard(props) {
         data-record_type={dataWrapper.type.value}
         data-doc_id={dataWrapper.doc_id.value}
         data-last_view={dataWrapper.when.valueOf()}
-        className={`${classes.root} dynamic-book-width grid-item`}
+        className={`${classes.root} record`}
     >
         <BookView
             book={book}
@@ -40,7 +39,6 @@ function BookCard(props) {
             images={dataWrapper.images.value}
             title={dataWrapper.title.value}
             tag={dataWrapper.when.value.fromNow()}
-            color={stringToHslColor(dataWrapper.type.valueOf(), saturation, brightness)}
             setFilter={setFilter}
         />
     </Card>;

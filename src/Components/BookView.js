@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        flexGrow: 1
+        flexGrow: 1,
     },
     image: {
         width: "100%"
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 function BookView(props) {
     const classes = useStyles();
-    const {book, onClick, images, title, tag, color, setFilter} = props;
+    const {book, onClick, images, title, tag} = props;
 
     const loader = <CircularProgress/>;
     const fallback = <div className={classes.text}><h3>{title}</h3></div>;
@@ -69,7 +69,7 @@ function BookView(props) {
                 {tag}
             </Button>
         </Tooltip>
-        <CardActionArea onClick={onClick} className={classes.clickable} style={{background: color}}>
+        <CardActionArea onClick={onClick} className={classes.clickable}>
 
             <Img src={images} alt={""} className={classes.image} loader={loader}
                  unloader={fallback}

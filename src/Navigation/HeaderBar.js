@@ -36,12 +36,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HeaderBar(props) {
-    const {saturation, brightness, upstream, onResize} = props;
+    const {upstream, onResize, record_types} = props;
     const {state, last_reached} = upstream;
     const [showMenu, setShowMenu] = useState(false);
     const classes = useStyles();
 
-    return (<Card className={`${classes.root} stamp dynamic-header-width`}
+    return (<Card className={`${classes.root} stamp header`}
 
                   data-last_view={(new Date()).valueOf()}
         >
@@ -66,7 +66,6 @@ function HeaderBar(props) {
                 connected={state === "synced"}
                 when={last_reached}
                 onResize={onResize}
-                color={stringToHslColor("header", saturation / 2, brightness)}
             />
         </Card>
     );
@@ -76,9 +75,8 @@ function HeaderBar(props) {
 HeaderBar.propTypes = {
     connected: PropTypes.bool,
     last_connected: PropTypes.object,
-    brightness: PropTypes.number,
-    saturation: PropTypes.number,
-    onResize: PropTypes.func
+    onResize: PropTypes.func,
+    recordTypes: PropTypes.object
 };
 
 HeaderBar.defaultProps = {
@@ -86,7 +84,9 @@ HeaderBar.defaultProps = {
     last_connected: null,
     brightness: 100,
     saturation: 0,
-    onResize: () => null
+    onResize: () => null,
+    recordTypes: {}
+
 };
 
 export default HeaderBar

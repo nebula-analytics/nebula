@@ -40,7 +40,7 @@ export const findNumCards = () => {
 };
 
 export const buildRecordRequestURL = (filter) => {
-    let protocol = window.location.protocol;
+    let protocol = "https:";
     let location = process.env.REACT_APP_API_LOCATION || '/api';
     let host = process.env.REACT_APP_API_HOST || window.location.hostname;
     let max_results = getQueryStringValue("max_results") || findNumCards() * 10;
@@ -58,6 +58,7 @@ export const buildRecordRequestURL = (filter) => {
 
 export const buildTimeFilter = (from, until) => {
     let params = new URLSearchParams(window.location.search);
+    console.log(from, until)
     if (until === undefined) {
         if (params.has("end_at")) {
             until = moment(params.get("end_at"))
@@ -73,11 +74,12 @@ export const buildTimeFilter = (from, until) => {
             if (params.has("window")) {
                 window = parseInt(params.get("window"))
             }
-            from = until.add(window, "minute");
+            from = until.subtract(window, "minutes");
         }
     }
     until = until.toISOString();
     from = from.toISOString();
+    console.log(from, ">", until)
     return {
         aggregate: JSON.stringify({"$start": from, "$end": until})
     };

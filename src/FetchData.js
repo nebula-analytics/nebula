@@ -3,8 +3,9 @@ import BookCard from "./Components/BookCard";
 import Gallery from "./Components/Gallery";
 import {buildRecordRequestURL, buildTimeFilter, getQueryStringValue} from "./helpers/utils";
 import BookModal from "./Components/BookModal";
-import BookSizer from "./Components/BookSizer";
 import HeaderBar from "./Navigation/HeaderBar";
+import BookStyler from "./Components/BookStyler";
+import * as themeData from "./constants/theme";
 
 
 class FetchData extends Component {
@@ -100,6 +101,19 @@ class FetchData extends Component {
         );
     }
 
+    getRecordTypeCounts = () => {
+        const types = {};
+        if (this.state.books) {
+            this.state.books.map(record => {
+                if (!types.hasOwnProperty(record.record_type)) {
+                    types[record.record_type] = 0
+                }
+                types[record.record_type] += 1
+            })
+        }
+        return types
+    };
+
     componentWillUnmount() {
         if (this.timeout) {
             clearInterval(this.timeout);
@@ -140,27 +154,34 @@ class FetchData extends Component {
     render() {
         const saturation = parseInt(getQueryStringValue("saturation", 0));
         const brightness = parseInt(getQueryStringValue("brightness", 50));
+        const typeCounts = this.getRecordTypeCounts();
         return <>
             <Gallery
                 filter={this.state.filter}
+                packery={{
+                    gutter: themeData.cards.gutter,
+                    columnWidth: `.record`,
+                }}
+                sortBy={["header", "time", "id"]}
             >
                 {this.state.books && this.state.books.map(
                     book => <BookCard
                         key={book['_id']}
                         book={book}
                         createModal={this.openModal}
-                        saturation={saturation}
-                        brightness={brightness}
                         setFilter={this.setFilter}
                         setSort={this.setSort}
                     />)}
                 <HeaderBar
                     upstream={this.state.upstream}
-                    brightness={brightness}
-                    saturation={saturation}
+                    recordTypes={typeCounts}
                 />
-                <BookSizer/>
             </Gallery>
+            <BookStyler
+                records={{values: Object.keys(typeCounts)}}
+                brightness={brightness}
+                saturation={saturation}
+            />
             <BookModal onClose={this.closeModal} open={this.state.modal_open} values={this.state.modal}/>
         </>
     }

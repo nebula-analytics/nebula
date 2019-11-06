@@ -45,7 +45,7 @@ Gallery.defaultProps = {
         time: "[data-last_view]",
         id: "[data-doc_id]"
     },
-    sortBy: ["header", "time", "id"],
+    sortBy: [],
     sortAscending: false
 };
 

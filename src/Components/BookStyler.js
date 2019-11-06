@@ -1,6 +1,7 @@
 import {makeStyles} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import themeData from "../constants/theme";
+import {stringToHslColor} from "../helpers/utils";
 
 
 const findPercentWidth = () => {
@@ -11,9 +12,29 @@ const findPercentWidth = () => {
     return `${(100 / num_cards)}% - ${themeData.cards.gutter * 2}px`;
 };
 
+function getRecordStyling(record_types, brightness, saturation) {
+    const result = {};
+    record_types.map(value => {
+        let key = value.replace("\"", "");
+        result[`[data-record_type="${key}"]`] = {
+            backgroundColor: stringToHslColor(value, saturation, brightness),
+            borderColor: stringToHslColor(value, saturation, brightness + 25),
+            border: "4px solid"
+        }
+    });
+    return result;
+}
 
-export default function BookSizer(props) {
+
+export default function BookStyler(props) {
     const [width, setWidth] = useState(findPercentWidth());
+    const {records, brightness, saturation} = props;
+    const [styling, setStyling] = useState(getRecordStyling(records.values, brightness, saturation));
+
+    useEffect(() => {
+        setStyling(getRecordStyling(records.values, brightness, saturation))
+    }, [records, brightness, saturation]);
+
 
     useEffect(() => {
         const listener = () => {
@@ -29,7 +50,7 @@ export default function BookSizer(props) {
             return {
                 "@global":
                     {
-                        ".dynamic-book-width": {
+                        ".record": {
                             width: `100%`,
                             [theme.breakpoints.up('xs')]: {
                                 width: `calc(50% -  ${themeData.cards.gutter}px)`,
@@ -38,13 +59,16 @@ export default function BookSizer(props) {
                                 width: `calc(${width})`,
                             },
                         },
-                        ".dynamic-header-width": {
+                        ".header": {
                             width: `100%`,
                             [theme.breakpoints.up('sm')]: {
                                 width: `calc((${width}) * 2 + ${themeData.cards.gutter}px)`,
                             }
-                        }
-                    }
+                        },
+                        ...styling
+
+                    },
+
             }
         }
     )(() => null);
