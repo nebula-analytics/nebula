@@ -11,7 +11,6 @@ import * as themeData from "./constants/theme";
 class FetchData extends Component {
     constructor(props) {
         super(props);
-        this.headerRef = createRef();
         this.state = {
             upstream: {
                 state: "connecting"
@@ -19,22 +18,31 @@ class FetchData extends Component {
             books: [],
             modal: null,
             modal_open: false,
-            filter: undefined,
+            filter: [],
         };
     }
 
-    setFilter = (filter = undefined) => {
-        if (typeof filter === "string") {
-            filter = `${filter}, .stamp`
-        }
-        if (filter === this.state.filter) {
-            filter = null
-
+    toggleFilter = (field, value) => {
+        let selector = {field, value};
+        let filters = this.state.filter;
+        if (filters.includes(selector)) {
+            filters.remove(selector)
+        } else {
+            filters.push(selector)
         }
         this.setState({
-            filter: filter
+            filter: filters
         })
     };
+
+    getFilterString(){
+        let filters = this.state.filter;
+        if(!filters.length){
+            return ""
+        }else{
+            return [{field:"always_visible", value: "true"} ,...filters].map(f => `[data-${f.field}="${f.value}"]`).join(", ")
+        }
+    }
 
     setSort = (sort = undefined) => {
         this.setState({
@@ -158,7 +166,7 @@ class FetchData extends Component {
         const typeCounts = this.getRecordTypeCounts();
         return <>
             <Gallery
-                filter={this.state.filter}
+                filter={this.getFilterString()}
                 packery={{
                     gutter: themeData.cards.gutter,
                     columnWidth: `.record`,
@@ -176,6 +184,8 @@ class FetchData extends Component {
                 <HeaderBar
                     upstream={this.state.upstream}
                     recordTypes={typeCounts}
+                    filters={this.state.filter}
+                    toggleFilter={this.toggleFilter}
                 />
             </Gallery>
             <BookStyler

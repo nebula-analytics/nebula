@@ -3,13 +3,10 @@ import IconButton from "@material-ui/core/IconButton";
 import {Close, Menu} from "@material-ui/icons";
 import Card from "@material-ui/core/Card";
 import Toolbar from "@material-ui/core/Toolbar";
-import {stringToHslColor} from "../helpers/utils";
 import Submenu from "./Submenu";
 import * as React from "react";
-import {useState} from "react";
-import themeData from "../constants/theme";
+import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
-import {useEffect} from "react";
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,17 +34,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HeaderBar(props) {
-    const {upstream, onResize, recordTypes} = props;
+    const {upstream, onResize, recordTypes, filters, toggleFilter} = props;
     const {state, last_reached} = upstream;
-    const [showMenu, setShowMenu] = useState(localStorage.getItem("header.showMenu", true));
+    const [showMenu, setShowMenu] = useState(JSON.parse(localStorage.getItem("header.showMenu") || "true"));
     const classes = useStyles();
 
     useEffect(() => {
-        localStorage.setItem("header.showMenu", showMenu)
+        localStorage.setItem("header.showMenu", JSON.stringify(showMenu))
     }, [showMenu]);
 
     return (<Card className={`${classes.root} stamp header`}
                   data-last_view={(new Date()).valueOf()}
+                  data-always_visible={true}
         >
             <Toolbar>
                 <IconButton
@@ -71,6 +69,8 @@ function HeaderBar(props) {
                 when={last_reached}
                 onResize={onResize}
                 recordTypes={recordTypes}
+                filters={filters}
+                toggleFilter={toggleFilter}
             />
         </Card>
     );
@@ -80,7 +80,9 @@ function HeaderBar(props) {
 HeaderBar.propTypes = {
     onResize: PropTypes.func,
     recordTypes: PropTypes.object,
-    upstream: PropTypes.object
+    upstream: PropTypes.object,
+    filters: PropTypes.array,
+    toggleFilter: PropTypes.func
 };
 
 HeaderBar.defaultProps = {
@@ -90,7 +92,8 @@ HeaderBar.defaultProps = {
         state: "desynced",
         last_attempt: null,
         last_reached: null
-    }
+    },
+    filters: [],
 };
 
 export default HeaderBar

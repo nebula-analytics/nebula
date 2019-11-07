@@ -36,8 +36,8 @@ function BookCard(props) {
         <BookView
             book={book}
             onClick={() => createModal(dataWrapper)}
-            images={dataWrapper.images.value}
-            title={dataWrapper.title.value}
+            images={dataWrapper.images.valueOf()}
+            title={dataWrapper.title.toString()}
             tag={dataWrapper.when.value.fromNow()}
             setFilter={setFilter}
         />

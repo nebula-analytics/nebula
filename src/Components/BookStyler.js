@@ -20,6 +20,9 @@ function getRecordStyling(record_types, brightness, saturation) {
             backgroundColor: stringToHslColor(value, saturation, brightness),
             borderColor: stringToHslColor(value, saturation, brightness + 25),
             border: "3px solid"
+        };
+        result[`[label-record_type="${key}"]`] = {
+            color: stringToHslColor(value, saturation, brightness),
         }
     });
     return result;
