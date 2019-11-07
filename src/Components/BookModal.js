@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Modal from "@material-ui/core/Modal";
 import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
-import {Launch} from "@material-ui/icons";
+import {Close, Launch} from "@material-ui/icons";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -101,9 +101,9 @@ function BookModal(props) {
                         />
                         <CardHeader
                             action={
-                                <Tooltip title={"View Source record"}>
-                                    <IconButton aria-label="view externally" href={values.link}>
-                                        <Launch/>
+                                <Tooltip title={"Close Modal"}>
+                                    <IconButton aria-label="Close Modal" onClick={() => onClose()}>
+                                        <Close/>
                                     </IconButton>
                                 </Tooltip>
                             }
