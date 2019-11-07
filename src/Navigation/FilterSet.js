@@ -1,22 +1,13 @@
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import {Card, CardHeader, makeStyles} from "@material-ui/core";
+import {Card, CardHeader, makeStyles, TextField} from "@material-ui/core";
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {} from "@material-ui/icons"
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
+import {FilterList, Visibility, VisibilityOff} from "@material-ui/icons"
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import AppBar from "@material-ui/core/AppBar";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import {useState} from "react";
-import TabPanel from "./TabPanel";
-import {FilterList} from "@material-ui/icons";
-import {Visibility} from "@material-ui/icons";
-import {VisibilityOff} from "@material-ui/icons";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -69,13 +60,69 @@ function FilterSet(props) {
             </FormGroup>
 
         </CardContent>
+        <CardHeader
+            title={"By Time Period"}
+            subheader={"Take a look into the past."}
+            avatar={<FilterList/>}
+        />
+        <FormGroup row>
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        label={"Start Date"}
+                        type={"date"}
+                        InputLabelProps={{shrink: true}}
+                        margin={"normal"}
+                        variant={"filled"}
+                        fullWidth
+
+                    />
+                </Grid>
+                <Grid item xs={6}>
+
+                    <TextField
+                        label={"Start Time"}
+                        type={"time"}
+                        InputLabelProps={{shrink: true}}
+                        margin={"normal"}
+                        variant={"filled"}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        label={"End Date"}
+                        type={"date"}
+                        InputLabelProps={{shrink: true}}
+                        margin={"normal"}
+                        variant={"filled"}
+                        fullWidth
+
+                    />
+                </Grid>
+                <Grid item xs={6}>
+
+                    <TextField
+                        label={"End Time"}
+                        type={"time"}
+                        InputLabelProps={{shrink: true}}
+                        margin={"normal"}
+                        variant={"filled"}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={9}/>
+                <Grid item xs={3}>
+                    <Button fullWidth>View</Button>
+                </Grid>
+            </Grid>
+        </FormGroup>
     </Card>
 
 }
 
 FilterSet.propTypes = {
     recordTypes: PropTypes.object,
-    filters: PropTypes.object,
     filters: PropTypes.array,
     toggleFilter: PropTypes.func
 };

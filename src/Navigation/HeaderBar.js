@@ -7,6 +7,7 @@ import Submenu from "./Submenu";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
+import moment from "moment";
 
 
 const useStyles = makeStyles(theme => ({
@@ -44,7 +45,7 @@ function HeaderBar(props) {
     }, [showMenu]);
 
     return (<Card className={`${classes.root} stamp header`}
-                  data-last_view={(new Date()).valueOf()}
+                  data-last_view={moment().add(5, "y").valueOf()}
                   data-always_visible={true}
         >
             <Toolbar>

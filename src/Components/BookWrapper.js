@@ -113,7 +113,7 @@ class BookRow {
             case "anchor":
                 return <Typography><a href={this.toString()}>{this.toString()}</a></Typography>;
             case "date":
-                return <Typography>{this.toString()}</Typography>;
+                return <Typography style={{textTransform: "none !important"}}>{this.toString()}</Typography>;
             case "list":
                 return Object.values(this.value).map(
                     (item, i) => <Chip

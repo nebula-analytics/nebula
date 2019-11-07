@@ -3,6 +3,7 @@ import * as React from "react";
 import {Group, Info, QuestionAnswer} from "@material-ui/icons"
 import Link from "@material-ui/core/Link";
 import Creators from "./Creators";
+import GitHub from "../Components/Icons/Github";
 
 function About(props) {
     return <React.Fragment>
@@ -23,6 +24,14 @@ function About(props) {
             title={"About the creators"}
             avatar={<Group/>}
             subheader={<Creators/>}
+        />
+        <CardHeader
+            title={"Open Source"}
+            subheader={<>Nebula's source code is freely available and licensed under GPLv3. View
+                it <Link href={"https://github.com/nebula-analytics"} target="_blank" rel="noopener noreferrer">
+                    on Github</Link> and bring it to your library!</>}
+            avatar={<GitHub/>}
+
         />
         <CardHeader
             title={"Inspiration"}

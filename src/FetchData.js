@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, {Component} from 'react';
 import BookCard from "./Components/BookCard";
 import Gallery from "./Components/Gallery";
 import {buildRecordRequestURL, buildTimeFilter, getQueryStringValue} from "./helpers/utils";
@@ -25,9 +25,9 @@ class FetchData extends Component {
     toggleFilter = (field, value) => {
         let selector = {field, value};
         let filters = this.state.filter;
-        if (filters.includes(selector)) {
-            filters.remove(selector)
-        } else {
+        filters = filters.filter(({field, value}) => !(field === selector.field && value === selector.value));
+        if (filters.length === this.state.filter.length) {
+            console.log("Add filter");
             filters.push(selector)
         }
         this.setState({
@@ -35,12 +35,15 @@ class FetchData extends Component {
         })
     };
 
-    getFilterString(){
+    getFilterString() {
         let filters = this.state.filter;
-        if(!filters.length){
+        if (!filters.length) {
             return ""
-        }else{
-            return [{field:"always_visible", value: "true"} ,...filters].map(f => `[data-${f.field}="${f.value}"]`).join(", ")
+        } else {
+            return [{
+                field: "always_visible",
+                value: "true"
+            }, ...filters].map(f => `[data-${f.field}="${f.value}"]`).join(", ")
         }
     }
 

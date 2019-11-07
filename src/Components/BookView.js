@@ -10,7 +10,6 @@ import {makeStyles, Tooltip} from "@material-ui/core";
 import Zoom from "@material-ui/core/Zoom";
 import * as PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
-import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
     clickable: {
@@ -56,7 +55,8 @@ function BookView(props) {
     const classes = useStyles();
     const {book, onClick, images, title, tag} = props;
 
-    const loader = <Skeleton variant="rect" width={200} height={118}/>;
+    // const loader = <Skeleton variant="text" width={200} height={200}/>;
+    const loader = <CircularProgress/>;
     const fallback = <div className={classes.text}><h3>{title}</h3></div>;
 
     const filterByThisRecordType = () => {

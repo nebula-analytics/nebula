@@ -2,6 +2,7 @@ import * as Isotope from "isotope-layout"
 import "isotope-packery"
 import * as React from "react";
 import * as PropTypes from 'prop-types';
+
 class LayoutInterface extends React.Component {
     displayName = 'LayoutInterface';
 
@@ -93,26 +94,25 @@ class LayoutInterface extends React.Component {
     performLayout = () => {
         let diff = this.diffDomChildren();
 
+        if (diff.appended.length > 0) {
+
+            this.isotope.appended(diff.appended);
+        }
+        if (diff.prepended.length > 0) {
+
+            this.isotope.appended(diff.prepended);
+        }
         if (diff.removed.length > 0) {
             this.isotope.remove(diff.removed);
         }
 
-        if (diff.appended.length > 0) {
-            this.isotope.appended(diff.appended);
-        }
-
-        if (diff.prepended.length > 0) {
-            this.isotope.appended(diff.prepended);
-        }
-
-        if(this.props.options.stamp){
+        if (this.props.options.stamp) {
             let stamped = this.reference.current.querySelectorAll(this.props.options.stamp);
             this.isotope.stamp(stamped);
         }
 
         this.isotope.reloadItems();
         this.isotope.arrange();
-        this.isotope.layout();
     };
 
     componentDidMount = () => {

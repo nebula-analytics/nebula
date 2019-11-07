@@ -32,18 +32,18 @@ Gallery.propTypes = {
 
 Gallery.defaultProps = {
     transitionDuration: '2s',
+    stagger: 30,
     layoutMode: 'packery',
     packery: {
         gutter: themeData.cards.gutter,
         columnWidth: `.dynamic-book-width`,
     },
-    // stamp: ".stamp",
     percentPosition: true,
     filter: "*",
     getSortData: {
-        header: "[data-is_first]",
+        header: "[data-always_visible]",
         time: "[data-last_view]",
-        id: "[data-doc_id]"
+        id: "[data-doc_id]",
     },
     sortBy: [],
     sortAscending: false
