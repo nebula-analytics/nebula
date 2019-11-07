@@ -111,7 +111,6 @@ function FilterSet(props) {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={9}/>
                 <Grid item xs={3}>
                     <Button fullWidth>View</Button>
                 </Grid>

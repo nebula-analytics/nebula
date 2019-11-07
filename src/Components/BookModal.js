@@ -109,6 +109,7 @@ function BookModal(props) {
                             }
                             title={values.title.toString()}
                             subheader={values.type.toString()}
+                            subheaderTypographyProps={{'label-record_type': values.type.valueOf()}}
                             className={classes.headerText}
                         />
                     </CardContent>

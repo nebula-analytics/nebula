@@ -35,7 +35,7 @@ export default class Book {
         this.subjects = new BookRow(subject).setLabel("subjects").setMode("list");
         this.where = new BookRow(locations).setLabel("Viewed from").setMode("list");
         this.when = new BookRow(when).setLabel("last accessed").setMode("date");
-        this.type = new BookRow(record_type).setLabel("type of record").setFilter("_", " ");
+        this.type = new BookRow(record_type).setLabel("type of record").setFilter("_", " ").setMode("coloured");
         this.title = new BookRow(title).setFilter(/(<([^>]+)>)/ig);
         this.images = new BookRow(images.values);
     }
@@ -110,6 +110,8 @@ class BookRow {
             default:
             case "string":
                 return <Typography>{this.toString()}</Typography>;
+            case "coloured":
+                return <Typography label-record_type={this.valueOf()}>{this.toString()}</Typography>;
             case "anchor":
                 return <Typography><a href={this.toString()}>{this.toString()}</a></Typography>;
             case "date":

@@ -34,7 +34,8 @@ function BookCard(props) {
         className={`${classes.root} record`}
     >
         <BookView
-            book={book}
+            count={dataWrapper.count.valueOf()}
+            recordType={dataWrapper.type.valueOf()}
             onClick={() => createModal(dataWrapper)}
             images={dataWrapper.images.valueOf()}
             title={dataWrapper.title.toString()}

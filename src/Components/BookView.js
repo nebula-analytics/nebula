@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 function BookView(props) {
     const classes = useStyles();
-    const {book, onClick, images, title, tag} = props;
+    const {count, recordType, onClick, images, title, tag} = props;
 
     // const loader = <Skeleton variant="text" width={200} height={200}/>;
     const loader = <CircularProgress/>;
@@ -65,22 +65,25 @@ function BookView(props) {
 
 
     return <>
-        <Tooltip title={`Filter by ${tag}`}>
-            <Button className={classes.tag} onClick={filterByThisRecordType}>
-                {tag}
-            </Button>
-        </Tooltip>
+        <Button className={classes.tag} onClick={filterByThisRecordType}>
+            {tag}
+        </Button>
         <CardActionArea onClick={onClick} className={classes.clickable}>
 
-            <Img src={images} alt={""} className={classes.image} loader={loader}
+            <Img image-record_type={recordType}
+                 src={images} alt={""} className={classes.image} loader={loader}
                  unloader={fallback}
                  container={(c) => <Zoom mountOnEnter={true} in={true} appear={true} timeout={1000}>{c}</Zoom>}
             />
 
             <div className={classes.views}>
-                {book.count > 1 &&
-                <Badge badgeContent={book.count} overlap={"circle"} color="primary">
-                    <Visibility/>
+                {count > 1 &&
+                <Badge badgeContent={count} overlap={"circle"} color="primary" anchorOrigin={{
+                    horizontal: "right", vertical: "top"
+                }}>
+                    <Tooltip title={`${count} views`}>
+                        <Visibility/>
+                    </Tooltip>
                 </Badge>
                 }
             </div>
@@ -90,8 +93,6 @@ function BookView(props) {
 }
 
 BookView.propTypes = {
-    book: PropTypes.object.isRequired,
-
     onClick: PropTypes.func.isRequired,
     setFilter: PropTypes.func,
     setSort: PropTypes.func,
@@ -99,7 +100,9 @@ BookView.propTypes = {
     images: PropTypes.array,
     title: PropTypes.string,
     tag: PropTypes.string,
-    color: PropTypes.string
+    color: PropTypes.string,
+    count: PropTypes.number,
+    recordType: PropTypes.string
 };
 
 BookView.defaultProps = {

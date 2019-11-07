@@ -18,9 +18,16 @@ function getRecordStyling(record_types, brightness, saturation) {
         let key = value.replace("\"", "");
         result[`[data-record_type="${key}"]`] = {
             backgroundColor: stringToHslColor(value, saturation, brightness),
-            borderColor: stringToHslColor(value, saturation, brightness + 25),
-            border: "3px solid"
+            borderColor: stringToHslColor(value, saturation, brightness),
+            border: "5px solid",
         };
+        // result[`[image-record_type="${key}"]`] = {
+        //     borderLeftColor: stringToHslColor(value, saturation, brightness),
+        //     borderRightColor: stringToHslColor(value, saturation, brightness),
+        //     borderLeft: "5px solid",
+        //     borderRight: "5px solid",
+        //     width: "calc(100% - 6px)"
+        // };
         result[`[label-record_type="${key}"]`] = {
             color: stringToHslColor(value, saturation, brightness),
         }
@@ -66,7 +73,7 @@ export default function BookStyler(props) {
                         ".header": {
                             width: `100%`,
                             [theme.breakpoints.up('sm')]: {
-                                width: `calc((${width}) * 2 + ${themeData.cards.gutter}px * 2.5)`,
+                                width: `calc((${width}) * 2 + ${themeData.cards.gutter}px + 3px*4)`,
                             }
                         },
                         ...styling
