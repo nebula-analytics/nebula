@@ -1,64 +1,26 @@
 import CardContent from "@material-ui/core/CardContent";
-import {Card, CardHeader, makeStyles, TextField} from "@material-ui/core";
+import {Card, CardHeader, TextField} from "@material-ui/core";
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {FilterList, Visibility, VisibilityOff} from "@material-ui/icons"
+import {FilterList} from "@material-ui/icons"
 import FormGroup from "@material-ui/core/FormGroup";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import RecordTypeFilter from "./Filters/RecordTypeFilter";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        background: "white",
-    },
-    checkSet: {
-        color: "black",
-        width: "100%",
-    },
-    group: {
-        flexDirection: "row",
-        width: "100%"
-    },
-    checkbox: {
-        textTransform: "capitalize"
-    }
-}));
 
 function FilterSet(props) {
     const {recordTypes, filters, toggleFilter} = props;
-    const classes = useStyles();
 
-    const enabledRecordFilters = [];
-    filters.forEach(({field, value}) => {
-        if (field === "record_type") {
-            enabledRecordFilters.push(value);
-        }
-    });
 
     return <Card>
         <CardHeader
-            title={"By Record Type"}
-            subheader={"Select any combination to show!"}
+            title={"Filter by Record Type"}
+            subheader={"Show/hide any combination of records by toggling the buttons below!"}
             avatar={<FilterList/>}
         />
         <CardContent>
-            <FormGroup row>
-                {Object.keys(recordTypes).map(type =>
-                    <FormControlLabel
-                        control={<Checkbox
-                            icon={<VisibilityOff label-record_type={type}/>}
-                            checkedIcon={<Visibility label-record_type={type}/>}
-                            checked={enabledRecordFilters.includes(type)}
-                            onChange={() => toggleFilter("record_type", type)}
-                        />}
-                        label={type.replace("_", " ") + `(${recordTypes[type]})`}
-                        className={classes.checkbox}
-                    />
-                )}
-            </FormGroup>
-
+            <RecordTypeFilter recordTypes={recordTypes} filters={filters} toggleFilter={toggleFilter}/>
         </CardContent>
         <CardHeader
             title={"By Time Period"}
@@ -127,7 +89,7 @@ FilterSet.propTypes = {
 };
 
 FilterSet.defaultProps = {
-    filters: [{field: "record_type", value: "book"}]
+    filters: []
 };
 
 export default FilterSet

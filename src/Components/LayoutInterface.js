@@ -95,12 +95,10 @@ class LayoutInterface extends React.Component {
         let diff = this.diffDomChildren();
 
         if (diff.appended.length > 0) {
-
-            this.isotope.appended(diff.appended);
+            this.isotope.insert(diff.appended);
         }
         if (diff.prepended.length > 0) {
-
-            this.isotope.appended(diff.prepended);
+            this.isotope.insert(diff.prepended);
         }
         if (diff.removed.length > 0) {
             this.isotope.remove(diff.removed);
@@ -111,8 +109,12 @@ class LayoutInterface extends React.Component {
             this.isotope.stamp(stamped);
         }
 
-        this.isotope.reloadItems();
-        this.isotope.arrange();
+        if (diff.prepended.length > 0 || diff.appended.length > 0){
+            this.isotope.reloadItems();
+            this.isotope.arrange();
+        }else{
+            this.isotope.layout()
+        }
     };
 
     componentDidMount = () => {
@@ -125,8 +127,9 @@ class LayoutInterface extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.performLayout();
+
         if (prevProps.options.filter !== this.props.options.filter) {
-            this.isotope.arrange(this.props.options)
+            this.isotope.arrange({filter: this.props.options.filter})
         }
     };
 
@@ -134,7 +137,7 @@ class LayoutInterface extends React.Component {
     relayout = (isotope) => () => {
         if (isotope) {
             isotope.reloadItems();
-            isotope.layout();
+            isotope.arrange();
         }
     };
 

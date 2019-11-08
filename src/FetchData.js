@@ -38,7 +38,7 @@ class FetchData extends Component {
     getFilterString() {
         let filters = this.state.filter;
         if (!filters.length) {
-            return ""
+            return "*"
         } else {
             return [{
                 field: "always_visible",

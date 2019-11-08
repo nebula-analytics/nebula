@@ -52,6 +52,7 @@ function Submenu(props) {
                 <Card>
                     <CardActionArea onClick={() => setShowAbout(!showAbout)}>
                         <CardHeader title={"About Nebula (Library Live)"}
+                                    titleTypographyProps={{variant: "h6"}}
                                     avatar={showAbout ? <ExpandMore/> : <ExpandLess/>}
                         />
                     </CardActionArea>
@@ -62,12 +63,14 @@ function Submenu(props) {
 
                 <Card>
                     <CardActionArea onClick={() => setShowFilters(!showFilters)}>
-                        <CardHeader title={"Filtering"}
+                        <CardHeader title={"Filter Records"}
+                                    titleTypographyProps={{variant: "h6"}}
                                     avatar={showFilters ? <ExpandMore/> : <ExpandLess/>}
                         />
                     </CardActionArea>
                     <Collapse in={showFilters} timeout="auto" onEntered={onResize} onExited={onResize}>
                         <FilterSet
+
                             recordTypes={recordTypes}
                             filters={filters}
                             toggleFilter={toggleFilter}
