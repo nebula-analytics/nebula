@@ -7,11 +7,15 @@ import FormGroup from "@material-ui/core/FormGroup";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import RecordTypeFilter from "./Filters/RecordTypeFilter";
+import {DateTimePicker} from "@material-ui/pickers";
+import moment from "moment";
+import CardActions from "@material-ui/core/CardActions";
 
 
 function FilterSet(props) {
-    const {recordTypes, filters, toggleFilter} = props;
+    const {recordTypes, filters, toggleFilter, filterDates, setTimeFilter} = props;
 
+    const {start, end} = filterDates;
 
     return <Card>
         <CardHeader
@@ -22,61 +26,43 @@ function FilterSet(props) {
         <CardContent>
             <RecordTypeFilter recordTypes={recordTypes} filters={filters} toggleFilter={toggleFilter}/>
         </CardContent>
-        <CardHeader
-            title={"By Time Period"}
-            subheader={"Take a look into the past."}
-            avatar={<FilterList/>}
-        />
         <FormGroup row>
-            <Grid container spacing={1}>
-                <Grid item xs={6}>
-                    <TextField
-                        label={"Start Date"}
-                        type={"date"}
-                        InputLabelProps={{shrink: true}}
-                        margin={"normal"}
-                        variant={"filled"}
-                        fullWidth
+            <Card>
+                <CardHeader
+                    title={"By Time Period"}
+                    subheader={"Take a look into the past."}
+                    avatar={<FilterList/>}
+                />
+                <CardContent>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                            <DateTimePicker
+                                label="Latest Record"
+                                disableFuture
+                                showTodayButton
+                                value={end}
+                                onChange={setTimeFilter("end")}
+                            />
 
-                    />
-                </Grid>
-                <Grid item xs={6}>
+                        </Grid>
 
-                    <TextField
-                        label={"Start Time"}
-                        type={"time"}
-                        InputLabelProps={{shrink: true}}
-                        margin={"normal"}
-                        variant={"filled"}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        label={"End Date"}
-                        type={"date"}
-                        InputLabelProps={{shrink: true}}
-                        margin={"normal"}
-                        variant={"filled"}
-                        fullWidth
+                        <Grid item xs={6}>
+                            <DateTimePicker
+                                value={start}
+                                disableFuture
+                                onChange={setTimeFilter("start")}
+                                label="Earliest Record"
+                                showTodayButton
+                                maxDate={end || moment()}
+                            />
+                        </Grid>
+                        <CardActions>
+                            <Button fullWidth>Update Times</Button>
+                        </CardActions>
 
-                    />
-                </Grid>
-                <Grid item xs={6}>
-
-                    <TextField
-                        label={"End Time"}
-                        type={"time"}
-                        InputLabelProps={{shrink: true}}
-                        margin={"normal"}
-                        variant={"filled"}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item xs={3}>
-                    <Button fullWidth>View</Button>
-                </Grid>
-            </Grid>
+                    </Grid>
+                </CardContent>
+            </Card>
         </FormGroup>
     </Card>
 
@@ -84,12 +70,17 @@ function FilterSet(props) {
 
 FilterSet.propTypes = {
     recordTypes: PropTypes.object,
+    filterDates: PropTypes.object,
+    setTimeFilter: PropTypes.func,
     filters: PropTypes.array,
     toggleFilter: PropTypes.func
 };
 
 FilterSet.defaultProps = {
-    filters: []
+    filters: [],
+    filterDates: {start: null, end: null},
+    setTimeFilter: () => {
+    },
 };
 
 export default FilterSet
