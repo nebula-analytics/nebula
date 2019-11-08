@@ -67,8 +67,9 @@ function RecordTypeFilter(props) {
                         <ListItemText id={labelId} className={classes.item}
                                       primary={type.replace("_", " ")}/>
                         <ListItemSecondaryAction>
-                            {checked && <Visibility edge="end" aria-label="visibility status"/>}
-                                {/*<VisibilityOff edge="end" aria-label="visibility status"/>}*/}
+                            {checked && <Visibility label-record_type={type}
+                                                    edge="end" aria-label="visibility status"/>}
+                            {/*<VisibilityOff edge="end" aria-label="visibility status"/>}*/}
                         </ListItemSecondaryAction>
                     </ListItem>
                 );
