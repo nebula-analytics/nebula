@@ -64,7 +64,6 @@ export const buildTimeFilter = (start, end) => {
     start = (start || startParam) && moment(start || startParam);
     end = (end || endParam) && moment(end || endParam);
     if (!start && !end) {
-        console.log("Auto-Select time period");
         end = moment();
 
     }
@@ -81,7 +80,6 @@ export const buildTimeFilter = (start, end) => {
         "$end": end.toISOString()
     };
 
-    console.log(aggregation);
 
     return {
         aggregate: JSON.stringify(aggregation)

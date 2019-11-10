@@ -1,21 +1,13 @@
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import {CardHeader, makeStyles} from "@material-ui/core";
 import Collapse from "@material-ui/core/Collapse";
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
-import {ExpandLess, ExpandMore, Group, Info, QuestionAnswer} from "@material-ui/icons"
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Link from "@material-ui/core/Link";
-import Creators from "./Creators";
+import {ExpandLess, ExpandMore} from "@material-ui/icons"
 import Card from "@material-ui/core/Card";
 import About from "./About";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import FilterSet from "./FilterSet";
-import {useEffect} from "react";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -56,7 +48,7 @@ function Submenu(props) {
                                     avatar={showAbout ? <ExpandMore/> : <ExpandLess/>}
                         />
                     </CardActionArea>
-                    <Collapse in={showAbout} timeout="auto" onEntered={onResize} onExited={onResize} >
+                    <Collapse in={showAbout} timeout="auto" onEntered={onResize} onExited={onResize}>
                         <About/>
                     </Collapse>
                 </Card>

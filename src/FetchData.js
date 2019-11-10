@@ -6,6 +6,7 @@ import BookModal from "./Components/BookModal";
 import HeaderBar from "./Navigation/HeaderBar";
 import BookStyler from "./Components/BookStyler";
 import * as themeData from "./constants/theme";
+import LoadingCard from "./Components/LoadingCard";
 
 
 class FetchData extends Component {
@@ -19,6 +20,9 @@ class FetchData extends Component {
             modal: null,
             modal_open: false,
             filter: [],
+            loaders: [...Array(30).keys()].map(
+                i => <LoadingCard key={i} className={"record"}/>
+            )
         };
     }
 
@@ -27,7 +31,6 @@ class FetchData extends Component {
         let filters = this.state.filter;
         filters = filters.filter(({field, value}) => !(field === selector.field && value === selector.value));
         if (filters.length === this.state.filter.length) {
-            console.log("Add filter");
             filters.push(selector)
         }
         this.setState({
@@ -113,16 +116,11 @@ class FetchData extends Component {
     }
 
     getRecordTypeCounts = () => {
-        const types = {};
-        if (this.state.books) {
-            this.state.books.map(record => {
-                if (!types.hasOwnProperty(record.record_type)) {
-                    types[record.record_type] = 0
-                }
-                types[record.record_type] += 1
-            })
-        }
-        console.log(types);
+        let types = this.state.books.reduce((state, value) => {
+            state[value.record_type] = (state[value.record_type] || 0) + 1;
+            return state
+        }, {});
+        console.log(`Current State; ${Object.keys(types).length} unique record types, ${Object.values(types).reduce((t, v) => t + v, 0)} unique records.`);
         return types
     };
 
@@ -166,6 +164,7 @@ class FetchData extends Component {
     render() {
         const saturation = parseInt(getQueryStringValue("saturation", 100));
         const brightness = parseInt(getQueryStringValue("brightness", 40));
+
         const typeCounts = this.getRecordTypeCounts();
         return <>
             <Gallery

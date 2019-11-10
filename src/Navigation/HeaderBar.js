@@ -63,7 +63,8 @@ function HeaderBar(props) {
                 </div>
             </Toolbar>
             <LinearProgress color={state === "connecting" ? "primary" : "secondary"}
-                            style={{opacity: state === "synced" ? 0 : 100}}/>
+                            style={{opacity: state === "synced" ? 0 : 100}}
+                            {...state === "connecting"?{} :{variant: "determinate", value: 100}}/>
             <Submenu
                 visible={showMenu}
                 connected={state === "synced"}

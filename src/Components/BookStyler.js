@@ -6,15 +6,15 @@ import {stringToHslColor} from "../helpers/utils";
 
 const findPercentWidth = () => {
     let adjusted = window.innerWidth - ((32 * 2));
-    let num_cards = parseInt(adjusted / (themeData.cards.size + themeData.cards.gutter * 2));
+    let num_cards = parseInt(adjusted / (themeData.cards.size + 6 + themeData.cards.gutter * 2));
     console.log(`Calculated grid width: ${adjusted}; Expected column count: ${num_cards}`);
 
-    return `${(100 / num_cards)}% - ${themeData.cards.gutter * 2}px`;
+    return `${(100 / num_cards)}% - ${themeData.cards.gutter * 2}px - 6px`;
 };
 
 function getRecordStyling(record_types, brightness, saturation) {
     const result = {};
-    record_types.map(value => {
+    record_types.forEach(value => {
         let key = value.replace("\"", "");
         result[`[data-record_type="${key}"]`] = {
             backgroundColor: stringToHslColor(value, saturation, brightness),
@@ -61,12 +61,12 @@ export default function BookStyler(props) {
                 "@global":
                     {
                         ".record": {
-                            width: `100%`,
+                            width: `calc(100% - 6px)`,
                             border: "5px solid",
                             borderColor: "rgba(0,0,0,0)",
 
                             [theme.breakpoints.up('xs')]: {
-                                width: `calc(50% -  ${themeData.cards.gutter}px -6px)`,
+                                width: `calc(50% -  ${theme.cards.gutter}px - 6px)`,
                             },
                             [theme.breakpoints.up('sm')]: {
                                 width: `calc(${width})`,
@@ -75,7 +75,7 @@ export default function BookStyler(props) {
                         ".header": {
                             width: `100%`,
                             [theme.breakpoints.up('sm')]: {
-                                width: `calc((${width}) * 2 + ${themeData.cards.gutter}px + 3px*4)`,
+                                width: `calc((${width}) * 2 + ${theme.cards.gutter}px + 3px*6)`,
                             }
                         },
                         ...styling

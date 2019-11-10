@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Modal from "@material-ui/core/Modal";
 import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
-import {Close, Launch} from "@material-ui/icons";
+import {Close} from "@material-ui/icons";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import Tooltip from "@material-ui/core/Tooltip";

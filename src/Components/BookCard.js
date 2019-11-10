@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {Card, Fade, makeStyles} from "@material-ui/core";
+import {Card, makeStyles} from "@material-ui/core";
 import BookView from "./BookView";
 import BookWrapper from "./BookWrapper";
 import Img from 'react-image'
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => {
 
 function BookCard(props) {
     const classes = useStyles();
-    const {book, createModal, setFilter} = props;
+    const {book, createModal} = props;
     const dataWrapper = new BookWrapper(book);
 
 

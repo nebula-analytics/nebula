@@ -148,7 +148,7 @@ class LayoutInterface extends React.Component {
     render() {
 
         const children = React.Children.map(this.props.children, child => {
-            return React.cloneElement(child, {
+            return child !== null && React.cloneElement(child, {
                 onResize: this.relayout(this.isotope),
             });
         });

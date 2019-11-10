@@ -1,14 +1,10 @@
 import * as React from "react";
-
-import themeData from "../constants/theme"
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Badge from "@material-ui/core/Badge";
 import {Visibility} from "@material-ui/icons";
 import {makeStyles, Tooltip} from "@material-ui/core";
-import Zoom from "@material-ui/core/Zoom";
 import * as PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
-import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
     clickable: {
@@ -44,17 +40,8 @@ function BookView(props) {
     const classes = useStyles();
     const {children, count, tag, onClick} = props;
 
-    // const loader = <Skeleton variant="text" width={200} height={200}/>;
-    // const loader = <CircularProgress/>;
-    // const fallback = ;
-
-    const filterByThisRecordType = () => {
-        // setFilter(`[data-record_type=${tag.replace(" ", "_")}]`);
-    };
-
-
     return <>
-        <Button className={classes.tag} onClick={filterByThisRecordType}>
+        <Button className={classes.tag} onClick={()=>{}}>
             {tag}
         </Button>
         <CardActionArea onClick={onClick} className={classes.clickable}>
@@ -76,15 +63,14 @@ function BookView(props) {
 }
 
 BookView.propTypes = {
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
 
-    tag: PropTypes.string,
-    count: PropTypes.number,
+    tag: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    count: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
 };
 
 BookView.defaultProps = {
-    onClick: () => {
-    }
+    onClick: () => {}
 };
 
 export default BookView
