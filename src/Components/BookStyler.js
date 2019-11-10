@@ -19,7 +19,6 @@ function getRecordStyling(record_types, brightness, saturation) {
         result[`[data-record_type="${key}"]`] = {
             backgroundColor: stringToHslColor(value, saturation, brightness),
             borderColor: stringToHslColor(value, saturation, brightness),
-            border: "5px solid",
         };
         // result[`[image-record_type="${key}"]`] = {
         //     borderLeftColor: stringToHslColor(value, saturation, brightness),
@@ -63,8 +62,11 @@ export default function BookStyler(props) {
                     {
                         ".record": {
                             width: `100%`,
+                            border: "5px solid",
+                            borderColor: "rgba(0,0,0,0)",
+
                             [theme.breakpoints.up('xs')]: {
-                                width: `calc(50% -  ${themeData.cards.gutter}px)`,
+                                width: `calc(50% -  ${themeData.cards.gutter}px -6px)`,
                             },
                             [theme.breakpoints.up('sm')]: {
                                 width: `calc(${width})`,

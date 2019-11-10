@@ -136,8 +136,7 @@ class LayoutInterface extends React.Component {
 
     relayout = (isotope) => () => {
         if (isotope) {
-            isotope.reloadItems();
-            isotope.arrange();
+            isotope.layout();
         }
     };
 

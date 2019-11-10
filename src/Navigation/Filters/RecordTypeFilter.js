@@ -1,5 +1,5 @@
 import List from "@material-ui/core/List";
-import {Visibility, VisibilityOff} from "@material-ui/icons";
+import {Visibility} from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
 import * as React from "react";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -65,7 +65,7 @@ function RecordTypeFilter(props) {
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} className={classes.item}
-                                      primary={type.replace("_", " ")}/>
+                                      primary={type.replace("_", " ") + ` (${recordTypes[type]})`}/>
                         <ListItemSecondaryAction>
                             {checked && <Visibility label-record_type={type}
                                                     edge="end" aria-label="visibility status"/>}
