@@ -59,8 +59,6 @@ function BookView(props) {
         </Button>
         <CardActionArea onClick={onClick} className={classes.clickable}>
             {children}
-
-
             <div className={classes.views}>
                 {count > 1 ?
                     <Badge badgeContent={count} overlap={"circle"} color="primary" anchorOrigin={{
@@ -70,7 +68,7 @@ function BookView(props) {
                             <Visibility/>
                         </Tooltip>
                     </Badge>
-                    : count == null && <Skeleton variant={"circle"} width={20} height={20}/>}
+                    : count !== 1 && count}
             </div>
         </CardActionArea>
     </>

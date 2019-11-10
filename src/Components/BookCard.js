@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {Card, makeStyles} from "@material-ui/core";
+import {Card, Fade, makeStyles} from "@material-ui/core";
 import BookView from "./BookView";
 import BookWrapper from "./BookWrapper";
 import Img from 'react-image'
 import Skeleton from "@material-ui/lab/Skeleton";
+import Grow from "@material-ui/core/Grow";
 
 
 const useStyles = makeStyles((theme) => {
@@ -47,24 +48,28 @@ function BookCard(props) {
     const highLevelWrapper = child => <Card {...isotopeProps} > {child} </Card>;
 
     const viewWrapper = child => highLevelWrapper(
-        <BookView
-            onClick={() => createModal(dataWrapper)}
-            count={dataWrapper.count.valueOf()}
-            tag={dataWrapper.when.value.fromNow()}
-        >
-            {child}
-        </BookView>
+        <Grow in={Boolean(child)} timeout={399000} appear={true}>
+            <BookView
+                onClick={() => createModal(dataWrapper)}
+                count={dataWrapper.count.valueOf()}
+                tag={dataWrapper.when.value.fromNow()}
+            >
+                {child}
+            </BookView>
+        </Grow>
     );
 
     const Loader = <Card className={isotopeProps.className}>
         <BookView
-            count={null}
-            tag={<Skeleton variant={"text"} width={40} height={5}/>}
+            count={<Skeleton variant={"circle"} width={30} height={20}/>}
+            tag={<Skeleton variant={"text"} width={50} height={10}/>}
         >
+            <Skeleton variant={"text"} width={0} height={30}/>
             <Skeleton variant={"text"} width={"80%"} height={20}/>
             <Skeleton variant={"text"} width={"100%"} height={20}/>
             <Skeleton variant={"text"} width={"100%"} height={20}/>
             <Skeleton variant={"text"} width={"70%"} height={20}/>
+            <Skeleton variant={"text"} width={0} height={20}/>
         </BookView>
     </Card>;
 
