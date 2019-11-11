@@ -4,9 +4,9 @@ import {Card, makeStyles} from "@material-ui/core";
 import BookView from "./BookView";
 import BookWrapper from "./BookWrapper";
 import Img from 'react-image'
-import Skeleton from "@material-ui/lab/Skeleton";
 import Grow from "@material-ui/core/Grow";
 import LoadingCard from "./LoadingCard";
+import clsx from "clsx";
 
 
 const useStyles = makeStyles((theme) => {
@@ -32,6 +32,26 @@ const useStyles = makeStyles((theme) => {
     }
 });
 
+export function GenericCard(props) {
+    const classes = useStyles();
+    let {children, type = "info", ...remaining} = props;
+
+    if (typeof children === "string") {
+        children = <div className={classes.text}><h3>{children}</h3></div>
+    }
+
+    const highLevelWrapper = child => <Card {...remaining} className={clsx(classes.root, "record")}> {child} </Card>;
+
+    const viewWrapper = child => highLevelWrapper(
+        <BookView
+            count={1}
+            tag={type}
+        >
+            {child}
+        </BookView>);
+    return viewWrapper(children)
+}
+
 
 function BookCard(props) {
     const classes = useStyles();
@@ -43,6 +63,7 @@ function BookCard(props) {
         "data-record_type": dataWrapper.type.valueOf(),
         "data-doc_id": dataWrapper.doc_id.valueOf(),
         "data-last_view": dataWrapper.when.valueOf(),
+        "data-order_first": false,
         "className": `${classes.root} record`,
     };
 
@@ -62,37 +83,39 @@ function BookCard(props) {
 
     const Loader = <LoadingCard numRows={5} {...isotopeProps}/>;
 
+    const Plain = <div className={classes.text}>
+       {/* Fix weird quotes in library books (we've escaped tags already)*/}
+        <h3 dangerouslySetInnerHTML={{__html: dataWrapper.title.toString()}}/>
+    </div>;
 
-    const Plain = <div className={classes.text}><h3>{dataWrapper.title.toString()}</h3></div>;
 
+            return <Img image-record_type={dataWrapper.type.valueOf()}
+            src={dataWrapper.images.valueOf()}
+            className={classes.image}
+            container={viewWrapper}
+            unloaderContainer={viewWrapper}
+            unloader={Plain}
+            loaderContainer={highLevelWrapper}
+            loader={Loader}
+            />
+        }
 
-    return <Img image-record_type={dataWrapper.type.valueOf()}
-                src={dataWrapper.images.valueOf()}
-                className={classes.image}
-                container={viewWrapper}
-                unloaderContainer={viewWrapper}
-                unloader={Plain}
-                loaderContainer={highLevelWrapper}
-                loader={Loader}
-    />
-}
+        BookCard.propTypes={
+            book: PropTypes.object.isRequired,
+            createModal: PropTypes.func.isRequired,
+            saturation: PropTypes.number,
+            brightness: PropTypes.number,
+            setFilter: PropTypes.func,
+            setSort: PropTypes.func
+        };
 
-BookCard.propTypes = {
-    book: PropTypes.object.isRequired,
-    createModal: PropTypes.func.isRequired,
-    saturation: PropTypes.number,
-    brightness: PropTypes.number,
-    setFilter: PropTypes.func,
-    setSort: PropTypes.func
-};
+        BookCard.defaultProps = {
+            saturation: 0,
+            brightness: 100,
+            setFilter: () => {
+        },
+            setSort: () => {
+        }
+        };
 
-BookCard.defaultProps = {
-    saturation: 0,
-    brightness: 100,
-    setFilter: () => {
-    },
-    setSort: () => {
-    }
-};
-
-export default BookCard;
+        export default BookCard;

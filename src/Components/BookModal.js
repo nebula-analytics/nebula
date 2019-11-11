@@ -88,6 +88,7 @@ function BookModal(props) {
         BackdropProps={{
             timeout: 500,
         }}
+        keepMounted={false}
     >
 
         <Zoom in={open} timeout={600}>

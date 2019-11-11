@@ -2,12 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import custom_theme from "./constants/theme"
 
 import './App.css';
-import FetchData from "./FetchData";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import {ThemeProvider} from '@material-ui/styles';
 import {Container, responsiveFontSizes} from "@material-ui/core";
 import {MuiPickersUtilsProvider,} from "@material-ui/pickers";
 import MomentUtils from '@date-io/moment';
+import DataLayer from "./DataLayer";
 
 function App(props) {
     const [darkMode, setDarkMode] = useState(localStorage.getItem("app.darkmode") !== undefined);
@@ -17,7 +17,7 @@ function App(props) {
             if (darkMode) {
                 custom_theme.palette.type = "dark";
                 localStorage.setItem("app.darkmode", "yes")
-            }else{
+            } else {
                 custom_theme.palette.type = "light";
                 localStorage.setItem("app.darkmode", undefined)
             }
@@ -32,9 +32,7 @@ function App(props) {
         <ThemeProvider theme={ref.current}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
                 <Container maxWidth={false}>
-                    <FetchData
-                        {...{toggleDarkMode}}
-                    />
+                    <DataLayer toggleDarkMode={toggleDarkMode}/>
                 </Container>
             </MuiPickersUtilsProvider>
         </ThemeProvider>

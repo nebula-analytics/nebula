@@ -4,23 +4,34 @@ import LayoutInterface from "./LayoutInterface";
 import * as themeData from "../constants/theme"
 
 function Gallery(props) {
-    const {children, ...options} = props;
+    const {children, filter, ...options} = props;
     return (
         <LayoutInterface
             className={'grid'}
             elementType={'div'}
-            options={options}
+            options={{filter: getFilterString(filter), ...options}}
         >
             {children}
         </LayoutInterface>
     );
 }
 
+const getFilterString = (filters) => {
+    if (!filters.length) {
+        return "*"
+    } else {
+        return [{
+            field: "always_visible",
+            value: "true"
+        }, ...filters].map(f => `[data-${f.field}="${f.value}"]`).join(", ")
+    }
+};
+
 Gallery.propTypes = {
     children: PropTypes.arrayOf(PropTypes.node).isRequired,
     stamped: PropTypes.oneOf([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
 
-    filter: PropTypes.any,
+    filter: PropTypes.arrayOf(PropTypes.string),
     sort: PropTypes.object,
     transitionDuration: PropTypes.string,
     stagger: PropTypes.number,
@@ -39,14 +50,14 @@ Gallery.defaultProps = {
         columnWidth: `.dynamic-book-width`,
     },
     percentPosition: true,
-    filter: "*",
     getSortData: {
-        header: "[data-always_visible]",
+        header: "[data-order_first]",
         time: "[data-last_view]",
         id: "[data-doc_id]",
     },
+    sortAscending: false,
     sortBy: [],
-    sortAscending: false
+    filter: [],
 };
 
 export default Gallery;
