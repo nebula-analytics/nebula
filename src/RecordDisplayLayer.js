@@ -41,7 +41,7 @@ function RecordDisplayLayer(props) {
                 upstream={upstream}
                 recordTypes={recordTypes}
                 filters={filters}
-                toggleFilter={toggleFilter}
+                toggleFilter={toggleFilter(filters, setFilterState)}
                 toggleDarkMode={toggleDarkMode}
             />
             {isDesynced(upstream) && <GenericCard data-always_visible={true} data-order_first={true}>
@@ -75,17 +75,18 @@ const getRecordTypes = records => records.reduce(
     }), {}
 );
 
-const toggleFilter = (filters, setFilterState) => (selector) => {
+const toggleFilter = (filters, setFilterState) => (...selectors) => setFilterState(selectors.reduce((state, value) => {
+    console.log(value)
     /* Toggle a filter */
-    const filtered = filters.filter(isEqual(selector));
-    if (filtered.length === filters.length) {
+    const filtered = state.filter(isEqual(value));
+    if (filtered.length !== state.length) {
         /* Toggle off */
-        setFilterState(filtered);
+        return filtered
     } else {
         /* Toggle on */
-        setFilterState([selector, ...filters])
+        return [value, ...filters]
     }
-};
+}, filters));
 
 
 RecordDisplayLayer.propTypes = {

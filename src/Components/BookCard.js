@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => {
             width: "100%"
         },
         text: {
-            color: "white",
             textAlign: "center",
             padding: `${theme.cards.gutter}px`,
             width: "calc(100 % -10px);",
@@ -64,7 +63,12 @@ function BookCard(props) {
         "data-doc_id": dataWrapper.doc_id.valueOf(),
         "data-last_view": dataWrapper.when.valueOf(),
         "data-order_first": false,
+        "data-has_image": false,
         "className": `${classes.root} record`,
+    };
+
+    const hasImageProps = {
+        "data-has_image": true,
     };
 
     const highLevelWrapper = child => <Card {...isotopeProps} > {child} </Card>;

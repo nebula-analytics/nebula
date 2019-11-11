@@ -11,7 +11,7 @@ function LoadingCard(props) {
         ref.current = [...Array(numRows).keys()].map(
             i => {
                 const size = parseInt(Math.random() * (10 - 6) + 6) * 10;
-                return <Skeleton variant={"text"} width={`${size}%`} height={textHeight}/>
+                return <Skeleton key={i} variant={"text"} width={`${size}%`} height={textHeight}/>
             }
         )
     }

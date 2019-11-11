@@ -26,9 +26,13 @@ export const generatePrimoLink = (book) => {
     const host = process.env.REACT_APP_PRIMO_HOST || `primo-direct-${region}.hosted.exlibrisgroup.com`;
     const url = new URL(`https://${host}/primo-explore/fulldisplay?`);
 
+    /* Compensate for poor data */
+    if(book.institution === undefined){
+        book.institution = "RMITU"
+    }
     url.search = new URLSearchParams({
         docid: book.doc_id,
-        vid: book.institution || "RMITU",
+        vid: book.institution,
         context: book.context || "PC",
     });
     return url.toString()

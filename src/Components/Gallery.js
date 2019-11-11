@@ -31,7 +31,7 @@ Gallery.propTypes = {
     children: PropTypes.arrayOf(PropTypes.node).isRequired,
     stamped: PropTypes.oneOf([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
 
-    filter: PropTypes.arrayOf(PropTypes.string),
+    filter: PropTypes.arrayOf(PropTypes.object),
     sort: PropTypes.object,
     transitionDuration: PropTypes.string,
     stagger: PropTypes.number,

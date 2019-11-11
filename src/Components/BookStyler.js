@@ -19,14 +19,8 @@ function getRecordStyling(record_types, brightness, saturation) {
         result[`[data-record_type="${key}"]`] = {
             backgroundColor: stringToHslColor(value, saturation, brightness),
             borderColor: stringToHslColor(value, saturation, brightness),
+            color: "white"
         };
-        // result[`[image-record_type="${key}"]`] = {
-        //     borderLeftColor: stringToHslColor(value, saturation, brightness),
-        //     borderRightColor: stringToHslColor(value, saturation, brightness),
-        //     borderLeft: "5px solid",
-        //     borderRight: "5px solid",
-        //     width: "calc(100% - 6px)"
-        // };
         result[`[label-record_type="${key}"]`] = {
             color: stringToHslColor(value, saturation, brightness),
         }

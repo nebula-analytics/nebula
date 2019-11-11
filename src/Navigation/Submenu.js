@@ -1,9 +1,9 @@
-import {CardHeader, makeStyles} from "@material-ui/core";
+import {CardHeader, makeStyles, Tooltip} from "@material-ui/core";
 import Collapse from "@material-ui/core/Collapse";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
-import {Brightness4, ExpandLess, ExpandMore} from "@material-ui/icons"
+import {Brightness4, BrightnessHigh, Cached, ExpandLess, ExpandMore} from "@material-ui/icons"
 import Card from "@material-ui/core/Card";
 import About from "./About";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -19,6 +19,12 @@ const useStyles = makeStyles(theme => ({
         fontSize: theme.typography.pxToRem(20),
         fontWeight: theme.typography.fontWeightRegular,
     },
+    light: {
+        display: theme.palette.type === "light" ? undefined : "none"
+    },
+    dark: {
+        display: theme.palette.type === "dark" ? undefined : "none"
+    }
 }));
 
 function Submenu(props) {
@@ -33,6 +39,7 @@ function Submenu(props) {
 
     useEffect(
         () => {
+            console.log("Store menu state");
             localStorage.setItem("Submenu.filters", JSON.stringify(showFilters));
             localStorage.setItem("Submenu.about", JSON.stringify(showAbout));
         }, [showFilters, showAbout, onResize]
@@ -44,9 +51,23 @@ function Submenu(props) {
 
             <Card>
                 <CardActions>
-                    <IconButton onClick={toggleDarkMode}>
-                        <Brightness4/>
-                    </IconButton>
+                    <Tooltip title={"Change theme"}>
+                        <IconButton onClick={toggleDarkMode}>
+                            <Brightness4 className={classes.dark}/>
+                            <BrightnessHigh className={classes.light}/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Clear stored settings (menu state, stored filters, etc)"}>
+                        <IconButton onClick={() => {
+                            window.localStorage.clear();
+                            toggleDarkMode(true);
+                            setShowAbout(true);
+                            setShowFilters(false);
+                            toggleFilter(...filters)
+                        }}>
+                            <Cached/>
+                        </IconButton>
+                    </Tooltip>
                 </CardActions>
                 <Card>
                     <CardActionArea onClick={() => setShowAbout(!showAbout)}>

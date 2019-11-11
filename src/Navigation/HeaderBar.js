@@ -47,7 +47,6 @@ function HeaderBar(props) {
     }, [showMenu]);
 
     return (<Card className={`${classes.root} stamp header`}
-                  data-last_view={moment().add(5, "y").valueOf()}
                   data-always_visible={true}
                   data-order_first={true}
         >

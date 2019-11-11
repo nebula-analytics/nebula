@@ -30,7 +30,7 @@ function RecordTypeFilter(props) {
             enabledRecordFilters.push(value);
         }
     });
-    const handleToggle = (type) => () => toggleFilter("record_type", type);
+    const handleToggle = (type) => () => toggleFilter({field: "record_type", value: type});
     return (
         <List className={classes.root}>
             {
