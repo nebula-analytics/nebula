@@ -3,11 +3,13 @@ import Collapse from "@material-ui/core/Collapse";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
-import {ExpandLess, ExpandMore} from "@material-ui/icons"
+import {Brightness4, ExpandLess, ExpandMore} from "@material-ui/icons"
 import Card from "@material-ui/core/Card";
 import About from "./About";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import FilterSet from "./FilterSet";
+import CardActions from "@material-ui/core/CardActions";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Submenu(props) {
-    const {visible, onResize, recordTypes, filters, toggleFilter} = props;
+    const {visible, onResize, recordTypes, filters, toggleFilter, toggleDarkMode} = props;
     const classes = useStyles();
     const [showAbout, setShowAbout] = useState(
         JSON.parse(localStorage.getItem("Submenu.about") || "true")
@@ -41,6 +43,11 @@ function Submenu(props) {
         <div className={classes.root}>
 
             <Card>
+                <CardActions>
+                    <IconButton onClick={toggleDarkMode}>
+                        <Brightness4/>
+                    </IconButton>
+                </CardActions>
                 <Card>
                     <CardActionArea onClick={() => setShowAbout(!showAbout)}>
                         <CardHeader title={"About Nebula (Library Live)"}
@@ -82,7 +89,8 @@ Submenu.propTypes = {
     color: PropTypes.string,
     recordTypes: PropTypes.object,
     filters: PropTypes.array,
-    toggleFilter: PropTypes.func
+    toggleFilter: PropTypes.func,
+    toggleDarkMode: PropTypes.func,
 };
 
 Submenu.defaultProps = {

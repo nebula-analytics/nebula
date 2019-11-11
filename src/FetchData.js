@@ -166,6 +166,7 @@ class FetchData extends Component {
         const brightness = parseInt(getQueryStringValue("brightness", 40));
 
         const typeCounts = this.getRecordTypeCounts();
+        const {toggleDarkMode} = this.props;
         return <>
             <Gallery
                 filter={this.getFilterString()}
@@ -188,6 +189,8 @@ class FetchData extends Component {
                     recordTypes={typeCounts}
                     filters={this.state.filter}
                     toggleFilter={this.toggleFilter}
+                    toggleDarkMode={toggleDarkMode}
+
                 />
             </Gallery>
             <BookStyler

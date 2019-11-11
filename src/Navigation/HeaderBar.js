@@ -8,6 +8,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
 import moment from "moment";
+import BookCard from "../Components/BookCard";
 
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +40,7 @@ function HeaderBar(props) {
     const {state, last_reached} = upstream;
     const [showMenu, setShowMenu] = useState(JSON.parse(localStorage.getItem("header.showMenu") || "true"));
     const classes = useStyles();
+    const {toggleDarkMode} = props;
 
     useEffect(() => {
         localStorage.setItem("header.showMenu", JSON.stringify(showMenu))
@@ -73,6 +75,7 @@ function HeaderBar(props) {
                 recordTypes={recordTypes}
                 filters={filters}
                 toggleFilter={toggleFilter}
+                toggleDarkMode={toggleDarkMode}
             />
         </Card>
     );
@@ -84,7 +87,8 @@ HeaderBar.propTypes = {
     recordTypes: PropTypes.object,
     upstream: PropTypes.object,
     filters: PropTypes.array,
-    toggleFilter: PropTypes.func
+    toggleFilter: PropTypes.func,
+    toggleDarkMode: PropTypes.func,
 };
 
 HeaderBar.defaultProps = {

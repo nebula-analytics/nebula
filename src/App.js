@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import custom_theme from "./constants/theme"
 
 import './App.css';
@@ -6,26 +6,39 @@ import FetchData from "./FetchData";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import {ThemeProvider} from '@material-ui/styles';
 import {Container, responsiveFontSizes} from "@material-ui/core";
-import { MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import {MuiPickersUtilsProvider,} from "@material-ui/pickers";
 import MomentUtils from '@date-io/moment';
 
-let theme = createMuiTheme(custom_theme);
-theme = responsiveFontSizes(theme);
+function App(props) {
+    const [darkMode, setDarkMode] = useState(localStorage.getItem("app.darkmode") !== undefined);
+    const ref = useRef(responsiveFontSizes(createMuiTheme(custom_theme)));
+    useEffect(
+        () => {
+            if (darkMode) {
+                custom_theme.palette.type = "dark";
+                localStorage.setItem("app.darkmode", "yes")
+            }else{
+                custom_theme.palette.type = "light";
+                localStorage.setItem("app.darkmode", undefined)
+            }
+            ref.current = responsiveFontSizes(createMuiTheme(custom_theme))
+        }, [darkMode]
+    );
 
-class App extends React.Component {
+    const toggleDarkMode = () => setDarkMode(!darkMode);
 
-    render() {
-        return (
-            <ThemeProvider theme={theme}>
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <Container maxWidth={false}>
-                        <FetchData/>
-                    </Container>
-                </MuiPickersUtilsProvider>
-            </ThemeProvider>
-        );
-    }
+
+    return (
+        <ThemeProvider theme={ref.current}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+                <Container maxWidth={false}>
+                    <FetchData
+                        {...{toggleDarkMode}}
+                    />
+                </Container>
+            </MuiPickersUtilsProvider>
+        </ThemeProvider>
+    );
 }
 
 export default App;

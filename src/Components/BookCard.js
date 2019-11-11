@@ -6,6 +6,7 @@ import BookWrapper from "./BookWrapper";
 import Img from 'react-image'
 import Skeleton from "@material-ui/lab/Skeleton";
 import Grow from "@material-ui/core/Grow";
+import LoadingCard from "./LoadingCard";
 
 
 const useStyles = makeStyles((theme) => {
@@ -59,19 +60,7 @@ function BookCard(props) {
         </Grow>
     );
 
-    const Loader = <Card className={isotopeProps.className}>
-        <BookView
-            count={<Skeleton variant={"circle"} width={30} height={20}/>}
-            tag={<Skeleton variant={"text"} width={50} height={10}/>}
-        >
-            <Skeleton variant={"text"} width={0} height={30}/>
-            <Skeleton variant={"text"} width={"80%"} height={20}/>
-            <Skeleton variant={"text"} width={"100%"} height={20}/>
-            <Skeleton variant={"text"} width={"100%"} height={20}/>
-            <Skeleton variant={"text"} width={"70%"} height={20}/>
-            <Skeleton variant={"text"} width={0} height={20}/>
-        </BookView>
-    </Card>;
+    const Loader = <LoadingCard numRows={5} {...isotopeProps}/>;
 
 
     const Plain = <div className={classes.text}><h3>{dataWrapper.title.toString()}</h3></div>;
@@ -83,8 +72,8 @@ function BookCard(props) {
                 container={viewWrapper}
                 unloaderContainer={viewWrapper}
                 unloader={Plain}
-                loaderContainer={c => Loader}
-                loader={<></>}
+                loaderContainer={highLevelWrapper}
+                loader={Loader}
     />
 }
 
