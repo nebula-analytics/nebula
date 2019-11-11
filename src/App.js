@@ -8,6 +8,7 @@ import {Container, responsiveFontSizes} from "@material-ui/core";
 import {MuiPickersUtilsProvider,} from "@material-ui/pickers";
 import MomentUtils from '@date-io/moment';
 import DataLayer from "./DataLayer";
+import {getQueryStringValue} from "./helpers/utils";
 
 const getTheme = isDarkMode => {
     const base_custom_theme = JSON.parse(JSON.stringify(custom_theme));
@@ -30,6 +31,17 @@ function App(props) {
             else
                 localStorage.setItem("app.darkmode", "off");
         }, [darkMode]
+    );
+
+    useEffect(
+        () => {
+            if(getQueryStringValue("reset")) {
+                localStorage.clear();
+                let loc = new URL(window.location);
+                loc.searchParams.delete("reset");
+                window.location.href = loc.toString();
+            }
+        }, []
     );
 
     const toggleDarkMode = (reset) => {
