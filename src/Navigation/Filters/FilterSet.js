@@ -1,67 +1,30 @@
-import {Card, CardContent, CardHeader, FormControl, InputLabel, makeStyles, Slider} from "@material-ui/core";
+import {Card, CardContent, CardHeader} from "@material-ui/core";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import {FilterList} from "@material-ui/icons"
 import RecordTypeFilter from "./RecordTypeFilter";
-import {KeyboardDateTimePicker} from "@material-ui/pickers";
-import moment from "moment";
-
-const useStyles = makeStyles(theme => ({
-    formControl: {
-        margin: theme.spacing(1),
-        width: "100%"
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
+import SnapshotSelector from "./SnapshotSelector";
+import PropertyFilters from "./PropertyFilters";
 
 function FilterSet(props) {
     const {recordTypes, filters, toggleFilter, setWindowEnd, setRequestWindow, windowDuration, windowEnd} = props;
-    const classes = useStyles();
 
     return <Card>
-        <Card>
-            <CardHeader
-                title={"Change Snapshot Period"}
-                subheader={"Information will update automatically."}
-                avatar={<FilterList/>}
-            />
-            <CardContent>
-                <KeyboardDateTimePicker
-                    variant="inline"
-                    inputVariant="outlined"
-                    ampm={false}
-                    label="Snapshot Starts At"
-                    disableFuture
-                    value={windowEnd}
-                    onChange={setWindowEnd}
-                    fullWidth
-                    maxDateMessage={"You can't view the future :("}
-                    autoOk
-                />
 
-            </CardContent>
-            <CardContent>
-                <FormControl variant="outlined" className={classes.formControl}>
-                    <InputLabel htmlFor="window-duration-slider" id={"window-duration-slider-label"}>Snapshot Duration
-                        (minutes)</InputLabel>
-                    <Slider
-                        getAriaLabel={v => moment.duration(v, "m").humanize()}
-                        getAriaValueText={v => moment.duration(v, "m").humanize()}
-                        onChangeCommitted={(e, v) => setRequestWindow(v)}
-                        defaultValue={windowDuration.asMinutes()}
-                        valueLabelDisplay="auto"
-                        id={"window-duration-slider"}
-                        aria-labelledby={"window-duration-slider-label"}
-                        step={10}
-                        marks={true}
-                        min={30}
-                        max={300}
-                    />
-                </FormControl>
-            </CardContent>
-        </Card>
+        <CardHeader
+            title={"Change Snapshot Period"}
+            subheader={"Information will update automatically."}
+            avatar={<FilterList/>}
+        />
+        <SnapshotSelector setWindowEnd={setWindowEnd} setRequestWindow={setRequestWindow}
+                          windowDuration={windowDuration} windowEnd={windowEnd}/>
+
+        <CardHeader
+            title={"Filter by Content"}
+            subheader={"Show/Hide records based on thier visible properties"}
+            avatar={<FilterList/>}
+        />
+        <PropertyFilters filters={filters} toggleFilter={toggleFilter}/>
 
         <CardHeader
             title={"Filter by Record Type"}
@@ -77,8 +40,6 @@ function FilterSet(props) {
 
 FilterSet.propTypes = {
     recordTypes: PropTypes.object,
-    filterDates: PropTypes.object,
-    setTimeFilter: PropTypes.func,
     filters: PropTypes.array,
     toggleFilter: PropTypes.func,
     windowEnd: PropTypes.object,
@@ -88,12 +49,7 @@ FilterSet.propTypes = {
 };
 
 FilterSet.defaultProps = {
-    filters: [],
-    filterDates: {start: null, end: null},
-    setWindowEnd: () => {
-    },
-    setRequestWindow: () => {
-    }
+    filters: []
 };
 
 export default FilterSet

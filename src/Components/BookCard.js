@@ -65,7 +65,7 @@ function BookCard(props) {
         "className": `${classes.root} record`,
     };
 
-    const highLevelWrapper = extraProps => child => <Card {...isotopeProps} {...extraProps} > {child} </Card>;
+    const highLevelWrapper = extraProps => child => <Card {...{...isotopeProps, ...extraProps}} > {child} </Card>;
 
     const viewWrapper = extraProps => child => highLevelWrapper(extraProps)(
         <Grow in={Boolean(child)} timeout={399000} appear={true}>
@@ -90,10 +90,10 @@ function BookCard(props) {
     return <Img image-record_type={dataWrapper.type.valueOf()}
                 src={dataWrapper.images.valueOf()}
                 className={classes.image}
-                container={viewWrapper({"data-has-image": true})}
-                unloaderContainer={viewWrapper({"data-has-image": false})}
+                container={viewWrapper({"data-has_image": true})}
+                unloaderContainer={viewWrapper({"data-has_image": false})}
                 unloader={Plain}
-                loaderContainer={highLevelWrapper}
+                loaderContainer={highLevelWrapper({})}
                 loader={Loader}
     />
 }

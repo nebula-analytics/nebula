@@ -5,16 +5,42 @@ import * as themeData from "../constants/theme"
 
 function Gallery(props) {
     const {children, filter, ...options} = props;
+    let filterString = getFilterStringv2(filter);
+    if(filterString){
+       filterString += ", [data-always_visible=\"true\"]"
+    }
     return (
         <LayoutInterface
             className={'grid'}
             elementType={'div'}
-            options={{filter: getFilterString(filter), ...options}}
+            options={{filter: filterString, ...options}}
         >
             {children}
         </LayoutInterface>
     );
 }
+
+const getFilterStringv2 = filters => Object.values(filters.reduce((state, {field, value}) => {
+    return {
+        ...state,
+        [field]: [...(state[field] || []), `[data-${field}="${value}"]`]
+    }
+}, {})).sort(
+    (v1, v2) => v1.length > v2.length ? 1 : v2.length > v1.length ? -1 : 0
+).reduce((query, values) => {
+    const result = [];
+    values.forEach(selector => {
+        if (query.length) {
+            query.forEach(existing => {
+                result.push(`${selector}${existing}`)
+            })
+        } else {
+            result.push(selector)
+        }
+    });
+    console.log(query, values);
+    return result
+}, []).join(",");
 
 const getFilterString = (filters) => {
     if (!filters.length) {

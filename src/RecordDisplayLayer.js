@@ -83,10 +83,12 @@ const toggleFilter = (filters, setFilterState) => (...selectors) => setFilterSta
     const filtered = state.filter(isEqual(value));
     if (filtered.length !== state.length) {
         /* Toggle off */
+        console.log("Off", value, filtered);
         return filtered
     } else {
+        console.log("On", value, filtered);
         /* Toggle on */
-        return [value, ...filters]
+        return [value, ...filtered]
     }
 }, filters));
 
