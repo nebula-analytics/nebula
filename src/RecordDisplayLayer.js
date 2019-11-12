@@ -44,7 +44,7 @@ function RecordDisplayLayer(props) {
                 toggleFilter={toggleFilter(filters, setFilterState)}
                 toggleDarkMode={toggleDarkMode}
             />
-            {isDesynced(upstream) && <GenericCard data-always_visible={true} data-order_first={5}>
+            {isDesynced(upstream) && <GenericCard data-always_visible={true} data-order_first={8}>
                 We're unable to contact the library site right now! We'll keep trying until we can reach it
             </GenericCard>}
             {records.map(createBook({

@@ -62,7 +62,7 @@ function BookCard(props) {
         "data-record_type": dataWrapper.type.valueOf(),
         "data-doc_id": dataWrapper.doc_id.valueOf(),
         "data-last_view": dataWrapper.when.valueOf(),
-        "data-order_first": false,
+        "data-order_first": 0,
         "data-has_image": false,
         "className": `${classes.root} record`,
     };
