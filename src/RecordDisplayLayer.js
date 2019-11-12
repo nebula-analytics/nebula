@@ -20,6 +20,7 @@ function RecordDisplayLayer(props) {
         getQueryStringValue("saturation", 100),
         getQueryStringValue("brightness", 40)
     ]);
+    const [shortDate, setShortDate] = useState(true);
 
     const {records = [], toggleDarkMode, upstream, windowDuration, windowEnd, setRequestWindow, setWindowEnd} = props;
 
@@ -46,6 +47,8 @@ function RecordDisplayLayer(props) {
                 windowDuration={windowDuration}
                 setRequestWindow={setRequestWindow}
                 setWindowEnd={setWindowEnd}
+                setShortDate={setShortDate}
+                shortDate={shortDate}
             />
             {isDesynced(upstream) && <GenericCard data-always_visible={true} data-order_first={8}>
                 We're unable to contact the library site right now! We'll keep trying until we can reach it
@@ -53,7 +56,8 @@ function RecordDisplayLayer(props) {
             {records.map(createBook({
                 createModal: setModalState,
                 setFilter: setFilterState,
-                setSort: setSortState
+                setSort: setSortState,
+                shortFormDate: shortDate
             }))}
         </Gallery>
 

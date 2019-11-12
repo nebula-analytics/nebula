@@ -31,7 +31,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HeaderBar(props) {
-    const {upstream, onResize, recordTypes, filters, toggleFilter, windowDuration, windowEnd, setRequestWindow, setWindowEnd} = props;
+    const {upstream, onResize, recordTypes, filters, toggleFilter,
+        windowDuration, windowEnd, setRequestWindow, setWindowEnd, shortDate, setShortDate} = props;
     const {state, last_reached} = upstream;
     const [showMenu, setShowMenu] = useState(JSON.parse(localStorage.getItem("header.showMenu") || "true"));
     const classes = useStyles();
@@ -75,6 +76,8 @@ function HeaderBar(props) {
                 windowEnd={windowEnd}
                 setWindowEnd={setWindowEnd}
                 setRequestWindow={setRequestWindow}
+                setShortDate={setShortDate}
+                shortDate={shortDate}
             />
         </Card>
     );

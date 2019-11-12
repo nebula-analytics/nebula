@@ -8,7 +8,16 @@ import {
     makeStyles,
     Tooltip,
 } from "@material-ui/core";
-import {Brightness4, BrightnessHigh, Cached, ExpandLess, ExpandMore} from "@material-ui/icons"
+import {
+    AccessTime,
+    Brightness4,
+    BrightnessHigh,
+    Cached,
+    CalendarToday,
+    ExpandLess,
+    ExpandMore,
+    History
+} from "@material-ui/icons"
 
 import * as React from "react";
 import {useEffect, useState} from "react";
@@ -35,7 +44,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Submenu(props) {
-    const {visible, onResize, recordTypes, filters, toggleFilter, toggleDarkMode, windowEnd, windowDuration, setRequestWindow, setWindowEnd} = props;
+    const {
+        visible, onResize, recordTypes, filters, toggleFilter, setShortDate, shortDate,
+        toggleDarkMode, windowEnd, windowDuration, setRequestWindow, setWindowEnd
+    } = props;
     const classes = useStyles();
     const [showAbout, setShowAbout] = useState(
         JSON.parse(localStorage.getItem("Submenu.about") || "true")
@@ -75,6 +87,11 @@ function Submenu(props) {
                             toggleFilter(...filters)
                         }}>
                             <Cached/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Change Date Format"}>
+                        <IconButton onClick={() => setShortDate(!shortDate)}>
+                            {shortDate ? <CalendarToday/> : <AccessTime/>}
                         </IconButton>
                     </Tooltip>
                 </CardActions>

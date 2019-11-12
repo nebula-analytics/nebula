@@ -53,7 +53,7 @@ export function GenericCard(props) {
 
 function BookCard(props) {
     const classes = useStyles();
-    const {book, createModal} = props;
+    const {book, createModal, shortFormDate} = props;
     const dataWrapper = new BookWrapper(book);
 
 
@@ -72,7 +72,7 @@ function BookCard(props) {
             <BookView
                 onClick={() => createModal(dataWrapper)}
                 count={dataWrapper.count.valueOf()}
-                tag={dataWrapper.when.value.fromNow()}
+                tag={shortFormDate ? dataWrapper.when.value.fromNow() : dataWrapper.when.value.calendar()}
             >
                 {child}
             </BookView>
@@ -104,7 +104,8 @@ BookCard.propTypes = {
     saturation: PropTypes.number,
     brightness: PropTypes.number,
     setFilter: PropTypes.func,
-    setSort: PropTypes.func
+    setSort: PropTypes.func,
+    shortFormDate: PropTypes.bool,
 };
 
 BookCard.defaultProps = {
@@ -113,7 +114,8 @@ BookCard.defaultProps = {
     setFilter: () => {
     },
     setSort: () => {
-    }
+    },
+    shortFormDate: true,
 };
 
 export default BookCard;
