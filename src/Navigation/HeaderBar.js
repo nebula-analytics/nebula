@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HeaderBar(props) {
-    const {upstream, onResize, recordTypes, filters, toggleFilter} = props;
+    const {upstream, onResize, recordTypes, filters, toggleFilter,windowDuration, windowEnd} = props;
     const {state, last_reached} = upstream;
     const [showMenu, setShowMenu] = useState(JSON.parse(localStorage.getItem("header.showMenu") || "true"));
     const classes = useStyles();
@@ -73,6 +73,8 @@ function HeaderBar(props) {
                 filters={filters}
                 toggleFilter={toggleFilter}
                 toggleDarkMode={toggleDarkMode}
+                windowDuration={windowDuration}
+                windowEnd={windowEnd}
             />
         </Card>
     );
@@ -86,6 +88,8 @@ HeaderBar.propTypes = {
     filters: PropTypes.array,
     toggleFilter: PropTypes.func,
     toggleDarkMode: PropTypes.func,
+    windowEnd: PropTypes.object,
+    windowDuration: PropTypes.object,
 };
 
 HeaderBar.defaultProps = {

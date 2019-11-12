@@ -8,7 +8,7 @@ import BookStyler from "./Components/BookStyler";
 import * as themeData from "./constants/theme";
 import * as PropTypes from "prop-types"
 import moment from "moment";
-import { Card } from '@material-ui/core';
+import {Card} from '@material-ui/core';
 
 function RecordDisplayLayer(props) {
     /*
@@ -22,7 +22,7 @@ function RecordDisplayLayer(props) {
         getQueryStringValue("brightness", 40)
     ]);
 
-    const {records = [], toggleDarkMode, upstream} = props;
+    const {records = [], toggleDarkMode, upstream, windowDuration, windowEnd} = props;
 
     const recordTypes = getRecordTypes(records);
 
@@ -43,6 +43,8 @@ function RecordDisplayLayer(props) {
                 filters={filters}
                 toggleFilter={toggleFilter(filters, setFilterState)}
                 toggleDarkMode={toggleDarkMode}
+                windowEnd={windowEnd}
+                windowDuration={windowDuration}
             />
             {isDesynced(upstream) && <GenericCard data-always_visible={true} data-order_first={8}>
                 We're unable to contact the library site right now! We'll keep trying until we can reach it
@@ -96,6 +98,8 @@ RecordDisplayLayer.propTypes = {
     setWindowEnd: PropTypes.func,
     records: PropTypes.arrayOf(PropTypes.object),
     upstream: PropTypes.object,
+    windowEnd: PropTypes.object,
+    windowDuration: PropTypes.object,
 };
 
 RecordDisplayLayer.defaultProps = {};

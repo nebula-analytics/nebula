@@ -84,7 +84,8 @@ function RecordTypeFilter(props) {
 RecordTypeFilter.propTypes = {
     recordTypes: PropTypes.object,
     filters: PropTypes.array,
-    toggleFilter: PropTypes.func
+    toggleFilter: PropTypes.func,
+
 };
 
 RecordTypeFilter.defaultProps = {};

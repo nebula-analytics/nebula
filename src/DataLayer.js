@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
-import {buildRecordRequestURL, findNumCards, getQueryStringValue} from "./helpers/utils";
+import {findNumCards, getQueryStringValue} from "./helpers/utils";
 import * as moment from "moment";
 import RecordDisplayLayer from "./RecordDisplayLayer";
 import * as PropTypes from "prop-types"
 
 
 class DataLayer extends Component {
+    MIN_QUERY_FREQUENCY = 10000;
+
     static defaultProps = {
         toggleDarkMode: () => {
         }
@@ -15,8 +17,6 @@ class DataLayer extends Component {
         toggleDarkMode: PropTypes.func
     };
 
-    MIN_QUERY_FREQUENCY = 10000;
-
 
     constructor(props) {
         super(props);
@@ -25,9 +25,11 @@ class DataLayer extends Component {
                 state: "connecting"
             },
             records: [],
-            start_at: getQueryStringValue("start_at", undefined),
-            end_at: getQueryStringValue("end_at", undefined),
-            window: moment.duration(getQueryStringValue("data_window", 30), "m"),
+            ...this.getTimeValues(
+                getQueryStringValue("start_at", undefined),
+                getQueryStringValue("end_at", undefined),
+                getQueryStringValue("data_window", 30)
+            ),
         };
     }
 
@@ -62,6 +64,7 @@ class DataLayer extends Component {
 
         let timeout = this.getSyncTimeout(query_frequency);
 
+
         console.log(`Calculated refresh interval: ${query_frequency} ms,  ${timeout} ms remaining`);
 
         if (timeout > 3000) {
@@ -77,6 +80,15 @@ class DataLayer extends Component {
             },
             timeout
         );
+
+        const timeUpdateInterval = moment.duration(10, 'seconds');
+
+        this.interval = setInterval(() => {
+            this.setState({
+                start_at: this.state.start_at.add(timeUpdateInterval),
+                end_at: this.state.end_at.add(timeUpdateInterval)
+            })
+        }, timeUpdateInterval.asMilliseconds())
     }
 
 
@@ -85,7 +97,9 @@ class DataLayer extends Component {
         * Clear the refresh interval to prevent crashes
         */
         if (this.timeout) {
+            clearTimeout(this.timeout);
             clearInterval(this.timeout);
+            clearInterval(this.interval);
         }
     }
 
@@ -115,9 +129,8 @@ class DataLayer extends Component {
         this.setState(update);
     };
 
-
-    buildTimeFilter = () => {
-        let {start_at, end_at, window} = this.state;
+    getTimeValues = (start_at, end_at, window) => {
+        window = moment.duration(window, "m");
 
         if (!start_at && !end_at) {
             end_at = moment();
@@ -125,6 +138,12 @@ class DataLayer extends Component {
 
         start_at = start_at ? moment(start_at) : end_at.clone().subtract(window);
         end_at = end_at ? moment(end_at) : start_at.clone().add(window);
+
+        return {start_at, end_at, window}
+    };
+
+    buildTimeFilter = () => {
+        let {start_at, end_at} = this.state;
 
         let aggregation = {
             "$start": start_at.toISOString(),
@@ -137,7 +156,6 @@ class DataLayer extends Component {
     };
 
     buildRecordRequestURL = (filter) => {
-        console.log(process.env.REACT_APP_API_HOST);
         let protocol = "https:";
         let location = process.env.REACT_APP_API_LOCATION || '/api';
         let host = process.env.REACT_APP_API_HOST || window.location.hostname;
@@ -195,7 +213,7 @@ class DataLayer extends Component {
     }
 
     render() {
-        const {records, upstream} = this.state;
+        const {records, upstream, end_at, window} = this.state;
         const {toggleDarkMode} = this.props;
         return <RecordDisplayLayer records={records}
                                    upstream={upstream}
@@ -203,6 +221,9 @@ class DataLayer extends Component {
                                    setRequestWindow={this.setRequestWindow}
                                    setWindowEnd={this.setWindowEnd}
                                    setWindowStart={this.setWindowStart}
+                                   windowEnd={end_at}
+                                   windowDuration={window}
+
         />
     }
 

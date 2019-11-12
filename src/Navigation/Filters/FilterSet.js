@@ -2,15 +2,15 @@ import { Card, CardHeader, CardContent, FormGroup, Grid, Button, CardActions } f
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import {FilterList} from "@material-ui/icons"
-import RecordTypeFilter from "./Filters/RecordTypeFilter";
+import RecordTypeFilter from "./RecordTypeFilter";
 import {DateTimePicker} from "@material-ui/pickers";
 import moment from "moment";
 
 
 function FilterSet(props) {
-    const {recordTypes, filters, toggleFilter, filterDates, setTimeFilter} = props;
+    const {recordTypes, filters, toggleFilter, setTimeFilter, windowDuration, windowEnd} = props;
 
-    const {start, end} = filterDates;
+    const windowStart = windowEnd.clone().add(windowDuration);
 
     return <Card>
         <CardHeader
@@ -35,7 +35,7 @@ function FilterSet(props) {
                                 label="Latest Record"
                                 disableFuture
                                 showTodayButton
-                                value={end}
+                                value={windowEnd}
                                 onChange={setTimeFilter("end")}
                             />
 
@@ -43,12 +43,12 @@ function FilterSet(props) {
 
                         <Grid item xs={6}>
                             <DateTimePicker
-                                value={start}
+                                value={windowStart}
                                 disableFuture
                                 onChange={setTimeFilter("start")}
                                 label="Earliest Record"
                                 showTodayButton
-                                maxDate={end || moment()}
+                                maxDate={windowEnd}
                             />
                         </Grid>
                         <CardActions>
@@ -68,7 +68,9 @@ FilterSet.propTypes = {
     filterDates: PropTypes.object,
     setTimeFilter: PropTypes.func,
     filters: PropTypes.array,
-    toggleFilter: PropTypes.func
+    toggleFilter: PropTypes.func,
+    windowEnd: PropTypes.object,
+    windowDuration: PropTypes.object,
 };
 
 FilterSet.defaultProps = {

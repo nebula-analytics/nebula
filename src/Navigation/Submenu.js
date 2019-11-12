@@ -13,7 +13,7 @@ import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
 import {Brightness4, BrightnessHigh, Cached, ExpandLess, ExpandMore} from "@material-ui/icons"
 import About from "./About";
-import FilterSet from "./FilterSet";
+import FilterSet from "./Filters/FilterSet";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Submenu(props) {
-    const {visible, onResize, recordTypes, filters, toggleFilter, toggleDarkMode} = props;
+    const {visible, onResize, recordTypes, filters, toggleFilter, toggleDarkMode, windowEnd, windowDuration} = props;
     const classes = useStyles();
     const [showAbout, setShowAbout] = useState(
         JSON.parse(localStorage.getItem("Submenu.about") || "true")
@@ -94,10 +94,11 @@ function Submenu(props) {
                     </CardActionArea>
                     <Collapse in={showFilters} timeout="auto" onEntered={onResize} onExited={onResize}>
                         <FilterSet
-
                             recordTypes={recordTypes}
                             filters={filters}
                             toggleFilter={toggleFilter}
+                            windowEnd={windowEnd}
+                            windowDuration={windowDuration}
                         />
                     </Collapse>
                 </Card>
@@ -116,6 +117,8 @@ Submenu.propTypes = {
     filters: PropTypes.array,
     toggleFilter: PropTypes.func,
     toggleDarkMode: PropTypes.func,
+    windowEnd: PropTypes.object,
+    windowDuration: PropTypes.object,
 };
 
 Submenu.defaultProps = {
