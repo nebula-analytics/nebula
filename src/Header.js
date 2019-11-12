@@ -1,17 +1,14 @@
 import * as React from "react";
-import {
-    Tooltip,
-    withStyles,
-    Toolbar,
-    Typography,
-    IconButton,
-    Card,
-    CardContent,
-    Collapse,
-    Divider,
-} from "@material-ui/core";
+import {Tooltip, withStyles} from "@material-ui/core";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
 import {Close, Sync, SyncProblem} from "@material-ui/icons"
 import MenuIcon from '@material-ui/icons/Menu';
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Collapse from "@material-ui/core/Collapse";
+import Divider from "@material-ui/core/Divider";
 import GitHub from "./Components/Icons/Github";
 import themeData from "./constants/theme"
 import * as PropTypes from "prop-types";

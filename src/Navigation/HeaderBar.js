@@ -1,5 +1,8 @@
-import { makeStyles, Tooltip, IconButton, Card, Toolbar } from "@material-ui/core";
+import {makeStyles, Tooltip} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import {Close, Menu, Sync, SyncProblem} from "@material-ui/icons";
+import Card from "@material-ui/core/Card";
+import Toolbar from "@material-ui/core/Toolbar";
 import {stringToHslColor} from "../helpers/utils";
 import Submenu from "./Submenu";
 import * as React from "react";

@@ -1,13 +1,10 @@
-import {
-    makeStyles,
-    Tooltip,
-    CardContent,
-    Typography,
-    Divider,
-    IconButton,
-    Collapse,
-} from "@material-ui/core";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import {makeStyles, Tooltip} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import GitHub from "../Components/Icons/Github";
+import Collapse from "@material-ui/core/Collapse";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 
