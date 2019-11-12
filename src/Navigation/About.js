@@ -1,7 +1,6 @@
-import {CardHeader} from "@material-ui/core";
+import { CardHeader, Link } from "@material-ui/core";
 import * as React from "react";
 import {Group, Info, QuestionAnswer} from "@material-ui/icons"
-import Link from "@material-ui/core/Link";
 import Creators from "./Creators";
 import GitHub from "../Components/Icons/Github";
 

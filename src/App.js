@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import custom_theme from "./constants/theme"
 
 import './App.css';
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import {ThemeProvider} from '@material-ui/styles';
-import {Container, responsiveFontSizes} from "@material-ui/core";
+import { Container, responsiveFontSizes, createMuiTheme } from "@material-ui/core";
 import {MuiPickersUtilsProvider,} from "@material-ui/pickers";
 import MomentUtils from '@date-io/moment';
 import DataLayer from "./DataLayer";

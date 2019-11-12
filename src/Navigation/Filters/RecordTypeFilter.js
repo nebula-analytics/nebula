@@ -1,14 +1,17 @@
-import List from "@material-ui/core/List";
 import {Visibility} from "@material-ui/icons";
-import Checkbox from "@material-ui/core/Checkbox";
 import * as React from "react";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Skeleton from "@material-ui/lab/Skeleton";
 import * as PropTypes from "prop-types";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+
+import {
+    List,
+    Checkbox,
+    ListItemIcon,
+    ListItem,
+    ListItemText,
+    ListItemSecondaryAction,
+    makeStyles,
+} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {

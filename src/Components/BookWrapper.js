@@ -1,11 +1,9 @@
 import moment from "moment";
 import {generatePrimoLink} from "../helpers/utils";
-import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 import {useEffect, useState} from "react";
-import Chip from "@material-ui/core/Chip";
 import {Label} from "@material-ui/icons";
-import {TableCell, TableRow} from "@material-ui/core";
+import { TableCell, TableRow, Typography, Chip } from "@material-ui/core";
 import {updateWithImageURLs} from "../helpers/thumbnails";
 
 export default class Book {

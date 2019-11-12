@@ -1,10 +1,7 @@
 import * as React from "react";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Badge from "@material-ui/core/Badge";
 import {Visibility} from "@material-ui/icons";
-import {makeStyles, Tooltip} from "@material-ui/core";
+import { makeStyles, Tooltip, CardActionArea, Badge, Button } from "@material-ui/core";
 import * as PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     clickable: {

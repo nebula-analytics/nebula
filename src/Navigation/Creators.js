@@ -1,11 +1,7 @@
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
 import React, {useEffect, useState} from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Skeleton from "@material-ui/lab/Skeleton";
+
+import { List, ListItem, ListItemAvatar, ListItemText, Avatar, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -89,4 +85,4 @@ export default function (props) {
         )}
 
     </List>
-};
+}

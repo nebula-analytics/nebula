@@ -8,7 +8,7 @@ import BookStyler from "./Components/BookStyler";
 import * as themeData from "./constants/theme";
 import * as PropTypes from "prop-types"
 import moment from "moment";
-import Card from "@material-ui/core/Card";
+import { Card } from '@material-ui/core';
 
 function RecordDisplayLayer(props) {
     /*

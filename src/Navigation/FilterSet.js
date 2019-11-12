@@ -1,15 +1,10 @@
-import CardContent from "@material-ui/core/CardContent";
-import {Card, CardHeader} from "@material-ui/core";
+import { Card, CardHeader, CardContent, FormGroup, Grid, Button, CardActions } from "@material-ui/core";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import {FilterList} from "@material-ui/icons"
-import FormGroup from "@material-ui/core/FormGroup";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import RecordTypeFilter from "./Filters/RecordTypeFilter";
 import {DateTimePicker} from "@material-ui/pickers";
 import moment from "moment";
-import CardActions from "@material-ui/core/CardActions";
 
 
 function FilterSet(props) {

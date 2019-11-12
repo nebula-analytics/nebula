@@ -1,8 +1,5 @@
-import {LinearProgress, makeStyles} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
+import { LinearProgress, makeStyles, IconButton, Card, Toolbar } from "@material-ui/core";
 import {Close, Menu} from "@material-ui/icons";
-import Card from "@material-ui/core/Card";
-import Toolbar from "@material-ui/core/Toolbar";
 import Submenu from "./Submenu";
 import * as React from "react";
 import {useEffect, useState} from "react";

@@ -1,10 +1,9 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {Card, makeStyles} from "@material-ui/core";
+import { Card, makeStyles, Grow } from "@material-ui/core";
 import BookView from "./BookView";
 import BookWrapper from "./BookWrapper";
 import Img from 'react-image'
-import Grow from "@material-ui/core/Grow";
 import LoadingCard from "./LoadingCard";
 import clsx from "clsx";
 
@@ -104,22 +103,22 @@ function BookCard(props) {
             />
         }
 
-        BookCard.propTypes={
-            book: PropTypes.object.isRequired,
-            createModal: PropTypes.func.isRequired,
-            saturation: PropTypes.number,
-            brightness: PropTypes.number,
-            setFilter: PropTypes.func,
-            setSort: PropTypes.func
-        };
+BookCard.propTypes={
+    book: PropTypes.object.isRequired,
+    createModal: PropTypes.func.isRequired,
+    saturation: PropTypes.number,
+    brightness: PropTypes.number,
+    setFilter: PropTypes.func,
+    setSort: PropTypes.func
+};
 
-        BookCard.defaultProps = {
-            saturation: 0,
-            brightness: 100,
-            setFilter: () => {
-        },
-            setSort: () => {
-        }
-        };
+BookCard.defaultProps = {
+    saturation: 0,
+    brightness: 100,
+    setFilter: () => {
+},
+    setSort: () => {
+}
+};
 
-        export default BookCard;
+export default BookCard;

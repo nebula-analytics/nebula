@@ -1,15 +1,19 @@
-import {CardHeader, makeStyles, Tooltip} from "@material-ui/core";
-import Collapse from "@material-ui/core/Collapse";
+import {
+    CardHeader,
+    makeStyles,
+    Tooltip,
+    Collapse,
+    Card,
+    CardActionArea,
+    CardActions,
+    IconButton,
+} from "@material-ui/core";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
 import {Brightness4, BrightnessHigh, Cached, ExpandLess, ExpandMore} from "@material-ui/icons"
-import Card from "@material-ui/core/Card";
 import About from "./About";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import FilterSet from "./FilterSet";
-import CardActions from "@material-ui/core/CardActions";
-import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
     root: {
