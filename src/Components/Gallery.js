@@ -4,23 +4,60 @@ import LayoutInterface from "./LayoutInterface";
 import * as themeData from "../constants/theme"
 
 function Gallery(props) {
-    const {children, ...options} = props;
+    const {children, filter, ...options} = props;
+    let filterString = getFilterStringv2(filter);
+    if(filterString){
+       filterString += ", [data-always_visible=\"true\"]"
+    }
     return (
         <LayoutInterface
             className={'grid'}
             elementType={'div'}
-            options={options}
-            disableImagesLoaded={false}
+            options={{filter: filterString, ...options}}
         >
             {children}
         </LayoutInterface>
     );
 }
 
-Gallery.propTypes = {
-    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+const getFilterStringv2 = filters => Object.values(filters.reduce((state, {field, value}) => {
+    return {
+        ...state,
+        [field]: [...(state[field] || []), `[data-${field}="${value}"]`]
+    }
+}, {})).sort(
+    (v1, v2) => v1.length > v2.length ? 1 : v2.length > v1.length ? -1 : 0
+).reduce((query, values) => {
+    const result = [];
+    values.forEach(selector => {
+        if (query.length) {
+            query.forEach(existing => {
+                result.push(`${selector}${existing}`)
+            })
+        } else {
+            result.push(selector)
+        }
+    });
+    console.log(query, values);
+    return result
+}, []).join(",");
 
-    filter: PropTypes.any,
+const getFilterString = (filters) => {
+    if (!filters.length) {
+        return "*"
+    } else {
+        return [{
+            field: "always_visible",
+            value: "true"
+        }, ...filters].map(f => `[data-${f.field}="${f.value}"]`).join(", ")
+    }
+};
+
+Gallery.propTypes = {
+    children: PropTypes.arrayOf(PropTypes.node).isRequired,
+    stamped: PropTypes.oneOf([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
+
+    filter: PropTypes.arrayOf(PropTypes.object),
     sort: PropTypes.object,
     transitionDuration: PropTypes.string,
     stagger: PropTypes.number,
@@ -31,14 +68,22 @@ Gallery.propTypes = {
 };
 
 Gallery.defaultProps = {
-    transitionDuration: '2s',
-    layoutMode: 'masonry',
-    masonry: {
-        gutter: themeData.cards.gutter*2,
+    transitionDuration: '1s',
+    stagger: 30,
+    layoutMode: 'packery',
+    packery: {
+        gutter: themeData.cards.gutter,
+        columnWidth: `.dynamic-book-width`,
     },
-    stamp: ".stamp",
     percentPosition: true,
-    filter: "*",
+    getSortData: {
+        header: "[data-order_first]",
+        time: "[data-last_view]",
+        id: "[data-doc_id]",
+    },
+    sortAscending: false,
+    sortBy: [],
+    filter: [],
 };
 
 export default Gallery;
