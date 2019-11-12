@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { Card, makeStyles, Grow } from "@material-ui/core";
+import {Card, makeStyles, Grow} from "@material-ui/core";
 import BookView from "./BookView";
 import BookWrapper from "./BookWrapper";
 import Img from 'react-image'
@@ -62,17 +62,12 @@ function BookCard(props) {
         "data-doc_id": dataWrapper.doc_id.valueOf(),
         "data-last_view": dataWrapper.when.valueOf(),
         "data-order_first": 0,
-        "data-has_image": false,
         "className": `${classes.root} record`,
     };
 
-    const hasImageProps = {
-        "data-has_image": true,
-    };
+    const highLevelWrapper = extraProps => child => <Card {...isotopeProps} {...extraProps} > {child} </Card>;
 
-    const highLevelWrapper = child => <Card {...isotopeProps} > {child} </Card>;
-
-    const viewWrapper = child => highLevelWrapper(
+    const viewWrapper = extraProps => child => highLevelWrapper(extraProps)(
         <Grow in={Boolean(child)} timeout={399000} appear={true}>
             <BookView
                 onClick={() => createModal(dataWrapper)}
@@ -87,23 +82,23 @@ function BookCard(props) {
     const Loader = <LoadingCard numRows={5} {...isotopeProps}/>;
 
     const Plain = <div className={classes.text}>
-       {/* Fix weird quotes in library books (we've escaped tags already)*/}
+        {/* Fix weird quotes in library books (we've escaped tags already)*/}
         <h3 dangerouslySetInnerHTML={{__html: dataWrapper.title.toString()}}/>
     </div>;
 
 
-            return <Img image-record_type={dataWrapper.type.valueOf()}
-            src={dataWrapper.images.valueOf()}
-            className={classes.image}
-            container={viewWrapper}
-            unloaderContainer={viewWrapper}
-            unloader={Plain}
-            loaderContainer={highLevelWrapper}
-            loader={Loader}
-            />
-        }
+    return <Img image-record_type={dataWrapper.type.valueOf()}
+                src={dataWrapper.images.valueOf()}
+                className={classes.image}
+                container={viewWrapper({"data-has-image": true})}
+                unloaderContainer={viewWrapper({"data-has-image": false})}
+                unloader={Plain}
+                loaderContainer={highLevelWrapper}
+                loader={Loader}
+    />
+}
 
-BookCard.propTypes={
+BookCard.propTypes = {
     book: PropTypes.object.isRequired,
     createModal: PropTypes.func.isRequired,
     saturation: PropTypes.number,
@@ -116,9 +111,9 @@ BookCard.defaultProps = {
     saturation: 0,
     brightness: 100,
     setFilter: () => {
-},
+    },
     setSort: () => {
-}
+    }
 };
 
 export default BookCard;

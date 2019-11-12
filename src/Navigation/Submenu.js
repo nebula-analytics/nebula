@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Submenu(props) {
-    const {visible, onResize, recordTypes, filters, toggleFilter, toggleDarkMode, windowEnd, windowDuration} = props;
+    const {visible, onResize, recordTypes, filters, toggleFilter, toggleDarkMode, windowEnd, windowDuration, setRequestWindow, setWindowEnd} = props;
     const classes = useStyles();
     const [showAbout, setShowAbout] = useState(
         JSON.parse(localStorage.getItem("Submenu.about") || "true")
@@ -111,6 +111,8 @@ function Submenu(props) {
                             toggleFilter={toggleFilter}
                             windowEnd={windowEnd}
                             windowDuration={windowDuration}
+                            setRequestWindow={setRequestWindow}
+                            setWindowEnd={setWindowEnd}
                         />
                     </Collapse>
                 </Card>
@@ -131,6 +133,9 @@ Submenu.propTypes = {
     toggleDarkMode: PropTypes.func,
     windowEnd: PropTypes.object,
     windowDuration: PropTypes.object,
+
+    setRequestWindow: PropTypes.func,
+    setWindowEnd: PropTypes.func,
 };
 
 Submenu.defaultProps = {

@@ -42,7 +42,7 @@ Gallery.propTypes = {
 };
 
 Gallery.defaultProps = {
-    transitionDuration: '2s',
+    transitionDuration: '1s',
     stagger: 30,
     layoutMode: 'packery',
     packery: {

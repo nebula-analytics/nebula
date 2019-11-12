@@ -72,7 +72,6 @@ function RecordTypeFilter(props) {
                         <ListItemSecondaryAction>
                             {checked && <Visibility label-record_type={type}
                                                     edge="end" aria-label="visibility status"/>}
-                            {/*<VisibilityOff edge="end" aria-label="visibility status"/>}*/}
                         </ListItemSecondaryAction>
                     </ListItem>
                 );

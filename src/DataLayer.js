@@ -85,7 +85,7 @@ class DataLayer extends Component {
 
         this.interval = setInterval(() => {
             this.setState({
-                start_at: this.state.start_at.add(timeUpdateInterval),
+                start_at: this.state.start_at ? this.state.start_at.add(timeUpdateInterval) : this.state.start_at,
                 end_at: this.state.end_at.add(timeUpdateInterval)
             })
         }, timeUpdateInterval.asMilliseconds())
@@ -135,14 +135,16 @@ class DataLayer extends Component {
             end_at = moment();
         }
 
-        start_at = start_at ? moment(start_at) : end_at.clone().subtract(duration);
+        start_at = start_at ? moment(start_at) : undefined;
         end_at = end_at ? moment(end_at) : start_at.clone().add(duration);
 
-        return {start_at, end_at, window: duration}
+        return {start_at, end_at, duration}
     };
 
     buildTimeFilter = () => {
-        let {start_at, end_at} = this.state;
+        let {start_at, end_at, duration} = this.state;
+
+        start_at = start_at === undefined ? end_at.clone().subtract(duration) : start_at;
 
         let aggregation = {
             "$start": start_at.toISOString(),
@@ -191,28 +193,21 @@ class DataLayer extends Component {
 
     };
 
-    setRequestWindow(int) {
-        this.setState({
-            window: moment.duration(
-                Math.max(int, 30), "m"
-            )
-        })
-    }
+    setRequestWindow = (int) => {
+        this.setState(this.getTimeValues(this.state.start_at, this.state.end_at, int))
+    };
 
-    setWindowStart(time) {
-        this.setState({
-            start_at: moment(time)
-        })
-    }
+    setWindowStart = (time) => {
+        this.setState(this.getTimeValues(time, this.state.end_at, this.state.duration))
+    };
 
-    setWindowEnd(time) {
-        this.setState({
-            end_at: moment(time)
-        })
-    }
+    setWindowEnd = (time) => {
+        console.log(time);
+        this.setState(this.getTimeValues(this.state.start_at, time, this.state.duration))
+    };
 
     render() {
-        const {records, upstream, end_at, window} = this.state;
+        const {records, upstream, end_at, duration} = this.state;
         const {toggleDarkMode} = this.props;
         return <RecordDisplayLayer records={records}
                                    upstream={upstream}
@@ -221,7 +216,7 @@ class DataLayer extends Component {
                                    setWindowEnd={this.setWindowEnd}
                                    setWindowStart={this.setWindowStart}
                                    windowEnd={end_at}
-                                   windowDuration={window}
+                                   windowDuration={duration}
 
         />
     }

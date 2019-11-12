@@ -1,11 +1,9 @@
-import { LinearProgress, makeStyles, IconButton, Card, Toolbar } from "@material-ui/core";
+import {Card, IconButton, LinearProgress, makeStyles, Toolbar} from "@material-ui/core";
 import {Close, Menu} from "@material-ui/icons";
 import Submenu from "./Submenu";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
-import moment from "moment";
-import BookCard from "../Components/BookCard";
 
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HeaderBar(props) {
-    const {upstream, onResize, recordTypes, filters, toggleFilter,windowDuration, windowEnd} = props;
+    const {upstream, onResize, recordTypes, filters, toggleFilter, windowDuration, windowEnd, setRequestWindow, setWindowEnd} = props;
     const {state, last_reached} = upstream;
     const [showMenu, setShowMenu] = useState(JSON.parse(localStorage.getItem("header.showMenu") || "true"));
     const classes = useStyles();
@@ -63,7 +61,7 @@ function HeaderBar(props) {
             </Toolbar>
             <LinearProgress color={state === "connecting" ? "primary" : "secondary"}
                             style={{opacity: state === "synced" ? 0 : 100}}
-                            {...state === "connecting"?{} :{variant: "determinate", value: 100}}/>
+                            {...state === "connecting" ? {} : {variant: "determinate", value: 100}}/>
             <Submenu
                 visible={showMenu}
                 connected={state === "synced"}
@@ -75,6 +73,8 @@ function HeaderBar(props) {
                 toggleDarkMode={toggleDarkMode}
                 windowDuration={windowDuration}
                 windowEnd={windowEnd}
+                setWindowEnd={setWindowEnd}
+                setRequestWindow={setRequestWindow}
             />
         </Card>
     );
@@ -90,6 +90,8 @@ HeaderBar.propTypes = {
     toggleDarkMode: PropTypes.func,
     windowEnd: PropTypes.object,
     windowDuration: PropTypes.object,
+    setRequestWindow: PropTypes.func,
+    setWindowEnd: PropTypes.func,
 };
 
 HeaderBar.defaultProps = {

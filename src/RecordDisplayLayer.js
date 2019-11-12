@@ -8,7 +8,6 @@ import BookStyler from "./Components/BookStyler";
 import * as themeData from "./constants/theme";
 import * as PropTypes from "prop-types"
 import moment from "moment";
-import {Card} from '@material-ui/core';
 
 function RecordDisplayLayer(props) {
     /*
@@ -17,12 +16,12 @@ function RecordDisplayLayer(props) {
     const [modalState, setModalState] = useState(null);
     const [filters, setFilterState] = useState([]);
     const [sorts, setSortState] = useState(["header", "time", "id"]);
-    const [[saturation, brightness], setSatBrightness] = useState([
+    const [[saturation, brightness],] = useState([
         getQueryStringValue("saturation", 100),
         getQueryStringValue("brightness", 40)
     ]);
 
-    const {records = [], toggleDarkMode, upstream, windowDuration, windowEnd} = props;
+    const {records = [], toggleDarkMode, upstream, windowDuration, windowEnd, setRequestWindow, setWindowEnd} = props;
 
     const recordTypes = getRecordTypes(records);
 
@@ -45,6 +44,8 @@ function RecordDisplayLayer(props) {
                 toggleDarkMode={toggleDarkMode}
                 windowEnd={windowEnd}
                 windowDuration={windowDuration}
+                setRequestWindow={setRequestWindow}
+                setWindowEnd={setWindowEnd}
             />
             {isDesynced(upstream) && <GenericCard data-always_visible={true} data-order_first={8}>
                 We're unable to contact the library site right now! We'll keep trying until we can reach it
@@ -62,7 +63,7 @@ function RecordDisplayLayer(props) {
 const isDesynced = upstream => upstream.state !== "synced" ?
     upstream.last_reached === undefined ?
         upstream.last_attempt !== undefined
-        : upstream.last_reached.isBefore(moment().subtract(10, 's'))
+        : upstream.last_reached.isBefore(moment().subtract(30, 's'))
     : false;
 
 const createBook = (props) => book => <BookCard key={book["_id"]} book={book} {...props}/>;
@@ -78,7 +79,6 @@ const getRecordTypes = records => records.reduce(
 );
 
 const toggleFilter = (filters, setFilterState) => (...selectors) => setFilterState(selectors.reduce((state, value) => {
-    console.log(value)
     /* Toggle a filter */
     const filtered = state.filter(isEqual(value));
     if (filtered.length !== state.length) {

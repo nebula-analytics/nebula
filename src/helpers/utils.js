@@ -1,5 +1,4 @@
 import themeData from "../constants/theme";
-import moment from "moment";
 
 export const getQueryStringValue = (string, d = undefined) => {
     const params = new URLSearchParams(window.location.search);
@@ -27,7 +26,7 @@ export const generatePrimoLink = (book) => {
     const url = new URL(`https://${host}/primo-explore/fulldisplay?`);
 
     /* Compensate for poor data */
-    if(book.institution === undefined){
+    if (book.institution === undefined) {
         book.institution = "RMITU"
     }
     url.search = new URLSearchParams({
