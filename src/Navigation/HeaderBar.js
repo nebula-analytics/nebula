@@ -48,7 +48,7 @@ function HeaderBar(props) {
 
     return (<Card className={`${classes.root} stamp header`}
                   data-always_visible={true}
-                  data-order_first={true}
+                  data-order_first={10}
         >
             <Toolbar>
                 <IconButton
