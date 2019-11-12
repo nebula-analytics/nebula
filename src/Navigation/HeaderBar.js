@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     },
     grow: {
         flexGrow: 1,
+        maxHeight: "100px",
+        color: "white",
+        fontSize: "50px"
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -57,7 +60,7 @@ function HeaderBar(props) {
                     {showMenu ? <Close/> : <Menu/>}
                 </IconButton>
                 <div className={classes.grow}>
-                    <img alt={"RMIT Library Live"} src={"/rmit-branding.png"} className={classes.title}/>
+                    <img alt={"Nebula"} src={"/branding.png"} className={classes.title}/>
                 </div>
             </Toolbar>
             <LinearProgress color={state === "connecting" ? "primary" : "secondary"}
