@@ -1,19 +1,22 @@
 import {
-    CardHeader,
-    makeStyles,
-    Tooltip,
-    Collapse,
     Card,
     CardActionArea,
     CardActions,
+    CardHeader,
+    Collapse,
     IconButton,
+    makeStyles,
+    Tooltip,
 } from "@material-ui/core";
+import {Brightness4, BrightnessHigh, Cached, ExpandLess, ExpandMore} from "@material-ui/icons"
+
 import * as React from "react";
 import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
-import {Brightness4, BrightnessHigh, Cached, ExpandLess, ExpandMore} from "@material-ui/icons"
 import About from "./About";
 import FilterSet from "./Filters/FilterSet";
+import * as moment from "moment-timezone";
+import {TimeIcon} from "@material-ui/pickers/_shared/icons/TimeIcon";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -49,6 +52,8 @@ function Submenu(props) {
         }, [showFilters, showAbout, onResize]
     );
 
+    let libraryTimeStart = moment.tz(windowEnd, 'Australia/Melbourne').format("LLLL z");
+    let libraryTimeEnd = moment.tz(windowEnd, 'Australia/Melbourne').subtract(windowDuration).format("LLLL z");
 
     return <Collapse in={visible} timeout="auto" onEntered={onResize} onExited={onResize}>
         <div className={classes.root}>
@@ -73,6 +78,7 @@ function Submenu(props) {
                         </IconButton>
                     </Tooltip>
                 </CardActions>
+
                 <Card>
                     <CardActionArea onClick={() => setShowAbout(!showAbout)}>
                         <CardHeader title={"About Nebula (Library Live)"}
@@ -82,6 +88,12 @@ function Submenu(props) {
                     </CardActionArea>
                     <Collapse in={showAbout} timeout="auto" onEntered={onResize} onExited={onResize}>
                         <About/>
+                        <CardHeader title={"What time am I looking at?"}
+                                    subheader={`This snapshot shows RMIT Library book data as it was between 
+                                    ${libraryTimeEnd} and ${libraryTimeStart}`}
+                                    avatar={<TimeIcon/>}
+                        >
+                        </CardHeader>
                     </Collapse>
                 </Card>
 

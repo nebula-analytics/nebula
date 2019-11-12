@@ -14,6 +14,7 @@
     "isotope-layout": "^3.0.6",
     "isotope-packery": "^2.0.1",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
     "prop-types": "latest",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

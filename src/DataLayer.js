@@ -129,17 +129,16 @@ class DataLayer extends Component {
         this.setState(update);
     };
 
-    getTimeValues = (start_at, end_at, window) => {
-        window = moment.duration(window, "m");
-
+    getTimeValues = (start_at, end_at, duration) => {
+        duration = moment.duration(duration, "m");
         if (!start_at && !end_at) {
             end_at = moment();
         }
 
-        start_at = start_at ? moment(start_at) : end_at.clone().subtract(window);
-        end_at = end_at ? moment(end_at) : start_at.clone().add(window);
+        start_at = start_at ? moment(start_at) : end_at.clone().subtract(duration);
+        end_at = end_at ? moment(end_at) : start_at.clone().add(duration);
 
-        return {start_at, end_at, window}
+        return {start_at, end_at, window: duration}
     };
 
     buildTimeFilter = () => {

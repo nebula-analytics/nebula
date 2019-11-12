@@ -1,10 +1,11 @@
-import { Card, CardHeader, CardContent, FormGroup, Grid, Button, CardActions } from "@material-ui/core";
+import {Card, CardHeader, CardContent, FormGroup, Grid, Button, CardActions} from "@material-ui/core";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import {FilterList} from "@material-ui/icons"
 import RecordTypeFilter from "./RecordTypeFilter";
 import {DateTimePicker} from "@material-ui/pickers";
 import moment from "moment";
+import Slider from "@material-ui/core/Slider";
 
 
 function FilterSet(props) {
@@ -21,44 +22,36 @@ function FilterSet(props) {
         <CardContent>
             <RecordTypeFilter recordTypes={recordTypes} filters={filters} toggleFilter={toggleFilter}/>
         </CardContent>
-        <FormGroup row>
-            <Card>
-                <CardHeader
-                    title={"By Time Period"}
-                    subheader={"Take a look into the past."}
-                    avatar={<FilterList/>}
+        <Card>
+            <CardHeader
+                title={"Alternate time periods"}
+                subheader={"Information will update automatically."}
+                avatar={<FilterList/>}
+            />
+            <CardContent>
+
+                <DateTimePicker
+                    label="Latest Record"
+                    disableFuture
+                    showTodayButton
+                    value={windowEnd}
+                    onChange={setTimeFilter("end")}
+                    fullWidth
                 />
-                <CardContent>
-                    <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                            <DateTimePicker
-                                label="Latest Record"
-                                disableFuture
-                                showTodayButton
-                                value={windowEnd}
-                                onChange={setTimeFilter("end")}
-                            />
-
-                        </Grid>
-
-                        <Grid item xs={6}>
-                            <DateTimePicker
-                                value={windowStart}
-                                disableFuture
-                                onChange={setTimeFilter("start")}
-                                label="Earliest Record"
-                                showTodayButton
-                                maxDate={windowEnd}
-                            />
-                        </Grid>
-                        <CardActions>
-                            <Button fullWidth>Update Times</Button>
-                        </CardActions>
-
-                    </Grid>
-                </CardContent>
-            </Card>
-        </FormGroup>
+                {windowDuration.humanize()}
+                <Slider
+                    getAriaLabel={v => moment.duration(v, "m").humanize()}
+                    getAriaValueText={v => moment.duration(v, "m").humanize()}
+                    onChangeCommitted={(v) => console.log(v)}
+                    defaultValue={windowDuration.asMinutes()}
+                    valueLabelDisplay="auto"
+                    step={10}
+                    marks
+                    min={30}
+                    max={300}
+                />
+            </CardContent>
+        </Card>
     </Card>
 
 }
