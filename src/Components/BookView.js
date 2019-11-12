@@ -1,15 +1,7 @@
 import * as React from "react";
-import Img from 'react-image'
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-import themeData from "../constants/theme"
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Badge from "@material-ui/core/Badge";
 import {Visibility} from "@material-ui/icons";
-import {makeStyles, Tooltip} from "@material-ui/core";
-import Zoom from "@material-ui/core/Zoom";
+import { makeStyles, Tooltip, CardActionArea, Badge, Button } from "@material-ui/core";
 import * as PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     clickable: {
@@ -17,17 +9,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        flexGrow: 1
-    },
-    image: {
-        width: "100%"
-    },
-    text: {
-        color: "white",
-        textAlign: "center",
-        padding: `${themeData.cards.gutter}px`,
-        width: "calc(100 % -10px);",
-        marginTop: "10px"
+        flexGrow: 1,
     },
 
     tag: {
@@ -53,35 +35,24 @@ const useStyles = makeStyles((theme) => ({
 
 function BookView(props) {
     const classes = useStyles();
-    const {book, onClick, images, title, record_type, color, setFilter} = props;
-
-    const loader = <CircularProgress/>;
-    const fallback = <div className={classes.text}><h3>{title}</h3></div>;
-
-    const filterByThisRecordType = () => {
-        setFilter(`[data-record_type=${record_type}]`);
-    };
-
+    const {children, count, tag, onClick} = props;
 
     return <>
-        <Tooltip title={`Filter by ${record_type}`}>
-            <Button className={classes.tag} onClick={filterByThisRecordType}>
-                {record_type}
-            </Button>
-        </Tooltip>
-        <CardActionArea onClick={onClick} className={classes.clickable} style={{background: color}}>
-
-            <Img src={images} alt={""} className={classes.image} loader={loader}
-                 unloader={fallback}
-                 container={(c) => <Zoom mountOnEnter={true} in={true} appear={true} timeout={1000}>{c}</Zoom>}
-            />
-
+        <Button className={classes.tag} onClick={()=>{}}>
+            {tag}
+        </Button>
+        <CardActionArea onClick={onClick} className={classes.clickable}>
+            {children}
             <div className={classes.views}>
-                {book.count > 1 &&
-                <Badge badgeContent={book.count} overlap={"circle"} color="primary">
-                    <Visibility/>
-                </Badge>
-                }
+                {count > 1 ?
+                    <Badge badgeContent={count} overlap={"circle"} color="primary" anchorOrigin={{
+                        horizontal: "right", vertical: "top"
+                    }}>
+                        <Tooltip title={`${count} views`}>
+                            <Visibility/>
+                        </Tooltip>
+                    </Badge>
+                    : count !== 1 && count}
             </div>
         </CardActionArea>
     </>
@@ -89,23 +60,14 @@ function BookView(props) {
 }
 
 BookView.propTypes = {
-    book: PropTypes.object.isRequired,
+    onClick: PropTypes.func,
 
-    onClick: PropTypes.func.isRequired,
-    setFilter: PropTypes.func,
-    setSort: PropTypes.func,
-
-    images: PropTypes.array,
-    title: PropTypes.string,
-    record_type: PropTypes.string,
-    color: PropTypes.string
+    tag: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    count: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
 };
 
 BookView.defaultProps = {
-    setFilter: () => {
-    },
-    setSort: () => {
-    }
+    onClick: () => {}
 };
 
 export default BookView

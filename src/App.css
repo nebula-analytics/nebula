@@ -3,7 +3,9 @@ html {
 }
 body {
     background: #160028 !important;
-
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    transition: all 0.25s linear;
 }
 .grid {
     margin: auto;

@@ -1,27 +1,28 @@
-import {makeStyles, Tooltip} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import {Close, Menu, Sync, SyncProblem} from "@material-ui/icons";
-import Card from "@material-ui/core/Card";
-import Toolbar from "@material-ui/core/Toolbar";
-import {stringToHslColor} from "../helpers/utils";
+import {Card, IconButton, LinearProgress, makeStyles, Toolbar} from "@material-ui/core";
+import {Close, Menu} from "@material-ui/icons";
 import Submenu from "./Submenu";
 import * as React from "react";
-import {useState} from "react";
-import themeData from "../constants/theme";
+import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
 
 
 const useStyles = makeStyles(theme => ({
     root: {
-        marginBottom: `${themeData.cards.gutter}px`,
+        // marginBottom: `${themeData.cards.gutter}px`,
         float: "left",
         zIndex: 1000,
         color: "white",
         background: "none",
         boxShadow: "none",
+        position: "absolute",
+        top: "0%",
+        left: "0%",
     },
     grow: {
         flexGrow: 1,
+        maxHeight: "100px",
+        color: "white",
+        fontSize: "50px"
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -33,16 +34,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function HeaderBar(props) {
-    const {saturation, brightness, connected, last_connected, onResize} = props;
-    const [showMenu, setShowMenu] = useState(false);
+    const {upstream, onResize, recordTypes, filters, toggleFilter,
+        windowDuration, windowEnd, setRequestWindow, setWindowEnd, shortDate, setShortDate} = props;
+    const {state, last_reached} = upstream;
+    const [showMenu, setShowMenu] = useState(JSON.parse(localStorage.getItem("header.showMenu") || "true"));
     const classes = useStyles();
+    const {toggleDarkMode} = props;
 
-    const connectionText = connected ? "" : "Not";
-    const connectionIcon = connected ? undefined : <SyncProblem/>;
-    const connectionColor = connected ? "primary" : "secondary";
+    useEffect(() => {
+        localStorage.setItem("header.showMenu", JSON.stringify(showMenu))
+    }, [showMenu]);
 
-
-    return (<Card className={`stamp ${classes.root} dynamic-header-width`}>
+    return (<Card className={`${classes.root} stamp header`}
+                  data-always_visible={true}
+                  data-order_first={999}
+        >
             <Toolbar>
                 <IconButton
                     edge="start"
@@ -54,23 +60,27 @@ function HeaderBar(props) {
                     {showMenu ? <Close/> : <Menu/>}
                 </IconButton>
                 <div className={classes.grow}>
-                    {/*<Typography variant="h6" className={classes.title} color="inherit" noWrap>*/}
-                    {/*    Nebula*/}
-                    {/*</Typography>*/}
-                    <img alt={"RMIT Library Live"} src={"/rmit-branding.png"} className={classes.title}/>
+                    <img alt={"Nebula"} src={"/branding.png"} className={classes.title}/>
                 </div>
-                <Tooltip title={`${connectionText} Connected`}>
-                    <IconButton aria-label={`${connectionText} Connected`} color={connectionColor}>
-                        {connectionIcon}
-                    </IconButton>
-                </Tooltip>
             </Toolbar>
+            <LinearProgress color={state === "connecting" ? "primary" : "secondary"}
+                            style={{opacity: state === "synced" ? 0 : 100}}
+                            {...state === "connecting" ? {} : {variant: "determinate", value: 100}}/>
             <Submenu
                 visible={showMenu}
-                connected={connected}
-                when={last_connected}
+                connected={state === "synced"}
+                when={last_reached}
                 onResize={onResize}
-                color={stringToHslColor("header", saturation / 2, brightness)}
+                recordTypes={recordTypes}
+                filters={filters}
+                toggleFilter={toggleFilter}
+                toggleDarkMode={toggleDarkMode}
+                windowDuration={windowDuration}
+                windowEnd={windowEnd}
+                setWindowEnd={setWindowEnd}
+                setRequestWindow={setRequestWindow}
+                setShortDate={setShortDate}
+                shortDate={shortDate}
             />
         </Card>
     );
@@ -78,19 +88,27 @@ function HeaderBar(props) {
 }
 
 HeaderBar.propTypes = {
-    connected: PropTypes.bool,
-    last_connected: PropTypes.object,
-    brightness: PropTypes.number,
-    saturation: PropTypes.number,
-    onResize: PropTypes.func
+    onResize: PropTypes.func,
+    recordTypes: PropTypes.object,
+    upstream: PropTypes.object,
+    filters: PropTypes.array,
+    toggleFilter: PropTypes.func,
+    toggleDarkMode: PropTypes.func,
+    windowEnd: PropTypes.object,
+    windowDuration: PropTypes.object,
+    setRequestWindow: PropTypes.func,
+    setWindowEnd: PropTypes.func,
 };
 
 HeaderBar.defaultProps = {
-    connected: false,
-    last_connected: null,
-    brightness: 100,
-    saturation: 0,
-    onResize: () => null
+    onResize: () => null,
+    recordTypes: {},
+    upstream: {
+        state: "desynced",
+        last_attempt: null,
+        last_reached: null
+    },
+    filters: [],
 };
 
 export default HeaderBar

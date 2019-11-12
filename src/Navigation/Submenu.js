@@ -1,70 +1,139 @@
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import {makeStyles, Tooltip} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import GitHub from "../Components/Icons/Github";
-import Collapse from "@material-ui/core/Collapse";
+import {
+    Card,
+    CardActionArea,
+    CardActions,
+    CardHeader,
+    Collapse,
+    IconButton,
+    makeStyles,
+    Tooltip,
+} from "@material-ui/core";
+import {
+    AccessTime,
+    Brightness4,
+    BrightnessHigh,
+    Cached,
+    CalendarToday,
+    ExpandLess,
+    ExpandMore,
+    History
+} from "@material-ui/icons"
+
 import * as React from "react";
+import {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
+import About from "./About";
+import FilterSet from "./Filters/FilterSet";
+import * as moment from "moment-timezone";
+import {TimeIcon} from "@material-ui/pickers/_shared/icons/TimeIcon";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        background: "white",
+        backgroundColor: theme.palette.background.paper,
+    },
+    heading: {
+        fontSize: theme.typography.pxToRem(20),
+        fontWeight: theme.typography.fontWeightRegular,
+    },
+    light: {
+        display: theme.palette.type === "light" ? undefined : "none"
+    },
+    dark: {
+        display: theme.palette.type === "dark" ? undefined : "none"
     }
 }));
 
 function Submenu(props) {
-    const {visible, when, connected, onResize} = props;
+    const {
+        visible, onResize, recordTypes, filters, toggleFilter, setShortDate, shortDate,
+        toggleDarkMode, windowEnd, windowDuration, setRequestWindow, setWindowEnd
+    } = props;
     const classes = useStyles();
+    const [showAbout, setShowAbout] = useState(
+        JSON.parse(localStorage.getItem("Submenu.about") || "true")
+    );
+    const [showFilters, setShowFilters] = useState(
+        JSON.parse(localStorage.getItem("Submenu.filters") || "false")
+    );
 
-    const last_connected = when ? when.toLocaleString() : connected ? "Loading ..." : "Unable to connect to the library";
+    useEffect(
+        () => {
+            console.log("Store menu state");
+            localStorage.setItem("Submenu.filters", JSON.stringify(showFilters));
+            localStorage.setItem("Submenu.about", JSON.stringify(showAbout));
+        }, [showFilters, showAbout, onResize]
+    );
+
+    let libraryTimeStart = moment.tz(windowEnd, 'Australia/Melbourne').format("LLLL z");
+    let libraryTimeEnd = moment.tz(windowEnd, 'Australia/Melbourne').subtract(windowDuration).format("LLLL z");
 
     return <Collapse in={visible} timeout="auto" onEntered={onResize} onExited={onResize}>
         <div className={classes.root}>
-            <CardContent>
-                <Typography variant="body1" color="textPrimary" component="p">
-                    What is this?
-                </Typography>
-                <Typography gutterBottom variant="body2" color="textSecondary" component="p">
-                    You're looking at a real-time visualization of resource access at the RMIT library, as users view books
-                    online a card for the book is added on this site.
-                </Typography>
-                <Typography variant="body1" color="textPrimary" component="p">
-                    What time is it at the RMIT Library?
-                </Typography>
-                <Typography gutterBottom variant="body2" color="textSecondary" component="p">
-                    {last_connected}
-                </Typography>
-                <Typography variant="body1" color="textPrimary" component="p">
-                    About Nebula
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    Project Nebula was a 2019 student project at RMIT thought up by the RMIT library with the goal
-                    of visualizing resource usage in real-time.
-                </Typography>
-            </CardContent>
-            <Divider variant="fullWidth" component="div"/>
-            <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    <Tooltip title={"Github"}>
-                        <IconButton href={"https://github.com/nebula-analytics/nebula"} aria-label="Github link"
-                                    color="default">
-                            <GitHub/>
+
+            <Card>
+                <CardActions>
+                    <Tooltip title={"Change theme"}>
+                        <IconButton onClick={toggleDarkMode}>
+                            <Brightness4 className={classes.dark}/>
+                            <BrightnessHigh className={classes.light}/>
                         </IconButton>
                     </Tooltip>
-                    Explore Nebula's source code on Github
-                </Typography>
-            </CardContent>
-            <Divider variant="fullWidth" component="div"/>
-            <CardContent>
-                <Typography gutterBottom variant="body1" component="p">
-                    Filters
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    You can filter by record type by hitting the button in the top corner!
-                </Typography>
-            </CardContent>
+                    <Tooltip title={"Clear stored settings (menu state, stored filters, etc)"}>
+                        <IconButton onClick={() => {
+                            window.localStorage.clear();
+                            toggleDarkMode(true);
+                            setShowAbout(true);
+                            setShowFilters(false);
+                            toggleFilter(...filters)
+                        }}>
+                            <Cached/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={"Change Date Format"}>
+                        <IconButton onClick={() => setShortDate(!shortDate)}>
+                            {shortDate ? <CalendarToday/> : <AccessTime/>}
+                        </IconButton>
+                    </Tooltip>
+                </CardActions>
+
+                <Card>
+                    <CardActionArea onClick={() => setShowAbout(!showAbout)}>
+                        <CardHeader title={"About Nebula (Library Live)"}
+                                    titleTypographyProps={{variant: "h6"}}
+                                    avatar={showAbout ? <ExpandMore/> : <ExpandLess/>}
+                        />
+                    </CardActionArea>
+                    <Collapse in={showAbout} timeout="auto" onEntered={onResize} onExited={onResize}>
+                        <About/>
+                        <CardHeader title={"What time am I looking at?"}
+                                    subheader={`This snapshot shows RMIT Library book data as it was between 
+                                    ${libraryTimeEnd} and ${libraryTimeStart}`}
+                                    avatar={<TimeIcon/>}
+                        >
+                        </CardHeader>
+                    </Collapse>
+                </Card>
+
+                <Card>
+                    <CardActionArea onClick={() => setShowFilters(!showFilters)}>
+                        <CardHeader title={"Filter Records"}
+                                    titleTypographyProps={{variant: "h6"}}
+                                    avatar={showFilters ? <ExpandMore/> : <ExpandLess/>}
+                        />
+                    </CardActionArea>
+                    <Collapse in={showFilters} timeout="auto" onEntered={onResize} onExited={onResize}>
+                        <FilterSet
+                            recordTypes={recordTypes}
+                            filters={filters}
+                            toggleFilter={toggleFilter}
+                            windowEnd={windowEnd}
+                            windowDuration={windowDuration}
+                            setRequestWindow={setRequestWindow}
+                            setWindowEnd={setWindowEnd}
+                        />
+                    </Collapse>
+                </Card>
+            </Card>
         </div>
     </Collapse>
 }
@@ -74,7 +143,16 @@ Submenu.propTypes = {
     connected: PropTypes.bool,
     when: PropTypes.object,
     onResize: PropTypes.func,
-    color: PropTypes.string
+    color: PropTypes.string,
+    recordTypes: PropTypes.object,
+    filters: PropTypes.array,
+    toggleFilter: PropTypes.func,
+    toggleDarkMode: PropTypes.func,
+    windowEnd: PropTypes.object,
+    windowDuration: PropTypes.object,
+
+    setRequestWindow: PropTypes.func,
+    setWindowEnd: PropTypes.func,
 };
 
 Submenu.defaultProps = {

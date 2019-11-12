@@ -49,13 +49,13 @@ export const fixGoogleBooks = (gbooksURL) => {
 };
 
 export const updateWithImageURLs = (links, callback) => {
-    return links.map((link) => {
+    let result = () => links.map((link) => {
         if (link["displayLabel"] === "thumbnail") {
             if (link["linkURL"] && link["linkURL"] !== "no_cover") {
                 let url = rewritePrimoURLs(link["linkURL"]);
                 if (url.hostname === "books.google.com") {
                     if (callback && isValidGBooksURL(url)) {
-                        updateWithGBooksURLs(url, callback);
+                        // updateWithGBooksURLs(url, callback);
                     }
                     return undefined
                 }
@@ -63,16 +63,14 @@ export const updateWithImageURLs = (links, callback) => {
             }
         }
         return undefined
-    }).filter((l) => l)
+    }).filter((l) => l);
 
-};
-
-export const updateWithALMAImages = (alma_id) => {
-    if (alma_id !== undefined) {
-
+    if (!callback) {
+        return result()
+    } else {
+        callback({values: result()})
     }
-}
-
+};
 
 export const updateWithGBooksURLs = (url, callback) => {
     fetchJsonp(url.toString()).then(

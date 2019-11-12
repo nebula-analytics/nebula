@@ -20,6 +20,10 @@
   },
   "cards": {
     "size": 200,
-    "gutter": 5
+    "gutter": 10
+  },
+  "typography": {
+    "fontFamily": "\"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", Helvetica, Arial, \"Lucida Grande\", sans-serif",
+    "fontWeight": 300
   }
 }
