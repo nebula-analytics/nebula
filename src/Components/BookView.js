@@ -1,15 +1,10 @@
 import * as React from "react";
 import Img from 'react-image'
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import themeData from "../constants/theme"
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Badge from "@material-ui/core/Badge";
 import {Visibility} from "@material-ui/icons";
-import {makeStyles, Tooltip} from "@material-ui/core";
-import Zoom from "@material-ui/core/Zoom";
+import { makeStyles, Tooltip, CircularProgress, CardActionArea, Badge, Zoom, Button } from "@material-ui/core";
 import * as PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     clickable: {

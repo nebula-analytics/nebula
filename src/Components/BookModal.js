@@ -2,20 +2,24 @@ import * as React from "react";
 import Img from 'react-image'
 
 import themeData from "../constants/theme"
-import Typography from "@material-ui/core/Typography";
-import {Card, makeStyles, TableCell} from "@material-ui/core";
-import Backdrop from "@material-ui/core/Backdrop/Backdrop";
-import Zoom from "@material-ui/core/Zoom";
-import CardContent from "@material-ui/core/CardContent";
-import Modal from "@material-ui/core/Modal";
-import CardHeader from "@material-ui/core/CardHeader";
-import IconButton from "@material-ui/core/IconButton";
+import {
+    Card,
+    makeStyles,
+    TableCell,
+    Typography,
+    Backdrop,
+    Zoom,
+    CardContent,
+    Modal,
+    CardHeader,
+    IconButton,
+    Chip,
+    Table,
+    TableHead,
+    TableRow,
+    Tooltip,
+} from "@material-ui/core";
 import {Label, Launch} from "@material-ui/icons";
-import Chip from "@material-ui/core/Chip";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Tooltip from "@material-ui/core/Tooltip";
 
 
 const useStyles = makeStyles((theme) => ({

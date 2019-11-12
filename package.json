@@ -35,5 +35,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "customize-cra": "^0.8.0",
+    "react-app-rewired": "^2.1.5"
   }
 }
